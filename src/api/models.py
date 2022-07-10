@@ -45,7 +45,7 @@ class Producto (db.Model):
     precio = db.Column(db.Float, nullable=False)
     vendido = db.Column(db.Boolean, nullable=False)
     foto_producto = db.Column(db.Text, nullable=False)
-    descipcion = db.Column(db.String(3000), nullable=False)
+    descripcion = db.Column(db.String(3000), nullable=False)
 
     # Recibimos FK
     vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
