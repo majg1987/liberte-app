@@ -6,17 +6,18 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     apellido = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
     dni = db.Column(db.String(50), unique=True, nullable=False)
-    nacimiento = db.Column(db.String(10), nullable=False)
-    foto_usuario = db.Column(db.String(50), nullable=False)
-    descipcion = db.Column(db.String(3000), nullable=False)
+    nacimiento = db.Column(db.String(10))
+    foto_usuario = db.Column(db.String(50))
+    descripcion = db.Column(db.String(3000))
 
     # Enviamos FK
     productos = db.relationship('Producto', backref='User', lazy=True)
     comprador = db.relationship('Pedido', backref='User', lazy=True)
     direccion = db.relationship('Direccion', backref='User', lazy=True)
+    cesta_comprador = db.relationship('Cesta', backref='User', lazy=True)
 
 
     def __repr__(self):
@@ -48,8 +49,10 @@ class Producto (db.Model):
 
     # Recibimos FK
     vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    pedido_id = db.Column(db.Boolean, db.ForeignKey('pedido.id'))
+    pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'))
 
+    # Enviamos FK
+    cesta_producto = db.relationship('Cesta', backref='Producto', lazy=True)
 
     def __repr__(self):
         return '<Producto %r>' % self.id
@@ -67,32 +70,6 @@ class Producto (db.Model):
         }
 
 
-
-
-
-class Pedido (db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    fecha_pedido = db.Column(db.String(10), nullable=False)
-    historico = db.Column(db.Boolean, nullable=False)
-    # Recibimos FK
-    id_direccion = db.Column(db.Integer, db.ForeignKey('direccion.id'))
-    id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    # Enviamos FK
-    producto_pedido = db.relationship('Producto', backref='Pedido', lazy=True)
-
-    
-
-    def __repr__(self):
-        return '<Pedido %r>' % self.id
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "fecha_pedido": self.fecha_pedido,
-            "historico": self.historico,
-
-        }
 
 class Direccion (db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -119,4 +96,50 @@ class Direccion (db.Model):
             "numero": self.numero,
             "piso": self.piso,
             "puerta": self.puerta,
+        }
+
+class Cesta (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    # Enviamos FK
+    cesta_pedido = db.relationship('Pedido', backref='Cesta', lazy=True)
+
+    # Recibimos FK
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'))
+
+    def __repr__(self):
+        return '<Cesta %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "producto_id": self.producto_id,
+        }
+
+
+class Pedido (db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    fecha_pedido = db.Column(db.String(10), nullable=False)
+    historico = db.Column(db.Boolean, nullable=False)
+    # Recibimos FK
+    id_cesta = db.Column(db.Integer, db.ForeignKey('cesta.id'))
+    id_direccion = db.Column(db.Integer, db.ForeignKey('direccion.id'))
+    id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    # Enviamos FK
+    producto_pedido = db.relationship('Producto', backref='Pedido', lazy=True)
+
+    
+
+    def __repr__(self):
+        return '<Pedido %r>' % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "fecha_pedido": self.fecha_pedido,
+            "historico": self.historico,
+
         }
