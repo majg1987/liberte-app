@@ -2,13 +2,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     apellido = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
-    dni = db.Column(db.String(50), unique=True, nullable=False)
+    artista = db.Column(db.Boolean, nullable= False)
+    dni = db.Column(db.String(50), unique=True)
     nacimiento = db.Column(db.String(10))
     foto_usuario = db.Column(db.String(50))
     descripcion = db.Column(db.String(3000))
@@ -29,6 +31,7 @@ class User(db.Model):
             "nombre": self.nombre,
             "apellido": self.apellido,
             "email": self.email,
+            "artista": self.artista,
             "dni": self.dni,
             "nacimiento": self.nacimiento,
             "foto_usuario": self.foto_usuario,
