@@ -21,7 +21,7 @@ export const Registro = () => {
 
   /** Creo las caracteristicas de alert */
   const notify = () =>
-    toast.warn("Asegurate de completar todos los datos corremente", {
+    toast.warn("Asegurate de completar todos los datos correctamente", {
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,
