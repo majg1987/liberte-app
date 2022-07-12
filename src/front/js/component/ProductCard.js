@@ -7,7 +7,6 @@ export const ProductCard = ({ img, nombreArtista, precio }) => {
 
     return (
         <div className="grid col-lg-4 col-md-6 col-sm-12 col-productos">
-            {/* // <div className="grid col-12 col-productos"> */}
             <div className="grid-item container-producto">
                 <a href="" className="h-100 w-100">
                     <div className="row info-artista">
