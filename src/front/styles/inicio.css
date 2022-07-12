@@ -1,0 +1,38 @@
+.container-inicio {
+    padding: 0;
+}
+
+.container-titulos {
+    width: 100%;
+    padding-left: 5%;
+}
+
+h5[class*="titulo"] {
+    font-size: 2.5rem;
+}
+
+.titulo-1 {
+    padding-right: 5%;
+}
+
+.container-foto-portada {
+    min-height: 80vh;
+    background-image: url(https://static.vecteezy.com/system/resources/previews/003/360/207/non_2x/colorful-abstract-painting-texture-background-template-free-vector.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.titulo-seccion-producto {
+    padding: 1rem 0;
+    font-size: 2.5rem;
+}
+
+.container-lista-productos {
+    min-height: 200vh;
+}
+
+.row-productos {
+    padding-right: 1vw;
+    height: auto;
+}
