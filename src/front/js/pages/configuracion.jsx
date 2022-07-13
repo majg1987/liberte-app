@@ -1,10 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/configuracion-usuario.css";
 
 export const ConfiguracionUsuario = () => {
     const { store, actions } = useContext(Context);
+
+    const [imagenSelect, setImagenSelect] = useState("");
+    const [loadin, setLoading] = useState(false);
+
+    const subirImagen = async (foto) => {
+        console.log(foto);
+        const data = new FormData();
+        data.append("file", foto);
+        data.append("upload_preset", "usuarios-liberte");
+        setLoading(true);
+        const resp = await fetch(
+            "https://api.cloudinary.com/v1_1/yisusrobles/image/upload",
+            {
+                method: "POST",
+                // mode: "no-cors",
+                body: data,
+            }
+        );
+        const file = await resp.json();
+        console.log(file);
+        setImagenSelect(file.secure_url);
+        setLoading(false);
+
+
+    };
+
 
     return (
         <div className="text-center mt-5">
@@ -83,6 +109,35 @@ export const ConfiguracionUsuario = () => {
                             </div>
                             <div className="col-9 col-input-descripcion ">
                                 <textarea className="input-descripcion"></textarea>
+                            </div>
+                        </div>
+
+                        <div className="row row-foto">
+                            <div className="col-3 col-titulo-foto">
+                                <p className="foto">Foto</p>
+                            </div>
+                            <div className="col-9 col-input-foto ">
+                                <div className="row row-input-foto-foto">
+
+                                    <div className="col-3 pl-2">
+                                        <div className="contenedor-img-user">
+                                            <img src={imagenSelect} alt="" className="img-usuario" />
+                                        </div>
+                                    </div>
+
+                                    <div className="col-8">
+                                        <input
+                                            type="file"
+                                            name="pic"
+                                            onChange={(e) => {
+                                                subirImagen(e.target.files[0]);
+                                            }}
+                                        ></input>
+
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
 

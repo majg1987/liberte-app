@@ -19,3 +19,19 @@
 .row-descripcion textarea:focus {
     outline: none;
 }
+
+div[class*="col-titulo"] p {
+    text-align: start;
+}
+
+.contenedor-img-user {
+    height: 100px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+.img-usuario {
+    object-fit: cover;
+    height: 100px;
+    width: 100px;
+}
