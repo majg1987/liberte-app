@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { ProductoComponente } from "../component/ProductoComponente.jsx";
 
 
 export const Producto = (props) => {
@@ -8,10 +9,9 @@ export const Producto = (props) => {
 	const params = useParams();
 
 	return (
-		<div className="container container-producto">
-			<h1 className="display-4">
-				This will show the demo elementHs
-			</h1>
+		<div className="container-producto">
+
+			<ProductoComponente></ProductoComponente>
 
 		</div>
 	);
