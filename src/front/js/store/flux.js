@@ -2,6 +2,8 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       registro: false,
+      auth: false,
+      errorAuth: false,
     },
     actions: {
       // Registro
@@ -36,6 +38,37 @@ const getState = ({ getStore, getActions, setStore }) => {
             });
           });
         } catch (Ferror) {
+          console.log("Error loading message from backend", error);
+        }
+      },
+
+      // Fecth de Login
+      login: (email, password) => {
+        try {
+          // fetching data from the backend
+          fetch(process.env.BACKEND_URL + "/api/login", {
+            method: "POST",
+            body: JSON.stringify({
+              email: email,
+              password: password,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.status === 200) {
+                setStore({
+                  auth: true,
+                });
+              } else {
+                setStore({ errorAuth: true });
+              }
+              response.json();
+            })
+            .then((data) => sessionStorage.setItem("token", data.access_token));
+          // don't forget to return something, that is how the async resolves
+        } catch (error) {
           console.log("Error loading message from backend", error);
         }
       },
