@@ -1,0 +1,21 @@
+.contenedor-configuracion {
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    border-radius: 0.5em;
+    background-color: #f2f2f2;
+    width: 40%;
+}
+
+.input-registro:focus {
+    outline: none;
+}
+
+.row-descripcion textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid black;
+}
+
+.row-descripcion textarea:focus {
+    outline: none;
+}
