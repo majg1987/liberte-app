@@ -47,6 +47,7 @@ jwt = JWTManager(app)
 #Le agregamos al objeto app la propiedad bcrypt para que se pueda
 #consumir en cualquier archivo de la app a traves de current_app la configuración que hicimos
 bcrypt = Bcrypt(app)
+print(bcrypt)
 app.bcrypt = bcrypt
 
 # add the admin

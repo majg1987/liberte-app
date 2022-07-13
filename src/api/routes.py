@@ -53,24 +53,23 @@ def login():
     # configuracion mimetype application/json 
     return jsonify(access_token=access_token)
 
-     # Hash password
-    hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
 # registration
 @api.route('/registration')
 def registration():
     # recibimos los datos del front
-    body = json.loads(request.data)
-    # print(body)
+    # json.loads(request.data)
+
     # Hash password
-    hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+    #hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
 
     # Guardar nuevo user con hased_password
-    user = User(email=body["email"], password = hashed_password)
-    db.session.add(user)
-    db.session.commit()
-    
-    response_body = {
-        "message": "Formulario de Registro"
+    #user = User(email=body["email"], password = hashed_password)
+    #db.session.add(user)
+    #db.session.commit()
+
+    response_body={
+        "message": "Formulario de Registro OK"
+        
     }
     return jsonify(response_body), 200
 
