@@ -1,3 +1,9 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+p {
+    padding: 0;
+}
