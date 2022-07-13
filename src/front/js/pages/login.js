@@ -67,25 +67,7 @@ export const Login = () => {
           <div className="contenedor-formulario d-flex justify-content-center align-items-center">
             <form onSubmit={handleSubmit} className="formulario-registro ">
               <h2 className="titulo-registro">Login</h2>
-              <input
-                type="text"
-                className="input-registro"
-                id="nombre"
-                placeholder="Escribe tu nombre"
-                onChange={(e) => setNombre(e.target.value)}
-                /** Asigno el valor con onChange a la variable nombre */
-                value={nombre}
-              />
-              <input
-                type="text"
-                className="input-registro"
-                id="apellidos"
-                placeholder="Escribe tus apellidos"
-                onChange={(e) =>
-                  setApellidos(e.target.value)
-                } /** Asigno el valor con onChange a la variable apellidos */
-                value={apellidos}
-              />
+
               <input
                 type="email"
                 className="input-registro"
@@ -106,27 +88,7 @@ export const Login = () => {
                 } /** Asigno el valor con onChange a la variable nombre */
                 value={password}
               />
-              <input
-                type="password"
-                className="input-registro"
-                id="password-repeat"
-                placeholder="Repite Password"
-                onChange={(e) =>
-                  setPasswordRepeat(e.target.value)
-                } /** Asigno el valor con onChange a la variable nombre */
-                value={passwordRepeat}
-              />
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="artista"
-                  onChange={(e) => handleInputChange(e)}
-                />
-                <label className="form-check-label" forhtml="label-artista">
-                  ¿Quieres tener perfil de artista?
-                </label>
-              </div>
+
               <button className="boton-registro">Crear Cuenta</button>
             </form>
           </div>
