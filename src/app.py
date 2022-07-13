@@ -14,6 +14,8 @@ from api.commands import setup_commands
 # JWTManager object, used to hold JWT settings and callback functions for the Flask-JWT-Extended extension
 from flask_jwt_extended import JWTManager
 # import the class wrapper Bcrypt
+from flask_bcrypt import Bcrypt   
+
 
 #from models import Person
 
@@ -42,9 +44,10 @@ app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_Secret_Key')
 jwt = JWTManager(app)
 
 #configuración de bcrypt
-
 #Le agregamos al objeto app la propiedad bcrypt para que se pueda
 #consumir en cualquier archivo de la app a traves de current_app la configuración que hicimos
+bcrypt = Bcrypt(app)
+app.bcrypt = bcrypt
 
 # add the admin
 setup_admin(app)

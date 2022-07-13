@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 
@@ -53,13 +53,22 @@ def login():
     # configuracion mimetype application/json 
     return jsonify(access_token=access_token)
 
-    
+     # Hash password
+    hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
 # registration
 @api.route('/registration')
 def registration():
     # recibimos los datos del front
     body = json.loads(request.data)
-    print(body)
+    # print(body)
+    # Hash password
+    hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+
+    # Guardar nuevo user con hased_password
+    user = User(email=body["email"], password = hashed_password)
+    db.session.add(user)
+    db.session.commit()
+    
     response_body = {
         "message": "Formulario de Registro"
     }
