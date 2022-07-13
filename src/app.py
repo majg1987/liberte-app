@@ -11,6 +11,9 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+# JWTManager object, used to hold JWT settings and callback functions for the Flask-JWT-Extended extension
+from flask_jwt_extended import JWTManager
+# import the class wrapper Bcrypt
 
 #from models import Person
 
@@ -32,6 +35,16 @@ db.init_app(app)
 
 # Allow CORS requests to this API
 CORS(app)
+
+# JWT config
+# Wrapper con variable de entorno
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_Secret_Key')
+jwt = JWTManager(app)
+
+#configuración de bcrypt
+
+#Le agregamos al objeto app la propiedad bcrypt para que se pueda
+#consumir en cualquier archivo de la app a traves de current_app la configuración que hicimos
 
 # add the admin
 setup_admin(app)
