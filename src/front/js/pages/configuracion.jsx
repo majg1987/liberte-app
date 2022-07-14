@@ -7,7 +7,7 @@ export const ConfiguracionUsuario = () => {
     const { store, actions } = useContext(Context);
 
     const [imagenSelect, setImagenSelect] = useState("");
-    const [loadin, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const subirImagen = async (foto) => {
         console.log(foto);
@@ -122,7 +122,13 @@ export const ConfiguracionUsuario = () => {
 
                                 <div className="col-3 pl-2">
                                     <div className="contenedor-img-user">
-                                        <img src={imagenSelect} alt="" className="img-usuario" />
+                                        {
+                                            imagenSelect == "" ?
+                                                <img className="sin-foto-perfil img-usuario" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+                                                :
+                                                <img src={imagenSelect} alt="" className="img-usuario" />
+
+                                        }
                                     </div>
                                 </div>
 
