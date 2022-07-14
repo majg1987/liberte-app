@@ -2,8 +2,9 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User
+from api.models import db, User, Producto, Pedido, Direccion, Cesta
 from api.utils import generate_sitemap, APIException
+import json
 
 api = Blueprint('api', __name__)
 
@@ -42,12 +43,23 @@ def login():
     # -O-
     # si el password introducido no es coincidente con password de user
     # retornamos mensaje y codigo de estado (error cliente)
-    if email != 'email' or password != 'password':
-        # email != 'test' or password != 'test':
-        return jsonify({"msg":"Bad username or password"}), 401
+
+    # if email != 'email' or password != 'password':
+    #     # email != 'test' or password != 'test':
+    #     return jsonify({"msg":"Bad username or password"}), 401
+
+    if email != user.email or  current_app.bcrypt.check_password_hash(user.password,password) == False:
+        return jsonify({"msg": "Bad username or password"}), 401
+        
+    access_token={
+        "token": create_access_token(identity=email),
+        "name": user.nombre
+    }
+
 
     # almacenamos el token creado en la ruta protegida
-    access_token = create_access_token(identity=email)
+
+    # access_token = create_access_token(identity=email)
 
     # retornamos el objeto Response devuelto por jsonify con la 
     # configuracion mimetype application/json 
@@ -57,15 +69,18 @@ def login():
 @api.route('/registration')
 def registration():
     # recibimos los datos del front
-    # json.loads(request.data)
+    body = json.loads(request.data)
+    user_password = body["password"]
 
     # Hash password
-    #hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+    hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
+    print("pass", hashed_password)
 
     # Guardar nuevo user con hased_password
+    user = User(nombre = body["nombre"], apellido=body["apellido"], email = body["email"], password = hashed_password, artista = body["artista"], dni = body["dni"], nacimiento = body["nacimiento"], foto_usuario = body["foto"], descripcion = body["descripcion"])
     #user = User(email=body["email"], password = hashed_password)
-    #db.session.add(user)
-    #db.session.commit()
+    db.session.add(user)
+    db.session.commit()
 
     response_body={
         "message": "Formulario de Registro OK"
