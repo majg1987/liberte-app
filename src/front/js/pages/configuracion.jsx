@@ -115,7 +115,17 @@ export const ConfiguracionUsuario = () => {
 
                     <div className="row row-foto">
                         <div className="col-3 col-titulo-foto">
-                            <p className="foto">Foto</p>
+                            {/* <p className="foto">Foto</p> */}
+                            <label className="label-boton-subir-foto" for="boton-subir-foto">Subir foto</label>
+
+                            <input
+                                id="boton-subir-foto"
+                                type="file"
+                                name="foto"
+                                onChange={(e) => {
+                                    subirImagen(e.target.files[0]);
+                                }}
+                            ></input>
                         </div>
                         <div className="col-9 col-input-foto ">
                             <div className="row row-input-foto">
@@ -132,16 +142,6 @@ export const ConfiguracionUsuario = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-8">
-                                    <input
-                                        type="file"
-                                        name="pic"
-                                        onChange={(e) => {
-                                            subirImagen(e.target.files[0]);
-                                        }}
-                                    ></input>
-
-                                </div>
 
                             </div>
 

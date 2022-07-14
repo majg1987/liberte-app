@@ -36,3 +36,19 @@ div[class*="col-titulo"] p {
     height: 98px;
     width: 98px;
 }
+
+#boton-subir-foto {
+    display: none;
+}
+
+.label-boton-subir-foto {
+    padding: 2%;
+    border: 1px solid black;
+    cursor: pointer;
+    border: 2px solid #f2cb05;
+    color: black;
+    background-color: #f2cb05;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
