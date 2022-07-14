@@ -4,7 +4,6 @@ import "../../styles/configuracion-usuario.css";
 
 export const ConfiguracionUsuario = () => {
     const { store, actions } = useContext(Context);
-
     const [imagenSelect, setImagenSelect] = useState("");
     const [loading, setLoading] = useState(false);
 
