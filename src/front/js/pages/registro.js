@@ -131,7 +131,7 @@ export const Registro = () => {
             </form>
           </div>
           <div>
-            /** Componente Alert */
+            {/* Componente Alert */}
             <ToastContainer
               position="bottom-center"
               autoClose={5000}
