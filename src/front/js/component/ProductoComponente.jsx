@@ -8,9 +8,6 @@ export const ProductoComponente = ({ nombreObra, foto, fotoArtista, nombreArtist
     return (
         <div className="container">
 
-
-
-
             <div className="row row-producto">
 
                 <div className="row row-titulo-obra">
