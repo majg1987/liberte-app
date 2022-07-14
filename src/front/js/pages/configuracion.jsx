@@ -115,7 +115,7 @@ export const ConfiguracionUsuario = () => {
 
                     <div className="row row-foto">
                         <div className="col-3 col-titulo-foto">
-                            {/* <p className="foto">Foto</p> */}
+
                             <label className="label-boton-subir-foto" for="boton-subir-foto">Subir foto</label>
 
                             <input
