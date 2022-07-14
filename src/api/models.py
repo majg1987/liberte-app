@@ -16,10 +16,10 @@ class User(db.Model):
     descripcion = db.Column(db.String(3000))
 
     # Enviamos FK
-    productos = db.relationship('Producto', backref='User', lazy=True)
-    comprador = db.relationship('Pedido', backref='User', lazy=True)
-    direccion = db.relationship('Direccion', backref='User', lazy=True)
-    cesta_comprador = db.relationship('Cesta', backref='User', lazy=True)
+    productos = db.relationship('Producto', backref='user', lazy=True)
+    comprador = db.relationship('Pedido', backref='user', lazy=True)
+    direccion = db.relationship('Direccion', backref='user', lazy=True)
+    cesta_comprador = db.relationship('Cesta', backref='user', lazy=True)
 
 
     def __repr__(self):
@@ -55,7 +55,7 @@ class Producto (db.Model):
     pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'))
 
     # Enviamos FK
-    cesta_producto = db.relationship('Cesta', backref='Producto', lazy=True)
+    cesta_producto = db.relationship('Cesta', backref='producto', lazy=True)
 
     def __repr__(self):
         return '<Producto %r>' % self.id
@@ -86,7 +86,7 @@ class Direccion (db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Enviamos FK
-    direccion_pedido = db.relationship('Pedido', backref='Direccion', lazy=True)
+    direccion_pedido = db.relationship('Pedido', backref='direccion', lazy=True)
 
     def __repr__(self):
         return '<Direccion %r>' % self.id
@@ -105,7 +105,7 @@ class Cesta (db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Enviamos FK
-    cesta_pedido = db.relationship('Pedido', backref='Cesta', lazy=True)
+    cesta_pedido = db.relationship('Pedido', backref='cesta', lazy=True)
 
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -132,7 +132,7 @@ class Pedido (db.Model):
     id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Enviamos FK
-    producto_pedido = db.relationship('Producto', backref='Pedido', lazy=True)
+    producto_pedido = db.relationship('Producto', backref='pedido', lazy=True)
 
     
 
