@@ -69,7 +69,6 @@ const getState = ({ getStore, getActions, setStore }) => {
               response.json();
             })
             .then((data) => sessionStorage.setItem("token", data.access_token));
-          // don't forget to return something, that is how the async resolves
         } catch (error) {
           console.log("Error loading message from backend", error);
         }
