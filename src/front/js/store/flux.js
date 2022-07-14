@@ -37,7 +37,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               registro: false,
             });
           });
-        } catch (Ferror) {
+        } catch (error) {
           console.log("Error loading message from backend", error);
         }
       },
@@ -62,7 +62,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                   auth: true,
                 });
               } else {
-                setStore({ errorAuth: true });
+                setStore({
+                  errorAuth: true,
+                });
               }
               response.json();
             })
