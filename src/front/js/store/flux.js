@@ -37,7 +37,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               registro: false,
             });
           });
-        } catch (Ferror) {
+        } catch (error) {
           console.log("Error loading message from backend", error);
         }
       },
@@ -62,12 +62,13 @@ const getState = ({ getStore, getActions, setStore }) => {
                   auth: true,
                 });
               } else {
-                setStore({ errorAuth: true });
+                setStore({
+                  errorAuth: true,
+                });
               }
               response.json();
             })
             .then((data) => sessionStorage.setItem("token", data.access_token));
-          // don't forget to return something, that is how the async resolves
         } catch (error) {
           console.log("Error loading message from backend", error);
         }
