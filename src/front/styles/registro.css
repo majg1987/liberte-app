@@ -1,0 +1,55 @@
+/* Propiedades de Css para Registro y Login */
+
+.contenedor-principal {
+    height: 680px;
+}
+
+.contenedor-formulario {
+    max-width: 400px;
+    height: 500px;
+    background-color: #f2f2f2;
+    margin: 2rem auto;
+    border-radius: .5em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Reajusto las propiedades del contenedor de Login */
+.contenedor-login {
+    height: 360px;
+    margin: 6rem auto 0 auto
+}
+
+.titulo-registro {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0 0 2rem 0;
+}
+
+.input-registro {
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: #f2f2f2;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.form-check {
+    margin-bottom: 2rem;
+    font-size: small;
+}
+
+.formulario-registro {
+    width: 80%;
+}
+
+.boton-registro {
+    border: 2px solid #F2CB05;
+    color: black;
+    background-color: #F2CB05;
+    font-weight: bold;
+    border-radius: .5rem;
+    padding: .5rem;
+}
+
+.toast-container-login {
+    margin-bottom: 5rem;
+}
