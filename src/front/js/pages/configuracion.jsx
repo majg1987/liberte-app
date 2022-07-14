@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/configuracion-usuario.css";
 
 export const ConfiguracionUsuario = () => {
@@ -68,12 +67,12 @@ export const ConfiguracionUsuario = () => {
                         </div>
                     </div>
 
-                    <div className="row row-contraseña">
-                        <div className="col-3 col-titulo-contraseña">
-                            <p className="contraseña">Contraseña</p>
+                    <div className="row row-password">
+                        <div className="col-3 col-titulo-password">
+                            <p className="password">password</p>
                         </div>
-                        <div className="col-9 col-input-contraseña">
-                            <input type="password" className="input-registro input-contraseña" />
+                        <div className="col-9 col-input-password">
+                            <input type="password" className="input-registro input-password" />
                         </div>
                     </div>
 
