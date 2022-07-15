@@ -17,7 +17,6 @@ export const Registro = () => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [artista, setArtista] = useState(false);
-  const [ok, setOk] = useState(null);
 
   /** Creo las caracteristicas de alert */
   const notify = (mensaje) =>
@@ -41,17 +40,12 @@ export const Registro = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
-    if (nombre === "") {
-      setOk(false);
-    }
-    if (apellidos === "") {
-      setOk(false);
-    }
-    if (password === "" || password !== passwordRepeat) {
-      setOk(false);
-    }
-    if (ok) {
+    if (
+      nombre !== "" &&
+      apellidos !== "" &&
+      password !== "" &&
+      password === passwordRepeat
+    ) {
       actions.registro(nombre, apellidos, email, password, artista);
     } else {
       notify("Completa todos los campos");
