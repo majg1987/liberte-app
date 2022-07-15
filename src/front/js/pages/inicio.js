@@ -8,27 +8,21 @@ export const Inicio = () => {
 
     return (
         <div className="container-fluid container-inicio">
-            <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
-
-            {/* <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script> */}
-
             {/* Seccion portada */}
-            <div className="container-portada">
-                <div className="container-titulos">
-                    <div className="row row-titulos">
-                        <div className="col-3 w-100 d-flex justify-content-center p-2">
-                            <img
-                                className="img-logo"
-                                src={
-                                    "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
-                                }
-                                alt="logo-liberte"
-                            />
-                        </div>
-                    </div>
+            <div className="container-portada  d-flex justify-content-center align-items-center">
+                {/* <div className="container-titulos"> */}
+                <div className="row row-logo">
+                    <img
+                        className="img-logo"
+                        src={
+                            "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
+                        }
+                        alt="logo-liberte"
+                    />
                 </div>
+                {/* </div> */}
 
-                <div className="container-foto-portada"></div>
+                {/* <div className="container-foto-portada"></div> */}
             </div>
 
             {/* Seccion productos */}
