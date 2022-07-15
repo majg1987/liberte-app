@@ -17,7 +17,6 @@ export const Registro = () => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [artista, setArtista] = useState(false);
-  // const [ok, setOk] = useState(true);
 
   /** Creo las caracteristicas de alert */
   const notify = (mensaje) =>
