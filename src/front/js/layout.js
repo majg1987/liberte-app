@@ -10,7 +10,7 @@ import { Login } from "./pages/login";
 import { ConfiguracionUsuario } from "./pages/configuracion.jsx";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { Navbar } from "./component/navbar/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
 
 //create your first component
