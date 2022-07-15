@@ -10,7 +10,6 @@ class User(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
     artista = db.Column(db.Boolean, nullable= False)
-    dni = db.Column(db.String(50), unique=True)
     nacimiento = db.Column(db.String(10))
     foto_usuario = db.Column(db.String(50))
     descripcion = db.Column(db.String(3000))
