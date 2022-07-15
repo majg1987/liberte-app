@@ -31,7 +31,6 @@ class User(db.Model):
             "apellido": self.apellido,
             "email": self.email,
             "artista": self.artista,
-            "dni": self.dni,
             "nacimiento": self.nacimiento,
             "foto_usuario": self.foto_usuario,
             "descripcion": self.descripcion,
