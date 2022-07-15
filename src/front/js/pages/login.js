@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-/*Importo el css individual para registro */
+/*Importo el css de registro, reutilizo muchas de las propiedades */
 import "../../styles/registro.css";
 import { Context } from "../store/appContext";
 /** Importo las librerias para crear alert de registro erroneo */
@@ -11,17 +11,12 @@ export const Login = () => {
   const { store, actions } = useContext(Context);
 
   /* Utilizo useState donde asigno valores de los input*/
-  const [nombre, setNombre] = useState("");
-  const [apellidos, setApellidos] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
-  const [artista, setArtista] = useState(false);
-  const [ok, setOk] = useState(null);
 
   /** Creo las caracteristicas de alert */
-  const notify = () =>
-    toast.warn("Asegurate de completar todos los datos correctamente", {
+  const notify = (mensaje) =>
+    toast.warn(mensaje, {
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -32,42 +27,35 @@ export const Login = () => {
       transition: Zoom,
     });
 
-  /** Recupero valor true o false segun si quiere perfil de artista o no, y lo asigno a artista */
-  const handleInputChange = (e) => {
-    const target = e.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    setArtista(value);
-  };
-
+  /** Compruebo que los campos no se encuentren vacios, si estan completos, mando datos a metodo login en flux
+   * si no es asi salta un alert que indica al usuario que debe rellenar los campos del formulario login
+   */
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
-    if (nombre === "") {
-      setOk(false);
-    }
-    if (apellidos === "") {
-      setOk(false);
-    }
-    if (password === "" || password !== passwordRepeat) {
-      setOk(false);
-    }
-    if (ok) {
-      actions.registro(nombre, apellidos, email, password, artista);
+
+    if (email !== "" && password !== "") {
+      actions.login(email, password);
     } else {
-      notify();
+      notify("Completa todos los campos");
     }
   };
+
+  // Cuando los datos mandados al backend son erróneos invocamos alert
+  useEffect(() => {
+    if (store.errorAuth) {
+      notify("Datos Erroneos");
+    }
+  }, []);
 
   return (
     <>
-      {store.registro ? (
-        <Navigate to={"/login"} />
+      {store.auth ? (
+        <Navigate to={"/inicio"} />
       ) : (
         <div className=" contenedor-principal pt-5">
-          <div className="contenedor-formulario d-flex justify-content-center align-items-center">
-            <form onSubmit={handleSubmit} className="formulario-registro ">
-              <h2 className="titulo-registro">Login</h2>
-
+          <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center">
+            <form onSubmit={handleSubmit} className="formulario-registro">
+              <h2 className="titulo-registro"> Login </h2>
               <input
                 type="email"
                 className="input-registro"
@@ -85,31 +73,33 @@ export const Login = () => {
                 placeholder="Introduce un password"
                 onChange={(e) =>
                   setPassword(e.target.value)
-                } /** Asigno el valor con onChange a la variable nombre */
+                } /** Asigno el valor con onChange a la variable password */
                 value={password}
               />
-
-              <button className="boton-registro">Crear Cuenta</button>
+              <div className="d-flex flex-column">
+                <button className="boton-registro mb-2"> Acceder </button>
+                {/* <button className="boton-registro"> */}
+                <Link to={"/registro"} className="text-center">
+                  Registrarse
+                </Link>
+                {/* </button> */}
+              </div>
             </form>
           </div>
           <div>
-            {!ok ? (
-              /** Componente Alert */
-              <ToastContainer
-                position="bottom-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                className="mb-4"
-              />
-            ) : (
-              <p></p>
-            )}
+            {/* Componente Alert  */}
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              className="toast-container-login"
+            />
           </div>
         </div>
       )}

@@ -7,10 +7,11 @@ import { Inicio } from "./pages/inicio";
 import { Registro } from "./pages/registro";
 import { Producto } from "./pages/producto";
 import { Login } from "./pages/login";
+import { ConfiguracionUsuario } from "./pages/configuracion.jsx";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
+import { Navbar } from "./component/navbar/Navbar.jsx";
+import { Footer } from "./component/Footer.jsx";
 
 //create your first component
 const Layout = () => {
@@ -25,15 +26,19 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
+            <Route
+              element={<ConfiguracionUsuario />}
+              path="/configuracion/:theid"
+            />
             <Route element={<Inicio />} path="/inicio" />
             <Route element={<Registro />} path="/registro" />
             <Route element={<Producto />} path="/producto/:theid" />
             <Route element={<Login />} path="/login" />
-            <Route element={<h1>Not found!</h1>} />
-          </Routes>
+            <Route element={<h1> Not found! </h1>} />
+          </Routes>{" "}
           <Footer />
-        </ScrollToTop>
-      </BrowserRouter>
+        </ScrollToTop>{" "}
+      </BrowserRouter>{" "}
     </div>
   );
 };

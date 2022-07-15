@@ -2,6 +2,9 @@ const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       registro: false,
+      auth: false,
+      errorAuth: false,
+      artistas: [],
     },
     actions: {
       // Registro
@@ -16,9 +19,8 @@ const getState = ({ getStore, getActions, setStore }) => {
               email: email,
               password: password,
               artista: artista,
-              dni: null,
               nacimiento: null,
-              foto_usuario: null,
+              foto: null,
               descripcion: null,
             }),
             headers: {
@@ -35,8 +37,54 @@ const getState = ({ getStore, getActions, setStore }) => {
               registro: false,
             });
           });
-        } catch (Ferror) {
+        } catch (error) {
           console.log("Error loading message from backend", error);
+        }
+      },
+
+      // Fecth de Login
+      login: (email, password) => {
+        try {
+          // fetching data from the backend
+          fetch(process.env.BACKEND_URL + "/api/login", {
+            method: "POST",
+            body: JSON.stringify({
+              email: email,
+              password: password,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.status === 200) {
+                setStore({
+                  auth: true,
+                });
+              } else {
+                setStore({
+                  errorAuth: true,
+                });
+              }
+              response.json();
+            })
+            .then((data) => sessionStorage.setItem("token", data.access_token));
+        } catch (error) {
+          console.log("Error loading message from backend", error);
+        }
+      },
+      logout: () => setStore({ auth: false }),
+      search: async () => {
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/artistas"
+          );
+          const data = await response.json();
+          setStore({
+            artistas: data,
+          });
+        } catch (error) {
+          console.log("Error loading message from /api/artistas", error);
         }
       },
     },

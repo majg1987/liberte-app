@@ -1,4 +1,4 @@
-/* Propiedades de Css para Registro */
+/* Propiedades de Css para Registro y Login */
 
 .contenedor-principal {
     height: 680px;
@@ -11,6 +11,12 @@
     margin: 2rem auto;
     border-radius: .5em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Reajusto las propiedades del contenedor de Login */
+.contenedor-login {
+    height: 360px;
+    margin: 6rem auto 0 auto
 }
 
 .titulo-registro {
@@ -42,4 +48,8 @@
     font-weight: bold;
     border-radius: .5rem;
     padding: .5rem;
+}
+
+.toast-container-login {
+    margin-bottom: 5rem;
 }

@@ -15,12 +15,36 @@ h5[class*="titulo"] {
     padding-right: 5%;
 }
 
-.container-foto-portada {
-    min-height: 80vh;
-    background-image: url(https://static.vecteezy.com/system/resources/previews/003/360/207/non_2x/colorful-abstract-painting-texture-background-template-free-vector.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+.container-portada {
+    background: linear-gradient(-45deg, #f2cb05, #f7750f, #7c0ff7, #0e75ed);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    min-height: 90vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.row-logo {
+    height: 30vh;
+    width: 30vh;
+    background-color: white;
+}
+
+.img-logo {
+    /* height: 10vh; */
+    object-fit: contain;
 }
 
 .titulo-seccion-producto {
@@ -29,7 +53,7 @@ h5[class*="titulo"] {
 }
 
 .container-lista-productos {
-    min-height: 200vh;
+    /* min-height: 200vh; */
 }
 
 .row-productos {

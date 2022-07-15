@@ -17,11 +17,10 @@ export const Registro = () => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [artista, setArtista] = useState(false);
-  const [ok, setOk] = useState(null);
 
   /** Creo las caracteristicas de alert */
-  const notify = () =>
-    toast.warn("Asegurate de completar todos los datos correctamente", {
+  const notify = (mensaje) =>
+    toast.warn(mensaje, {
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -41,20 +40,15 @@ export const Registro = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
-    if (nombre === "") {
-      setOk(false);
-    }
-    if (apellidos === "") {
-      setOk(false);
-    }
-    if (password === "" || password !== passwordRepeat) {
-      setOk(false);
-    }
-    if (ok) {
+    if (
+      nombre !== "" &&
+      apellidos !== "" &&
+      password !== "" &&
+      password === passwordRepeat
+    ) {
       actions.registro(nombre, apellidos, email, password, artista);
     } else {
-      notify();
+      notify("Completa todos los campos");
     }
   };
 
@@ -66,7 +60,7 @@ export const Registro = () => {
         <div className=" contenedor-principal pt-5">
           <div className="contenedor-formulario d-flex justify-content-center align-items-center">
             <form onSubmit={handleSubmit} className="formulario-registro ">
-              <h2 className="titulo-registro">Registro</h2>
+              <h2 className="titulo-registro"> Registro </h2>
               <input
                 type="text"
                 className="input-registro"
@@ -124,30 +118,26 @@ export const Registro = () => {
                   onChange={(e) => handleInputChange(e)}
                 />
                 <label className="form-check-label" forhtml="label-artista">
-                  ¿Quieres tener perfil de artista?
+                  ¿Quieres tener perfil de artista ?
                 </label>
               </div>
-              <button className="boton-registro">Crear Cuenta</button>
+              <button className="boton-registro"> Crear Cuenta </button>
             </form>
           </div>
           <div>
-            {!ok ? (
-              /** Componente Alert */
-              <ToastContainer
-                position="bottom-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                className="mb-4"
-              />
-            ) : (
-              <p></p>
-            )}
+            {/* Componente Alert */}
+            <ToastContainer
+              position="bottom-center"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              className="mb-4"
+            />
           </div>
         </div>
       )}

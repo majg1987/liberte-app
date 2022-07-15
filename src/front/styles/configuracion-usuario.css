@@ -1,0 +1,54 @@
+.contenedor-configuracion {
+    border-radius: 0.5em;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    border-radius: 0.5em;
+    background-color: #f2f2f2;
+    width: 40%;
+    padding: 2% 0;
+}
+
+.input-registro:focus {
+    outline: none;
+}
+
+.row-descripcion textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid black;
+}
+
+.row-descripcion textarea:focus {
+    outline: none;
+}
+
+div[class*="col-titulo"] p {
+    text-align: start;
+}
+
+.contenedor-img-user {
+    height: 100px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+.img-usuario {
+    object-fit: cover;
+    height: 98px;
+    width: 98px;
+}
+
+#boton-subir-foto {
+    display: none;
+}
+
+.label-boton-subir-foto {
+    padding: 2%;
+    border: 1px solid black;
+    cursor: pointer;
+    border: 2px solid #f2cb05;
+    color: black;
+    background-color: #f2cb05;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
