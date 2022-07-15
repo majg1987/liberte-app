@@ -66,7 +66,7 @@ def login():
     return jsonify(access_token=access_token)
 
 # registration
-@api.route('/registration')
+@api.route('/registration', methods=['POST'])
 def registration():
     # recibimos los datos del front
     body = json.loads(request.data)
@@ -77,7 +77,7 @@ def registration():
     print("pass", hashed_password)
 
     # Guardar nuevo user con hased_password
-    user = User(nombre = body["nombre"], apellido=body["apellido"], email = body["email"], password = hashed_password, artista = body["artista"], dni = body["dni"], nacimiento = body["nacimiento"], foto_usuario = body["foto"], descripcion = body["descripcion"])
+    user = User(nombre = body["nombre"], apellido=body["apellido"], email = body["email"], password = hashed_password, artista = body["artista"], nacimiento = body["nacimiento"], foto_usuario = body["foto"], descripcion = body["descripcion"])
     #user = User(email=body["email"], password = hashed_password)
     db.session.add(user)
     db.session.commit()
