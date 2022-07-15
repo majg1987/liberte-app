@@ -18,9 +18,8 @@ const getState = ({ getStore, getActions, setStore }) => {
               email: email,
               password: password,
               artista: artista,
-              dni: null,
               nacimiento: null,
-              foto_usuario: null,
+              foto: null,
               descripcion: null,
             }),
             headers: {
