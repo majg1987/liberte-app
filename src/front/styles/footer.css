@@ -1,0 +1,72 @@
+*:focus,
+*:active {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#copyright {
+    font-size: 80%;
+}
+
+.wrapper {
+    display: inline-flex;
+    list-style: none;
+}
+
+.wrapper .icon {
+    position: relative;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 15px;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover span,
+.wrapper .icon:hover {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .facebook:hover,
+.wrapper .facebook:hover,
+.wrapper .facebook:hover {
+    background: #1877f2;
+    color: #ffffff;
+}
+
+.wrapper .twitter:hover,
+.wrapper .twitter:hover,
+.wrapper .twitter:hover {
+    background: #1da1f2;
+    color: #ffffff;
+}
+
+.wrapper .instagram:hover,
+.wrapper .instagram:hover,
+.wrapper .instagram:hover {
+    background: #e4405f;
+    color: #ffffff;
+}
+
+.wrapper .github:hover,
+.wrapper .github:hover,
+.wrapper .github:hover {
+    background: #545353;
+    color: #ffffff;
+}
+
+.wrapper .youtube:hover,
+.wrapper .youtube:hover,
+.wrapper .youtube:hover {
+    background: #cd201f;
+    color: #ffffff;
+}
