@@ -98,3 +98,25 @@ def handle_artistas():
 
     
 
+@api.route('/producto', methods=['POST', 'GET'])
+def handle_producto():
+
+    if request.method == 'POST':
+        body = json.loads(request.data)
+        nuevo_producto = Producto(nombre = body["nombre"], fecha_alta = body["fecha_alta"], categoria = body["categoria"], precio = body["precio"], vendido = body["vendido"], foto_producto = ["foto_producto"], descripcion= body["descripcion"], vendedor_user_id=body["vendedor_user_id"],  pedido_id = body["pedido_id"])
+    
+        db.session.add(nuevo_producto)
+        db.session.commit()
+        
+        response_body={
+        "message": "Formulario de Registro OK"
+        
+    }
+    
+    else:
+        print("adios")
+
+    return response_body, 200
+
+    
+
