@@ -88,7 +88,13 @@ def registration():
     }
     return jsonify(response_body), 200
 
+# searchBar
+@api.route('/artistas', methods=['POST', 'GET'])
+def handle_artistas():
+    response_body = User.query.order_by(User.nombre).all()
+    response_body = [ user.serialize() for user in response_body]
 
+    return json.dumps(response_body), 200
 
     
 
