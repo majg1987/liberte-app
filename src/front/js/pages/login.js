@@ -13,7 +13,6 @@ export const Login = () => {
   /* Utilizo useState donde asigno valores de los input*/
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [ok, setOk] = useState(null);
 
   /** Creo las caracteristicas de alert */
   const notify = (mensaje) =>
@@ -33,15 +32,8 @@ export const Login = () => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
 
-    if (email === "") {
-      setOk(false);
-    }
-    if (password === "") {
-      setOk(false);
-    }
-    if (ok) {
+    if (email !== "" && password !== "") {
       actions.login(email, password);
     } else {
       notify("Completa todos los campos");
