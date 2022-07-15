@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       registro: false,
       auth: false,
       errorAuth: false,
+      artistas: [],
     },
     actions: {
       // Registro
@@ -70,6 +71,20 @@ const getState = ({ getStore, getActions, setStore }) => {
             .then((data) => sessionStorage.setItem("token", data.access_token));
         } catch (error) {
           console.log("Error loading message from backend", error);
+        }
+      },
+      logout: () => setStore({ auth: false }),
+      search: async () => {
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/artistas"
+          );
+          const data = await response.json();
+          setStore({
+            artistas: data,
+          });
+        } catch (error) {
+          console.log("Error loading message from /api/artistas", error);
         }
       },
     },
