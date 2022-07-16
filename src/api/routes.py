@@ -117,6 +117,28 @@ def handle_producto():
         print("adios")
 
     return response_body, 200
+    
+
+@api.route('/cesta', methods=['POST', 'GET'])
+def handle_cesta():
+
+    if request.method == 'POST':
+        body = json.loads(request.data)
+        nueva_cesta = Cesta(user_id= body["user_id"], producto_id = body["producto_id"])
+        # nuevo_producto = Producto(nombre = body["nombre"], fecha_alta = body["fecha_alta"], categoria = body["categoria"], precio = body["precio"], vendido = body["vendido"], foto_producto = ["foto_producto"], descripcion= body["descripcion"], vendedor_user_id=body["vendedor_user_id"],  pedido_id = body["pedido_id"])
+    
+        db.session.add(nueva_cesta)
+        db.session.commit()
+        
+        response_body={
+        "message": "Formulario de Registro OK"
+        
+    }
+    
+    else:
+        print("adios")
+
+    return response_body, 200
 
     
 
