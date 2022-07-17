@@ -68,6 +68,8 @@ class Producto (db.Model):
             "vendido": self.vendido,
             "foto_producto": self.foto_producto,
             "descripcion": self.descripcion,
+            "vendedor_user_id" : self.vendedor_user_id,
+            "pedido_id": self.pedido_id
         }
 
 

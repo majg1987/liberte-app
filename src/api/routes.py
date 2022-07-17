@@ -39,7 +39,7 @@ def registration():
     print("pass", hashed_password)
 
     # Guardar nuevo user con hased_password
-    user = User(nombre = body["nombre"], apellido=body["apellido"], email = body["email"], password = hashed_password, artista = body["artista"], nacimiento = body["nacimiento"], foto_usuario = body["foto"], descripcion = body["descripcion"])
+    user = User(nombre = body["nombre"], apellido=body["apellido"], email = body["email"], password = hashed_password, artista = body["artista"], nacimiento = body["nacimiento"], foto_usuario = body["foto_usuario"], descripcion = body["descripcion"])
     #user = User(email=body["email"], password = hashed_password)
     db.session.add(user)
     db.session.commit()
@@ -94,36 +94,96 @@ def login():
 
 
 
-
-@api.route('/producto', methods=['POST', 'GET'])
+# Producto
+@api.route('/producto', methods=['POST', 'GET', 'PUT'])
 def handle_producto():
 
     if request.method == 'POST':
+
         body = json.loads(request.data)
+
+        # Creamos nuevo producto
         nuevo_producto = Producto(nombre = body["nombre"], fecha_alta = body["fecha_alta"], categoria = body["categoria"], precio = body["precio"], vendido = body["vendido"], foto_producto = ["foto_producto"], descripcion= body["descripcion"], vendedor_user_id=body["vendedor_user_id"],  pedido_id = body["pedido_id"])
     
+        # Guardamos producto
         db.session.add(nuevo_producto)
         db.session.commit()
+
         print("IDPRODUCT", nuevo_producto.id)
         
         response_body={
-        "message": "Formulario de Registro OK"  
+        "result": "Producto creado"  
     }
  
     
-    else:
+    elif request.method == 'GET':
+
         body = json.loads(request.data)
-        productoSlect = Producto.query.filter_by(id= body["id"]).first()
-        productoSlect.serialize()
-        print("producto", productoSlect.serialize())
+        id = body["id"]
+
+        # Busqueda de todos los productos (Vista de inicio)
+        if id == None:
+            get_lista_productos = Producto.query.order_by(Producto.id).all()
+            lista_productos = [producto.serialize() for producto in get_lista_productos]
+            print("YEYE",lista_productos)
+
+            response_body={
+                "result": lista_productos
+            }
+
+        # Busqueda de todos los productos de un usuario (Vista de usuario)
+        elif id != None:
+            
+            # Buscamos en la tabla de producto el id del usuario
+            get_productos_artista = Producto.query.filter_by(vendedor_user_id= body["id"]).all()
+            print("eh",get_productos_artista)
+            productos_artista = [producto_artista.serialize() for producto_artista in get_productos_artista]
+            print("productos artista",productos_artista)
+
+            response_body={
+                "result": productos_artista
+            }
+
+    elif request.method == 'PUT':
+
+        body = json.loads(request.data)
+
+        # Busco por producto ID
+        producto_edit = Producto.query.filter_by(id = body["id_producto"]).first()
+
+        # Obtenemos las keys de la tabla producto para saber qué propiedad se ha cambiado.
+        keys = Producto.__table__.columns.keys()
+        print("keys",keys)
+
+        for edit_key in body:
+            # print("holaa", edit_key)
+            # print("holaa", body[edit_key])
+            if body[edit_key] != None:
+                if edit_key in keys:
+                    print("new value", type(edit_key),":", body[edit_key])
+                    producto = producto_edit.serialize()
+
+                    # producto[edit_key] = body[edit_key]
+                    print(type(producto_edit))
+                    print(producto["precio"])
+                    producto['precio'] = 100
+                    print(producto["precio"])
+                    # producto_edit = json.loads(producto)
+                    print(producto)
+                    db.session.commit()
+                    print("yija")
+
+        # db.session.commit()
+
         response_body={
-        "message": "Formulario de Registro OK"
-    }
+            "result": "productos_artista"
+        }
+
 
     return response_body, 200
     
 
-@api.route('/direccion', methods=['POST', 'GET'])
+@api.route('/direccion', methods=['POST', 'GET', 'PUT'])
 def handle_direccion():
 
     if request.method == 'POST':
@@ -140,7 +200,7 @@ def handle_direccion():
         
     }
     
-    else:
+    elif request.method == 'GET':
         body = json.loads(request.data)
         id = body["id"]
 
@@ -181,6 +241,8 @@ def handle_cesta():
         print("adios")
 
     return response_body, 200
+
+
 
 @api.route('/pedido', methods=['POST', 'GET'])
 def handle_pedido():
