@@ -5,7 +5,7 @@ import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import { Context } from "../../store/appContext";
 
-import logo from "../../../img/logo.png";
+import yellow from "../../../img/yellow.png";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -17,8 +17,8 @@ export const Navbar = () => {
           <div className="navbar-brand m-0">
             <Link to="/inicio">
               <img
-                src={logo}
-                style={{ width: "55%", height: "30%" }}
+                src={yellow}
+                style={{ width: "80%", height: "70%" }}
                 alt="Liberte"
               />
             </Link>
