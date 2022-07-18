@@ -11,7 +11,7 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     artista = db.Column(db.Boolean, nullable= False)
     nacimiento = db.Column(db.String(10))
-    foto_usuario = db.Column(db.String(50))
+    foto_usuario = db.Column(db.String(500))
     descripcion = db.Column(db.String(3000))
 
     # Enviamos FK
@@ -45,7 +45,7 @@ class Producto (db.Model):
     categoria = db.Column(db.String(20), nullable=False)
     precio = db.Column(db.Float, nullable=False)
     vendido = db.Column(db.Boolean, nullable=False)
-    foto_producto = db.Column(db.Text, nullable=False)
+    foto_producto = db.Column(db.String(500), nullable=False)
     descripcion = db.Column(db.String(3000), nullable=False)
 
     # Recibimos FK

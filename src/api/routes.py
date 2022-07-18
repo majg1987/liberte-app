@@ -74,11 +74,7 @@ def login():
     # almacenamos la primera coincidencia de email en User
     user = User.query.filter_by(email=email).first()
 
-    # condicion logica: 
-    # si el email introducido no es coincidente con email de user
-    # -O-
-    # si el password introducido no es coincidente con password de user
-    # retornamos mensaje y codigo de estado (error cliente)
+    # Si el email o password no coindicen retornamos error de autentificacion
 
     if email != user.email or  current_app.bcrypt.check_password_hash(user.password,password) == False:
         return jsonify({"msg": "Bad username or password"}), 401
@@ -94,9 +90,46 @@ def login():
 
 
 
+# Configuracion usuario
+@api.route('/configuracion', methods=['PUT'])
+def configuracion():
+
+    body = json.loads(request.data)
+
+    usuario_modificado = User.query.filter_by(id=body["id"]).first()
+    user_keys = User.__table__.columns.keys()
+   
+    for edit_key in body:
+        if body[edit_key] != None and  edit_key in user_keys:
+            usuario_modificado_srlz = usuario_modificado.serialize()
+
+            usuario_modificado_srlz[edit_key] = body[edit_key]
+
+            usuario_modificado.nombre = usuario_modificado_srlz["nombre"]
+            usuario_modificado.apellido = usuario_modificado_srlz["apellido"]
+            usuario_modificado.email = usuario_modificado_srlz["email"]
+            # usuario_modificado.password = usuario_modificado_srlz["password"]
+            usuario_modificado.artista = usuario_modificado_srlz["artista"]
+            usuario_modificado.nacimiento = usuario_modificado_srlz["nacimiento"]
+            usuario_modificado.foto_usuario = usuario_modificado_srlz["foto_usuario"]
+            usuario_modificado.descripcion = usuario_modificado_srlz["descripcion"]
+
+            db.session.commit()
+
+        response_body={
+            "result": usuario_modificado_srlz
+        }
+            
+
+    return response_body, 200
+
+
+
 # Producto
 @api.route('/producto', methods=['POST', 'GET', 'PUT'])
 def handle_producto():
+
+    # Publicar producto
 
     if request.method == 'POST':
 
@@ -118,77 +151,90 @@ def handle_producto():
     }
  
     
+    # Obtener productos
+
     elif request.method == 'GET':
 
-        # DATOS RECIBIDOS = ID USUARIO O NINGUNO
+        # DATOS RECIBIDOS => ID USUARIO O NINGUNO
+        # Comprobamos que la peticion nos envie datos para saber si devolver un producto o todos
+        # En caso de que exista body asignamos su valor y el id del usuario
+        if request.data != b'':
+            body = json.loads(request.data) 
+            id = body["id"]
 
-        body = json.loads(request.data)
-        id = body["id"]
-
-        # Busqueda de todos los productos (Vista de inicio)
-        if id == None:
-            get_lista_productos = Producto.query.order_by(Producto.id).all()
-            lista_productos = [producto.serialize() for producto in get_lista_productos]
-
-            response_body={
-                "result": lista_productos
-            }
-
-        # Busqueda de todos los productos de un usuario (Vista de usuario)
-        elif id != None:
+        # Devolvemos todos los productos (vista de inicio) // Si no hay body
+        get_lista_productos = Producto.query.order_by(Producto.id).all()
+        lista_productos = [producto.serialize() for producto in get_lista_productos]
+        response_body={
+            "result": lista_productos
+        }
+        
+        # Devolvemos los productos de un usuario (Vista usuario) // Si hay body
+        if 'id' in locals() and id != None:
             
             # Buscamos en la tabla de producto el id del usuario
             get_productos_artista = Producto.query.filter_by(vendedor_user_id= body["id"]).all()
-            print("eh",get_productos_artista)
             productos_artista = [producto_artista.serialize() for producto_artista in get_productos_artista]
-            print("productos artista",productos_artista)
 
+            # Devolvemos los productos del artista
             response_body={
                 "result": productos_artista
             }
 
+
+    # Modificar o eliminar productos
+
     elif request.method == 'PUT':
+
+        # RECIBIMOS TODOS LOS DATOS DE LA TABLA DE PRODUCTO MÁS LA KEY "BORRAR"
+        # * if borrar = true => Se borra el producto, else => Se edita
 
         body = json.loads(request.data)
 
         # Busco por producto ID
-        producto_edit = Producto.query.filter_by(id = body["id_producto"]).first()
+        producto_edit = Producto.query.filter_by(id = body["id"]).first()
 
-        # Obtenemos las keys de la tabla producto para saber qué propiedad se ha cambiado.
+        # Obtenemos las keys de la tabla producto para saber qué propiedad se ha cambiado
         keys = Producto.__table__.columns.keys()
 
         # Hacemos un bucle para saber los valores de las claves que han cambiado
         for edit_key in body:
-            # Si el valor de la clave ha cambiado (es distinto a none) asignamos el nuevo valor
-            if body[edit_key] != None:
-                if edit_key in keys:
-                    # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
-                    producto = producto_edit.serialize()
-                    producto[edit_key] = body[edit_key]
+            # Si el valor de la clave ha cambiado (es distinto a none) y las las claves del body coinciden con la del objeto Producto (borrar no entra) asignamos el nuevo valor
+            if body[edit_key] != None and edit_key in keys:
 
-                    # Incorporamos a nuestra clase los valores del producto serializado (los datos que no han cambiado permanecen y los que han cambiado se actualizan)
-                    producto_edit.nombre = producto['nombre']
-                    producto_edit.fecha_alta = producto['fecha_alta']
-                    producto_edit.categoria = producto['categoria']
-                    producto_edit.precio = producto['precio']
-                    producto_edit.vendido = producto['vendido']
-                    producto_edit.foto_producto = producto['foto_producto']
-                    producto_edit.descripcion = producto['descripcion']
-                    producto_edit.vendedor_user_id = producto['vendedor_user_id']
-                    producto_edit.pedido_id = producto['pedido_id']
+                # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
+                producto = producto_edit.serialize()
+                producto[edit_key] = body[edit_key]
 
-                    # Guardamos el producto modificado
-                    db.session.commit() 
+                # Incorporamos a nuestra clase los valores del producto serializado (los datos que no han cambiado permanecen y los que han cambiado se actualizan)
+                producto_edit.nombre = producto['nombre']
+                producto_edit.fecha_alta = producto['fecha_alta']
+                producto_edit.categoria = producto['categoria']
+                producto_edit.precio = producto['precio']
+                producto_edit.vendido = producto['vendido']
+                producto_edit.foto_producto = producto['foto_producto']
+                producto_edit.descripcion = producto['descripcion']
+                producto_edit.vendedor_user_id = producto['vendedor_user_id']
+                producto_edit.pedido_id = producto['pedido_id']
 
-            if body[edit_key] == 'borrar':
-                db.session.delete(producto_edit)
-                db.session.commit()
-                print("jojo")
+                # Guardamos el producto modificado
+                db.session.commit() 
+
+                # Devolvemos el producto modificado
+                response_body={
+                     "result": producto
+                }
+        
+        # BORRAR PRODUCTO
+
+        if body["borrar"] == True:
+            db.session.delete(producto_edit)
+            db.session.commit()
+            response_body={
+                "msg": "Producto borrado"
+            }
 
 
-        response_body={
-            "result": "productos_artista"
-        }
 
 
     return response_body, 200
@@ -197,6 +243,8 @@ def handle_producto():
 @api.route('/direccion', methods=['POST', 'GET', 'PUT'])
 def handle_direccion():
 
+
+    # Publicamos direccion
     if request.method == 'POST':
         body = json.loads(request.data)
         nueva_direccion = Direccion(tipo_via= body["tipo_via"], nombre_via = body["nombre_via"], numero = body["numero"], piso = body["piso"],puerta = body["puerta"],user_id = body["user_id"] )
@@ -212,10 +260,11 @@ def handle_direccion():
     }
     
     elif request.method == 'GET':
+
         body = json.loads(request.data)
         id = body["id"]
 
-        
+
         direccion_user = User.query.filter_by(id=id).first()
 
 
