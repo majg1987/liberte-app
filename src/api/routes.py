@@ -100,6 +100,8 @@ def handle_producto():
 
     if request.method == 'POST':
 
+        # DATOS RECIBIDOS = VALORES OBJETO
+
         body = json.loads(request.data)
 
         # Creamos nuevo producto
@@ -118,6 +120,8 @@ def handle_producto():
     
     elif request.method == 'GET':
 
+        # DATOS RECIBIDOS = ID USUARIO O NINGUNO
+
         body = json.loads(request.data)
         id = body["id"]
 
@@ -125,7 +129,6 @@ def handle_producto():
         if id == None:
             get_lista_productos = Producto.query.order_by(Producto.id).all()
             lista_productos = [producto.serialize() for producto in get_lista_productos]
-            print("YEYE",lista_productos)
 
             response_body={
                 "result": lista_productos
@@ -153,27 +156,35 @@ def handle_producto():
 
         # Obtenemos las keys de la tabla producto para saber qué propiedad se ha cambiado.
         keys = Producto.__table__.columns.keys()
-        print("keys",keys)
 
+        # Hacemos un bucle para saber los valores de las claves que han cambiado
         for edit_key in body:
-            # print("holaa", edit_key)
-            # print("holaa", body[edit_key])
+            # Si el valor de la clave ha cambiado (es distinto a none) asignamos el nuevo valor
             if body[edit_key] != None:
                 if edit_key in keys:
-                    print("new value", type(edit_key),":", body[edit_key])
+                    # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                     producto = producto_edit.serialize()
+                    producto[edit_key] = body[edit_key]
 
-                    # producto[edit_key] = body[edit_key]
-                    print(type(producto_edit))
-                    print(producto["precio"])
-                    producto['precio'] = 100
-                    print(producto["precio"])
-                    # producto_edit = json.loads(producto)
-                    print(producto)
-                    db.session.commit()
-                    print("yija")
+                    # Incorporamos a nuestra clase los valores del producto serializado (los datos que no han cambiado permanecen y los que han cambiado se actualizan)
+                    producto_edit.nombre = producto['nombre']
+                    producto_edit.fecha_alta = producto['fecha_alta']
+                    producto_edit.categoria = producto['categoria']
+                    producto_edit.precio = producto['precio']
+                    producto_edit.vendido = producto['vendido']
+                    producto_edit.foto_producto = producto['foto_producto']
+                    producto_edit.descripcion = producto['descripcion']
+                    producto_edit.vendedor_user_id = producto['vendedor_user_id']
+                    producto_edit.pedido_id = producto['pedido_id']
 
-        # db.session.commit()
+                    # Guardamos el producto modificado
+                    db.session.commit() 
+
+            if body[edit_key] == 'borrar':
+                db.session.delete(producto_edit)
+                db.session.commit()
+                print("jojo")
+
 
         response_body={
             "result": "productos_artista"
