@@ -155,7 +155,7 @@ def handle_producto():
             body = json.loads(request.data) 
             id = body["id"]
 
-        # Devolvemos todos los productos (vista de inicio) // Si no hay body
+        # Devolvemos todos los productos que no han sido pedidos (vista de inicio) // Si no hay body
         get_lista_productos = Producto.query.filter_by(pedido_id = None).all()
         lista_productos = [producto.serialize() for producto in get_lista_productos]
         response_body={
@@ -193,11 +193,21 @@ def handle_producto():
         # Hacemos un bucle para saber los valores de las claves que han cambiado
         for edit_key in body:
             # Si el valor de la clave ha cambiado (es distinto a none) y las las claves del body coinciden con la del objeto Producto (borrar no entra) asignamos el nuevo valor
-            if body[edit_key] != None and edit_key in keys:
+            if body[edit_key] != None and edit_key in keys and edit_key != "id":
+
+                print(edit_key,"editkey")                
 
                 # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                 producto = producto_edit.serialize()
                 producto[edit_key] = body[edit_key]
+
+
+
+                print("a",edit_key)
+
+
+                # producto_edit.edit_key= producto[edit_key]
+
 
                 # Incorporamos a nuestra clase los valores del producto serializado (los datos que no han cambiado permanecen y los que han cambiado se actualizan)
                 producto_edit.nombre = producto['nombre']
