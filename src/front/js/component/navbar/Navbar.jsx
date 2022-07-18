@@ -1,23 +1,14 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar.jsx";
-import {
-  AiOutlineShoppingCart,
-  AiOutlineUser,
-  AiOutlineLogout,
-} from "react-icons/ai";
+import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
+import { FiLogOut } from "react-icons/fi";
 import { Context } from "../../store/appContext";
-
-//import { IoLogOutOutline } from "react-icons/io";
 
 import logo from "../../../img/logo.png";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-
-  /*   const handleLogout = useEffect(() => {
-    actions.logout();
-  }, []); */
 
   return (
     <>
@@ -48,18 +39,34 @@ export const Navbar = () => {
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <AiOutlineLogout size={28} />
+                        <FiLogOut size={28} />
                       </button>
                     </Link>
                   </li>
                 ) : null}
-                <li className="nav-item dropdown">
-                  <Link to="/login">
-                    <button type="button" className="btn btn-sm mx-2 border-0">
-                      <AiOutlineUser size={28} />
-                    </button>
-                  </Link>
-                </li>
+                {store.auth ? (
+                  <li className="nav-item dropdown">
+                    <Link to="/perfil">
+                      <button
+                        type="button"
+                        className="btn btn-sm mx-2 border-0"
+                      >
+                        <AiOutlineUser size={28} />
+                      </button>
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="nav-item dropdown">
+                    <Link to="/login">
+                      <button
+                        type="button"
+                        className="btn btn-sm mx-2 border-0"
+                      >
+                        <AiOutlineUser size={28} />
+                      </button>
+                    </Link>
+                  </li>
+                )}
 
                 <li className="nav-item active">
                   <Link to="/cart">
