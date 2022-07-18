@@ -40,17 +40,9 @@ def registration():
 
     # Guardar nuevo user con hased_password
     user = User(nombre = body["nombre"], apellido=body["apellido"], email = body["email"], password = hashed_password, artista = body["artista"], nacimiento = body["nacimiento"], foto_usuario = body["foto_usuario"], descripcion = body["descripcion"])
-    #user = User(email=body["email"], password = hashed_password)
+
     db.session.add(user)
     db.session.commit()
-    print("ID",user.id)
-
-    # users = User.query.all()
-    # print("yeye",users)
-    # db.session.query(Cesta).delete()
-    # db.session.query(User).delete()
-    # db.session.query(Producto).delete()
-    # db.session.commit()
 
 
     response_body={
@@ -94,6 +86,7 @@ def login():
 @api.route('/configuracion', methods=['PUT'])
 def configuracion():
 
+    # Recibimos todos los datos del usuario menos contraseña
     body = json.loads(request.data)
 
     usuario_modificado = User.query.filter_by(id=body["id"]).first()
@@ -163,7 +156,7 @@ def handle_producto():
             id = body["id"]
 
         # Devolvemos todos los productos (vista de inicio) // Si no hay body
-        get_lista_productos = Producto.query.order_by(Producto.id).all()
+        get_lista_productos = Producto.query.filter_by(pedido_id = None).all()
         lista_productos = [producto.serialize() for producto in get_lista_productos]
         response_body={
             "result": lista_productos
@@ -240,6 +233,7 @@ def handle_producto():
     return response_body, 200
     
 
+# Direccion
 @api.route('/direccion', methods=['POST', 'GET', 'PUT'])
 def handle_direccion():
 
@@ -259,102 +253,158 @@ def handle_direccion():
         
     }
     
-    elif request.method == 'GET':
+    elif request.method == 'PUT':
 
         body = json.loads(request.data)
-        id = body["id"]
+
+        direccion_modificada = Direccion.query.filter_by(user_id=body["user_id"]).first()
+        user_keys = Direccion.__table__.columns.keys()
+    
+        for edit_key in body:
+            if body[edit_key] != None and  edit_key in user_keys:
+                direccion_modificada_srlz = direccion_modificada.serialize()
+
+                direccion_modificada_srlz[edit_key] = body[edit_key]
+
+                direccion_modificada.tipo_via = direccion_modificada_srlz["tipo_via"]
+                direccion_modificada.nombre_via = direccion_modificada_srlz["nombre_via"]
+                direccion_modificada.numero = direccion_modificada_srlz["numero"]
+                direccion_modificada.piso = direccion_modificada_srlz["piso"]
+                direccion_modificada.puerta = direccion_modificada_srlz["puerta"]
+                direccion_modificada.user_id = direccion_modificada_srlz["user_id"]
 
 
-        direccion_user = User.query.filter_by(id=id).first()
+                db.session.commit()
+
+            response_body={
+                "result": direccion_modificada_srlz
+            }
+
+        
+    return response_body, 200
 
 
-        direccion_completa = [ direcion.serialize() for direcion in direccion_user.direccion]
-        print(direccion_completa[0]['puerta'])
-        direccion_completa = direccion_completa[0]
+# Cesta
 
-        response_body={
-            "message": f"la direccion es {direccion_user.direccion}, puerta: {direccion_completa['id']}"
+@api.route('/cesta', methods=['POST', 'GET', 'PUT'])
+def handle_cesta():
+
+    # Publicar cesta
+    if request.method == 'POST':
+        # Recibimos todos los datos de Cesta
+        body = json.loads(request.data)
+        nueva_cesta = Cesta(user_id= body["user_id"], producto_id = body["producto_id"])
+    
+        # Vemos si el registro de esa cesta esta ya hecho
+        cesta_usuario = Cesta.query.filter_by(user_id = body["user_id"], producto_id = body["producto_id"]).first()
+
+        if cesta_usuario != None:
+            response_body={
+                "msg": "Este producto ya está guardado en la cesta"
+            }
+
+        else:
+            db.session.add(nueva_cesta)
+            db.session.commit()
+            response_body={
+                "result": nueva_cesta.serialize()   
+            }
+
+        
+    # Obtener cesta
+    
+    if request.method == 'GET':
+        # Recibimos id_user
+        id_user = request.json.get("id_user", None)
+
+        cesta_user = Cesta.query.filter_by(user_id=id_user).all()
+
+        cesta_user_srlz = [cesta.serialize() for cesta in cesta_user]
+
+        response_body ={
+            "resul": cesta_user_srlz
+        }
+
+    
+    # Eliminar cesta
+    if request.method == 'PUT':
+        # Recibimos id_user e id_producto
+        id_user = request.json.get("id_user", None)
+        id_producto = request.json.get("id_producto", None)
+
+        cesta_user = Cesta.query.filter_by(user_id= id_user, producto_id = id_producto ).first()
+
+        print(cesta_user)
+
+
+        db.session.delete(cesta_user)
+        db.session.commit()
+
+        response_body ={
+            "resul": "Producto borrado de cesta"
         }
 
     return response_body, 200
 
 
-
-@api.route('/cesta', methods=['POST', 'GET'])
-def handle_cesta():
-
-    if request.method == 'POST':
-        body = json.loads(request.data)
-        nueva_cesta = Cesta(user_id= body["user_id"], producto_id = body["producto_id"])
-        # nuevo_producto = Producto(nombre = body["nombre"], fecha_alta = body["fecha_alta"], categoria = body["categoria"], precio = body["precio"], vendido = body["vendido"], foto_producto = ["foto_producto"], descripcion= body["descripcion"], vendedor_user_id=body["vendedor_user_id"],  pedido_id = body["pedido_id"])
-    
-        db.session.add(nueva_cesta)
-        db.session.commit()
-        print("cesta_id",nueva_cesta.id)
-        
-        response_body={
-        "message": "Formulario de Registro OK"
-        
-    }
-    
-    else:
-        print("adios")
-
-    return response_body, 200
-
-
+# Pedido
 
 @api.route('/pedido', methods=['POST', 'GET'])
 def handle_pedido():
 
     if request.method == 'POST':
-
+        # Recibimos todos los datos de pedido mas id_user
         body = json.loads(request.data)
 
         # Añadimos nuevo pedido
-        nuevo_pedido = Pedido(fecha_pedido = body["fecha_pedido"], historico = body["historico"], id_cesta = body["id_cesta"], id_direccion = body["id_direccion"], id_comprador= body["id_comprador"])
+        nuevo_pedido = Pedido(fecha_pedido = body["fecha_pedido"], historico = body["historico"], id_comprador = body["id_comprador"])
     
         db.session.add(nuevo_pedido)
         db.session.commit()
 
-        # Buscamos en la cesta del pedido el id del producto comprado para alterar su valor de la colunna pedido
-        cesta = Cesta.query.filter_by(id = body['id_cesta']).first()
-        cesta = cesta.serialize()
-        producto_id = cesta['producto_id']
-        product_pedido = Producto.query.filter_by(id = producto_id).first()
-        product_pedido.pedido_id = nuevo_pedido.id
 
-        # Guardamos sesión con el registro del pedido en la tabla de producto
-        db.session.commit()
+
+        # Buscamos en la cesta del pedido el id del producto comprado para alterar su valor de la colunna pedido
+        cesta_usuario = Cesta.query.filter_by(user_id = body['id_comprador']).all()
+        product_cesta = [producto.serialize() for producto in cesta_usuario]
+
+
+        for product_id in product_cesta:
+
+
+            product_pedido = Producto.query.filter_by(id = product_id["producto_id"]).first()
+            cestas_con_producto = Cesta.query.filter_by(producto_id =  product_id["producto_id"]).all() 
+            for cesta in cestas_con_producto:
+                db.session.delete(cesta)
+                print("cesta borrada")
+            product_pedido.pedido_id = nuevo_pedido.id
+            db.session.commit()
+
         
         response_body={
-        "message": "Formulario de Registro OK"    
-    }
+            "message": "Formulario de Registro OK"    
+        }
     
-    else:
+    elif request.method == 'GET':
+
+        # Recibimos id de cesta pedida
         body = json.loads(request.data)
         id = body["id"]
 
-        
-        pedido_user = User.query.filter_by(id=id).all()
+        # Obtenemos la lista de pedidos del usuario con historico = False
+        pedido_user = Pedido.query.filter_by(id=id, historico = False).all()
 
 
         pedidos = [ pedido.serialize() for pedido in pedido_user]
-        print(pedidos)
-        # direccion_completa = direccion_completa[0]
+
 
         response_body={
-            "message": f"la direccion es {direccion_user.direccion}, puerta: {direccion_completa['id']}"
+            "message": pedidos
         }
-
 
     return response_body, 200
 
     
-
-
-
-
 
 # searchBar
 @api.route('/artistas', methods=['POST', 'GET'])

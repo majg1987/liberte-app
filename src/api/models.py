@@ -86,7 +86,7 @@ class Direccion (db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Enviamos FK
-    direccion_pedido = db.relationship('Pedido', backref='direccion', lazy=True)
+    # direccion_pedido = db.relationship('Pedido', backref='direccion', lazy=True)
 
     def __repr__(self):
         return '<Direccion %r>' % self.id
@@ -99,13 +99,14 @@ class Direccion (db.Model):
             "numero": self.numero,
             "piso": self.piso,
             "puerta": self.puerta,
+            "user_id" : self.user_id
         }
 
 class Cesta (db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Enviamos FK
-    cesta_pedido = db.relationship('Pedido', backref='cesta', lazy=True)
+    # cesta_pedido = db.relationship('Pedido', backref='cesta', lazy=True)
 
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -127,8 +128,6 @@ class Pedido (db.Model):
     fecha_pedido = db.Column(db.String(10), nullable=False)
     historico = db.Column(db.Boolean, nullable=False)
     # Recibimos FK
-    id_cesta = db.Column(db.Integer, db.ForeignKey('cesta.id'))
-    id_direccion = db.Column(db.Integer, db.ForeignKey('direccion.id'))
     id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Enviamos FK
@@ -144,5 +143,6 @@ class Pedido (db.Model):
             "id": self.id,
             "fecha_pedido": self.fecha_pedido,
             "historico": self.historico,
-
+            "id_comprador" : self.id_comprador
+            
         }
