@@ -42,13 +42,18 @@ export const Registro = () => {
     e.preventDefault();
     if (
       nombre !== "" &&
+      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
       apellidos !== "" &&
+      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(apellidos) &&
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email) &&
       password !== "" &&
       password === passwordRepeat
     ) {
       actions.registro(nombre, apellidos, email, password, artista);
     } else {
-      notify("Completa todos los campos");
+      notify(
+        "Completa todos los campos de forma correcta, recuerda que nombre y apellidos solo puede contener letras"
+      );
     }
   };
 
@@ -84,7 +89,7 @@ export const Registro = () => {
                 type="email"
                 className="input-registro"
                 id="email"
-                placeholder="Escribe tu email"
+                placeholder="Introduce tu email (name@gmail.com)"
                 onChange={(e) =>
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
