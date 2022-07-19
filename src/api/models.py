@@ -1,7 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
 
+def get_current_date():
+    return datetime.now().strftime("%d-%m-%Y")
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -41,11 +44,12 @@ class User(db.Model):
 class Producto (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
-    fecha_alta = db.Column(db.String(10), nullable=False)
-    categoria = db.Column(db.String(20), nullable=False)
+    fecha_alta = db.Column(db.String(10), default=get_current_date, nullable=False)
+    tecnica = db.Column(db.String(20), nullable=False)
     precio = db.Column(db.Float, nullable=False)
-    vendido = db.Column(db.Boolean, nullable=False)
+    vendido = db.Column(db.Boolean, default=False, nullable=False)
     foto_producto = db.Column(db.Text, nullable=False)
+    dimensiones = db.Column(db.String(10), nullable=False)
     descripcion = db.Column(db.String(3000), nullable=False)
 
     # Recibimos FK
@@ -122,7 +126,7 @@ class Cesta (db.Model):
 
 class Pedido (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    fecha_pedido = db.Column(db.String(10), nullable=False)
+    fecha_pedido = db.Column(db.String(10), default=get_current_date, nullable=False)
     historico = db.Column(db.Boolean, nullable=False)
     # Recibimos FK
     id_cesta = db.Column(db.Integer, db.ForeignKey('cesta.id'))
