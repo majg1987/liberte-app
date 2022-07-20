@@ -1,6 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 db = SQLAlchemy()
+
+def get_current_date():
+    return datetime.now().strftime("%d-%m-%Y")
 
 
 class User(db.Model):
@@ -11,7 +15,7 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
     artista = db.Column(db.Boolean, nullable= False)
     nacimiento = db.Column(db.String(10))
-    foto_usuario = db.Column(db.String(50))
+    foto_usuario = db.Column(db.String(500))
     descripcion = db.Column(db.String(3000))
 
     # Enviamos FK
@@ -19,7 +23,6 @@ class User(db.Model):
     comprador = db.relationship('Pedido', backref='user', lazy=True)
     direccion = db.relationship('Direccion', backref='user', lazy=True)
     cesta_comprador = db.relationship('Cesta', backref='user', lazy=True)
-
 
     def __repr__(self):
         return '<User %r>' % self.id
@@ -34,22 +37,23 @@ class User(db.Model):
             "nacimiento": self.nacimiento,
             "foto_usuario": self.foto_usuario,
             "descripcion": self.descripcion,
-
             # do not serialize the password, its a security breach
         }
+
 
 class Producto (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
-    fecha_alta = db.Column(db.String(10), nullable=False)
-    categoria = db.Column(db.String(20), nullable=False)
+    fecha_alta = db.Column(db.String(10), default=get_current_date, nullable=False)
+    tecnica = db.Column(db.String(20), nullable=False)
     precio = db.Column(db.Float, nullable=False)
-    vendido = db.Column(db.Boolean, nullable=False)
-    foto_producto = db.Column(db.Text, nullable=False)
+    vendido = db.Column(db.Boolean, default=False, nullable=False)
+    foto_producto = db.Column(db.String(500), nullable=False)
+    dimensiones = db.Column(db.String(10), nullable=False)
     descripcion = db.Column(db.String(3000), nullable=False)
 
     # Recibimos FK
-    vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'))
 
     # Enviamos FK
@@ -63,17 +67,18 @@ class Producto (db.Model):
             "id": self.id,
             "nombre": self.nombre,
             "fecha_alta": self.fecha_alta,
-            "categoria": self.categoria,
+            "tecnica": self.tecnica,
             "precio": self.precio,
             "vendido": self.vendido,
             "foto_producto": self.foto_producto,
             "descripcion": self.descripcion,
+            "vendedor_user_id" : self.vendedor_user_id,
+            "pedido_id": self.pedido_id
         }
 
 
-
 class Direccion (db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tipo_via = db.Column(db.String(20), nullable=False)
     nombre_via = db.Column(db.String(20), nullable=False)
     numero= db.Column(db.Integer, nullable=False)
@@ -82,10 +87,7 @@ class Direccion (db.Model):
 
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    # Enviamos FK
-    direccion_pedido = db.relationship('Pedido', backref='direccion', lazy=True)
-
+   
     def __repr__(self):
         return '<Direccion %r>' % self.id
 
@@ -97,13 +99,12 @@ class Direccion (db.Model):
             "numero": self.numero,
             "piso": self.piso,
             "puerta": self.puerta,
+            "user_id" : self.user_id
         }
 
-class Cesta (db.Model):
-    id = db.Column(db.Integer, primary_key=True)
 
-    # Enviamos FK
-    cesta_pedido = db.relationship('Pedido', backref='cesta', lazy=True)
+class Cesta (db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -121,18 +122,15 @@ class Cesta (db.Model):
 
 
 class Pedido (db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    fecha_pedido = db.Column(db.String(10), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    fecha_pedido = db.Column(db.String(10), default=get_current_date, nullable=False)
     historico = db.Column(db.Boolean, nullable=False)
+
     # Recibimos FK
-    id_cesta = db.Column(db.Integer, db.ForeignKey('cesta.id'))
-    id_direccion = db.Column(db.Integer, db.ForeignKey('direccion.id'))
     id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Enviamos FK
     producto_pedido = db.relationship('Producto', backref='pedido', lazy=True)
-
-    
 
     def __repr__(self):
         return '<Pedido %r>' % self.id
@@ -142,5 +140,6 @@ class Pedido (db.Model):
             "id": self.id,
             "fecha_pedido": self.fecha_pedido,
             "historico": self.historico,
-
+            "id_comprador" : self.id_comprador
+            
         }

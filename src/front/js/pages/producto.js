@@ -1,20 +1,84 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-
+import "../../styles/producto.css";
 
 export const Producto = (props) => {
 	const { store, actions } = useContext(Context);
 	const params = useParams();
-
+	console.log("hola", store.productoSelect);
 	return (
-		<div className="container container-producto">
-			<h1 className="display-4">
-				This will show the demo elementHs
-			</h1>
+		<div className="container-producto">
+			<div className="container">
+				<div className="row row-producto">
+					<div className="row row-titulo-obra">
+						<p className="nombre-obra">Mimimi</p>
+					</div>
 
+					<div className="col-lg-6 col-md-12 col-sm-12 col-foto-producto p-0 pr-2">
+						<div className="container-foto-producto">
+							<img
+								className="foto-producto"
+								src={
+									store.productoSelect.img
+								}
+								alt=""
+							/>
+						</div>
+					</div>
+
+					<div className="col-lg-6 col-md-12 col-info-producto">
+						<div className="row row-foto-nombre-artista">
+							<div className="col-12 col-titulo-artista pb-3">
+								<p className="artista">Artista</p>
+							</div>
+
+							<div className="col-1 col-foto-artista">
+								<img
+									className="foto-artista"
+									src={
+										"https://images.pexels.com/photos/12776968/pexels-photo-12776968.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
+									}
+									alt=""
+								/>
+							</div>
+
+							<div className="col-5 col-nombre-artista d-flex align-items-center">
+								<p className="nombre-artista">Vincent Van Gohg</p>
+							</div>
+
+							<div className="col-6 col-boton-cesta d-flex justify-content-end">
+								<button className="boton-registro">añadir a carrito</button>
+							</div>
+						</div>
+
+						<div className="row row-precio">
+							<div className="col-12 col-titulo-precio pb-3">
+								<p className="precio">Precio</p>
+							</div>
+
+							<div className="col-12 col-precio-obra">
+								<p className="precioObra">5€</p>
+							</div>
+						</div>
+
+						<div className="row row-descripcion">
+							<div className="col-12 col-titulo-descrpcion pb-3">
+								<p className="descrpcion">Descrpcion</p>
+							</div>
+
+							<div className="col-12 col-descripcion">
+								<p className="descripcion-obra">
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam
+									sapiente rem harum adipisci accusantium reiciendis libero quos
+									culpa quasi vel ipsa numquam illo maxime, aspernatur natus
+									architecto quibusdam quidem cum.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };
-
-
