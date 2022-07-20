@@ -9,6 +9,7 @@ const getState = ({
             auth: false,
             errorAuth: false,
             artistas: [],
+            productos: [],
             productoSelect: {},
         },
         actions: {
@@ -137,6 +138,35 @@ const getState = ({
                     });
                 } catch (error) {
                     console.log("Error loading message from /api/artistas", error);
+                }
+            },
+            // Productos Inicio
+            productosInicio: async () => {
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                };
+                try {
+                    const resp = await fetch(
+                        process.env.BACKEND_URL + "/api/producto",
+                        options
+                    );
+
+                    if (resp.status === 200) {
+                        console.log("hola");
+                    }
+
+                    const data = await resp.json();
+
+                    console.log(data, "data");
+
+                    setStore({
+                        productos: data,
+                    });
+                } catch (error) {
+                    console.log(error);
                 }
             },
             // ProductSelect
