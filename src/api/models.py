@@ -37,7 +37,6 @@ class User(db.Model):
             "nacimiento": self.nacimiento,
             "foto_usuario": self.foto_usuario,
             "descripcion": self.descripcion,
-
             # do not serialize the password, its a security breach
         }
 
@@ -73,8 +72,7 @@ class Producto (db.Model):
             "foto_producto": self.foto_producto,
             "descripcion": self.descripcion,
             "vendedor_user_id" : self.vendedor_user_id,
-            "pedido_id": self.pedido_id
-            
+            "pedido_id": self.pedido_id    
         }
 
 
@@ -90,6 +88,7 @@ class Direccion (db.Model):
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+   
     def __repr__(self):
         return '<Direccion %r>' % self.id
 
