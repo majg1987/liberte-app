@@ -43,37 +43,46 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       // Fecth de Login
-      login: (email, password) => {
+      login: async (email, password) => {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        };
         try {
-          // fetching data from the backend
-          fetch(process.env.BACKEND_URL + "/api/login", {
-            method: "POST",
-            body: JSON.stringify({
-              email: email,
-              password: password,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (response.status === 200) {
-                setStore({
-                  auth: true,
-                });
-              } else {
-                setStore({
-                  errorAuth: true,
-                });
-              }
-              response.json();
-            })
-            .then((data) => sessionStorage.setItem("token", data.access_token));
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/login",
+            options
+          );
+          if (resp.status === 200) {
+            setStore({
+              auth: true,
+            });
+          } else {
+            setStore({
+              errorAuth: true,
+            });
+          }
+          const data = await resp.json();
+          // console.log(data);
+          sessionStorage.setItem("token", data.access_token.token); // accedemos a la key acces_token de data
+
+          // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
         } catch (error) {
-          console.log("Error loading message from backend", error);
+          console.log(error);
         }
       },
-      logout: () => setStore({ auth: false }),
+      // logoutButtonNavbar
+      logout: () => {
+        setStore({ auth: false });
+        sessionStorage.removeItem("token");
+      },
+      //searchBar
       search: async () => {
         try {
           const response = await fetch(
