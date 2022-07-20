@@ -22,41 +22,29 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_requir
 def registration():
     # recibimos los datos del front
     body = json.loads(request.data)
-    user_password = body["password"]
 
     # Hash password
     hashed_password = current_app.bcrypt.generate_password_hash(body["password"]).decode('utf-8')
-    print("pass", hashed_password)
 
     # Guardar nuevo user con hashed_password
-    user = User(nombre = body["nombre"], 
-                apellido=body["apellido"], 
-                email = body["email"], 
-                password = hashed_password, 
-                artista = body["artista"], 
-                nacimiento = body["nacimiento"], 
-                foto_usuario = body["foto_usuario"], 
-                descripcion = body["descripcion"]
-    )
+    body = {x: body[x] for x in [
+        "nombre",
+        "apellido",
+        "email",
+        "artista",
+        "nacimiento",
+        "foto_usuario",
+        "descripcion"
+    ]}
 
+    body['password'] = hashed_password
 
-    """  body = {x: body[x] for x in [
-            "nombre",
-            "apelido",
-            "email",
-            "artista",
-            "nacimiento",
-            "foto_usuario",
-            "descripcion"
-        ]}
-
-        body['password'] = hashed_password
-    """
+    user = User(**body)
 
     db.session.add(user)
     db.session.commit()
 
-    response_body={
+    response_body = {
         "message": "Formulario de Registro OK"    
     }
     return jsonify(response_body), 200
@@ -65,8 +53,7 @@ def registration():
 #login
 @api.route('/login', methods=['POST'])
 def login():
-    # almacenamos la solicitud JSON obtenida de email
-    # almacenamos la solicitud JSON obtenida de password
+    # almacenamos la solicitud JSON obtenida de email y password
     email = request.json.get("email", None) 
     password = request.json.get("password", None)
 
@@ -75,10 +62,10 @@ def login():
 
     # Si el email o password no coindicen retornamos error de autentificacion
 
-    if email != user.email or current_app.bcrypt.check_password_hash(user.password,password) == False:
+    if email != user.email or not current_app.bcrypt.check_password_hash(user.password, password):
         return jsonify({"msg": "Bad username or password"}), 401
-        
-    access_token={
+    
+    access_token = {
         "token": create_access_token(identity=email),
         "user_info": {
             'user_id': user.id,
@@ -93,7 +80,7 @@ def login():
 
     # retornamos el objeto Response devuelto por jsonify con la 
     # configuracion mimetype application/json 
-    return jsonify(access_token=access_token)
+    return jsonify(access_token)
 
 
 # Configuracion usuario
@@ -155,8 +142,6 @@ def handle_producto():
         # Guardamos producto
         db.session.add(nuevo_producto)
         db.session.commit()
-
-        print("IDPRODUCT", nuevo_producto.id)
         
         response_body = {
         "result": "Producto creado"  
@@ -165,43 +150,38 @@ def handle_producto():
     # Obtener productos
     elif request.method == 'GET':
 
-        # DATOS RECIBIDOS => ID USUARIO O NINGUNO
-        # Comprobamos que la peticion nos envie datos para saber si devolver un producto o todos
-        # En caso de que exista body asignamos su valor y el id del usuario
-        if request.data != b'':
-            body = json.loads(request.data) 
-            id = body["id"]
+        # Recogemos argumento user_id de la URL. Si no existe, el GET es global
+        user_id = request.args.get('user_id')
 
-        # Devolvemos todos los productos que no han sido pedidos (vista de inicio) // Si no hay body
-        get_lista_productos = Producto.query.filter_by(pedido_id = None).all()
-        lista_productos = [producto.serialize() for producto in get_lista_productos]
+        # GET con user_id /api/producto?user_id=
+        if user_id:
+            try:
+                user_id = int(user_id)
+            except Exception as e:
+                response_body = {
+                    "result": f'user_id {user_id} is not an integer',
+                    "flask_error": str(e) 
+                }
+                return response_body, 400
 
-        # Mandamos el nombre del artista
-        for artista in lista_productos:
-            user = User.query.filter_by(id = artista["vendedor_user_id"]).first()
-            artista["vendedor_user_id"] = user.nombre
+            ##### NO BORRAR #### 
+            # Este JSON es igual al que debería de retornar el endpoint con las fotos del usuario
+            # Usamos data_gallery.py con datos dummy
+            #from api.data_gallery import data
+            #return json.dumps([x for x in data if x['user_id'] == user_id]), 200
+            ##### NO BORRAR ####
 
-        response_body={
-            "result": lista_productos
-        }
-        
-        # Devolvemos los productos de un usuario (Vista usuario) // Si hay body
-        if 'id' in locals() and id != None:
+            response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
+            response_body = [producto.serialize() for producto in response_body]
             
-            # Buscamos en la tabla de producto el id del usuario
-            get_productos_artista = Producto.query.filter_by(vendedor_user_id= body["id"]).all()
-            productos_artista = [producto_artista.serialize() for producto_artista in get_productos_artista]
+            return json.dumps(response_body), 200
+        
+        # GET sin user_id /api/producto
+        else:
+            response_body = Producto.query.filter_by(vendido=False).all()
+            response_body = [producto.serialize() for producto in response_body]
 
-            # Devolvemos vendedor_user_id como el nombre del vendedor
-            for artista in productos_artista:
-                user = User.query.filter_by(id =id).first()
-                artista["vendedor_user_id"] = user.nombre
-
-            # Devolvemos los productos del artista
-            response_body={
-                "result": productos_artista
-            }
-
+            return json.dumps(response_body), 200
 
     # Modificar o eliminar productos
     elif request.method == 'PUT':
@@ -222,13 +202,13 @@ def handle_producto():
             # Si el valor de la clave ha cambiado (es distinto a none) y las las claves del body coinciden con la del objeto Producto (borrar no entra) asignamos el nuevo valor
             if body[edit_key] != None and edit_key in keys and edit_key != "id":
 
-                print(edit_key,"editkey")                
+                #print(edit_key,"editkey")                
 
                 # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                 producto = producto_edit.serialize()
                 producto[edit_key] = body[edit_key]
 
-                print("a",edit_key)
+                #print("a",edit_key)
 
                 # producto_edit.edit_key= producto[edit_key]
 
@@ -425,25 +405,3 @@ def handle_artistas():
     response_body = [ user.serialize() for user in response_body]
 
     return json.dumps(response_body), 200
-
-
-# productosGaleria -- Artista PRUEBA
-@api.route('/productosGaleria', methods=['POST', 'GET'])
-def handle_productosGaleria():
-
-    user_id = int(request.args.get('user_id'))
-    
-    #  Mientras nuestra base de datos este vacía, podemos utilizar el JSON que he creado
-    #  para probar toda nuestra app con acceso a 30 fotos y su info respectiva. 
-
-    #  Este JSON es igual al que debería de retornar el usuario al subir fotos data_gallery.py
-    from api.data_gallery import data
-    return json.dumps([x for x in data if x['user_id'] == user_id]), 200
-
-    # no borrar
-    """ 
-    response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
-
-    response_body = [producto.serialize() for producto in response_body]
-    return json.dumps(response_body), 200
-    """
