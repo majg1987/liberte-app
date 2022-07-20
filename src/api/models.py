@@ -12,10 +12,10 @@ class User(db.Model):
     apellido = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
-    artista = db.Column(db.Boolean, nullable= False)
-    nacimiento = db.Column(db.String(10))
-    foto_usuario = db.Column(db.String(50))
-    descripcion = db.Column(db.String(3000))
+    artista = db.Column(db.Boolean, nullable=False)
+    nacimiento = db.Column(db.String(10), default=False)
+    foto_usuario = db.Column(db.String(500), default=False)
+    descripcion = db.Column(db.String(3000), default=False)
 
     # Enviamos FK
     productos = db.relationship('Producto', backref='user', lazy=True)
@@ -48,7 +48,7 @@ class Producto (db.Model):
     tecnica = db.Column(db.String(20), nullable=False)
     precio = db.Column(db.Float, nullable=False)
     vendido = db.Column(db.Boolean, default=False, nullable=False)
-    foto_producto = db.Column(db.Text, nullable=False)
+    foto_producto = db.Column(db.String(500), nullable=False)
     dimensiones = db.Column(db.String(10), nullable=False)
     descripcion = db.Column(db.String(3000), nullable=False)
 
@@ -72,6 +72,9 @@ class Producto (db.Model):
             "vendido": self.vendido,
             "foto_producto": self.foto_producto,
             "descripcion": self.descripcion,
+            "vendedor_user_id" : self.vendedor_user_id,
+            "pedido_id": self.pedido_id
+            
         }
 
 
@@ -87,9 +90,6 @@ class Direccion (db.Model):
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    # Enviamos FK
-    direccion_pedido = db.relationship('Pedido', backref='direccion', lazy=True)
-
     def __repr__(self):
         return '<Direccion %r>' % self.id
 
@@ -101,13 +101,11 @@ class Direccion (db.Model):
             "numero": self.numero,
             "piso": self.piso,
             "puerta": self.puerta,
+            "user_id": self.user_id,
         }
 
 class Cesta (db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
-    # Enviamos FK
-    cesta_pedido = db.relationship('Pedido', backref='cesta', lazy=True)
 
     # Recibimos FK
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -128,14 +126,12 @@ class Pedido (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fecha_pedido = db.Column(db.String(10), default=get_current_date, nullable=False)
     historico = db.Column(db.Boolean, nullable=False)
+
     # Recibimos FK
-    id_cesta = db.Column(db.Integer, db.ForeignKey('cesta.id'))
-    id_direccion = db.Column(db.Integer, db.ForeignKey('direccion.id'))
     id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Enviamos FK
     producto_pedido = db.relationship('Producto', backref='pedido', lazy=True)
-
     
 
     def __repr__(self):
@@ -146,5 +142,5 @@ class Pedido (db.Model):
             "id": self.id,
             "fecha_pedido": self.fecha_pedido,
             "historico": self.historico,
-
+            "id_comprador": self.id_comprador,
         }
