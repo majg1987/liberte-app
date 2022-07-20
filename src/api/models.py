@@ -53,7 +53,7 @@ class Producto (db.Model):
     descripcion = db.Column(db.String(3000), nullable=False)
 
     # Recibimos FK
-    vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'))
 
     # Enviamos FK
@@ -67,7 +67,7 @@ class Producto (db.Model):
             "id": self.id,
             "nombre": self.nombre,
             "fecha_alta": self.fecha_alta,
-            "categoria": self.categoria,
+            "tecnica": self.tecnica,
             "precio": self.precio,
             "vendido": self.vendido,
             "foto_producto": self.foto_producto,
@@ -125,9 +125,6 @@ class Pedido (db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     fecha_pedido = db.Column(db.String(10), default=get_current_date, nullable=False)
     historico = db.Column(db.Boolean, nullable=False)
-    oko= db.Column(db.Boolean, nullable=False)
-    e = db.Column(db.Boolean, nullable=False)
-    # iki= db.Column(db.Boolean, nullable=False)
 
     # Recibimos FK
     id_comprador = db.Column(db.Integer, db.ForeignKey('user.id'))
