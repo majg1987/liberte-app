@@ -6,7 +6,7 @@ import "../../styles/producto.css";
 export const Producto = (props) => {
 	const { store, actions } = useContext(Context);
 	const params = useParams();
-
+	console.log("hola", store.productoSelect);
 	return (
 		<div className="container-producto">
 			<div className="container">
@@ -20,7 +20,7 @@ export const Producto = (props) => {
 							<img
 								className="foto-producto"
 								src={
-									"https://images.pexels.com/photos/12776968/pexels-photo-12776968.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
+									store.productoSelect.img
 								}
 								alt=""
 							/>

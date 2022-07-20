@@ -1,31 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import '../../styles/productCard.css'
+import "../../styles/productCard.css";
 
-export const ProductCard = ({ img, nombreArtista, precio }) => {
-
+export const ProductCard = ({ img, nombreArtista, precio, id }) => {
+    const { store, actions } = useContext(Context);
 
     return (
-        <div className="grid col-lg-4 col-md-6 col-sm-12 col-productos">
-            <div className="grid-item container-producto">
-                <a href="" className="h-100 w-100">
+        <div className="grid col-lg-4 col-md-6 col-sm-12 col-productos" key={id}>
+            <Link to={`/producto/${id}`}>
+                <div
+                    className="grid-item container-producto"
+                    onClick={() => actions.productoSelect(img, nombreArtista, precio, id)}
+                >
                     <div className="row info-artista">
                         <div className="col-10 columna-nombre-artista">
-                            <p className="nombre-artista">
-                                {nombreArtista}
-                            </p>
+                            <p className="nombre-artista">{nombreArtista}</p>
                         </div>
                         <div className="col-2 columna-precio/obra">
-                            <p className="nombre-artista">
-                                {precio}
-                            </p>
+                            <p className="nombre-artista">{precio}</p>
                         </div>
-
                     </div>
-                </a>
-                <img src={img} alt="" className="img-producto" >
-                </img>
-            </div>
+
+                    <img src={img} alt="" className="img-producto"></img>
+                </div>
+            </Link>
         </div>
     );
 };
