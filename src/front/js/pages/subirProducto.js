@@ -88,6 +88,9 @@ export const SubirProducto = () => {
         imagenSelect,
         descripcion
       );
+      if (store.registroProducto) {
+        notify("Registro de Producto Completado");
+      }
     } else {
       notify("Completa todos los campos de forma correcta");
     }
@@ -134,8 +137,9 @@ export const SubirProducto = () => {
               <option defaultValue={"Seleccion de etiqueta"}>
                 Seleccione la técnica
               </option>
-              <option value="Pintura">Pintura</option>
-              <option value="Abstracto">Abstracto</option>
+              <option value="Acuarela">Pintura</option>
+              <option value="Lienzo">Lienzo</option>
+              <option value="Oleo">Oleo</option>
               <option value="Otro">Otro</option>
             </select>
             <div className="d-flex">

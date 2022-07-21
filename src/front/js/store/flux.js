@@ -6,6 +6,7 @@ const getState = ({
     return {
         store: {
             registro: false,
+            registroProducto: false,
             auth: false,
             errorAuth: false,
             artistas: [],
@@ -26,7 +27,7 @@ const getState = ({
                             password: password,
                             artista: artista,
                             nacimiento: null,
-                            foto: null,
+                            foto_usuario: null,
                             descripcion: null,
                         }),
                         headers: {
@@ -49,21 +50,21 @@ const getState = ({
             },
 
             // Registro de producto
-            // Registro
-            registro: (nombre, apellidos, email, password, artista) => {
+            registroProducto: (nombre,
+                tecnica,
+                precio,
+                imagenSelect,
+                descripcion) => {
                 try {
                     // fetching data from the backend
-                    fetch(process.env.BACKEND_URL + "/api/registration", {
+                    fetch(process.env.BACKEND_URL + "/api/producto", {
                         method: "POST",
                         body: JSON.stringify({
                             nombre: nombre,
-                            apellido: apellidos,
-                            email: email,
-                            password: password,
-                            artista: artista,
-                            nacimiento: null,
-                            foto: null,
-                            descripcion: null,
+                            tecnica: tecnica,
+                            precio: precio,
+                            foto_producto: imagenSelect,
+                            descripcion: descripcion,
                         }),
                         headers: {
                             "Content-Type": "application/json",
@@ -71,12 +72,12 @@ const getState = ({
                     }).then((response) => {
                         if (response.status === 200) {
                             setStore({
-                                registro: true,
+                                registroProducto: true,
                             });
                         }
                         response.json();
                         setStore({
-                            registro: false,
+                            registroProducto: false,
                         });
                     });
                 } catch (error) {
