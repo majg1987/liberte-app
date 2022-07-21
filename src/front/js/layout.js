@@ -5,7 +5,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { Inicio } from "./pages/inicio";
 import { Login } from "./pages/login";
 import { Registro } from "./pages/registro";
-import { Home } from "./pages/home";
+import { Perfil } from "./pages/perfil";
 import { Producto } from "./pages/producto";
 import { SubirProducto } from "./pages/subirProducto";
 import { ConfiguracionUsuario } from "./pages/configuracion.jsx";
@@ -29,7 +29,7 @@ const Layout = () => {
             <Route element={<Inicio />} path="/" />
             <Route element={<Login />} path="/login" />
             <Route element={<Registro />} path="/registro" />
-            {/* <Route element={<Home />} path="/" /> */}
+            <Route element={<Perfil />} path="/perfil/user_id" />
             <Route element={<Producto />} path="/producto/:theid" />
             <Route element={<SubirProducto />} path="/subirProducto/" />
             <Route

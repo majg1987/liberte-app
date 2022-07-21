@@ -12,6 +12,7 @@ const getState = ({
             artistas: [],
             productos: [],
             productoSelect: {},
+            userInfo: {},
         },
         actions: {
             // Registro
@@ -65,6 +66,7 @@ const getState = ({
                             precio: precio,
                             foto_producto: imagenSelect,
                             descripcion: descripcion,
+                            vendedor_user_id: userInfo.id
                         }),
                         headers: {
                             "Content-Type": "application/json",
@@ -113,8 +115,10 @@ const getState = ({
                     }
                     const data = await resp.json();
                     // console.log(data);
-                    sessionStorage.setItem("token", data.access_token.token); // accedemos a la key acces_token de data
-
+                    sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+                    setStore({
+                        userInfo: data.user_info
+                    });
                     // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
                 } catch (error) {
                     console.log(error);
@@ -124,6 +128,7 @@ const getState = ({
             logout: () => {
                 setStore({
                     auth: false,
+                    userInfo: {},
                 });
                 sessionStorage.removeItem("token");
             },
@@ -141,6 +146,23 @@ const getState = ({
                     console.log("Error loading message from /api/artistas", error);
                 }
             },
+            //perfilArtista -- galeria
+            producto_galeria: async (user_id) => {
+                try {
+                    const response = await fetch(
+                        process.env.BACKEND_URL + `/api/producto?user_id=${user_id}`
+                    );
+                    const data = await response.json();
+                    setStore({
+                        artistaGaleria: data,
+                    });
+                } catch (error) {
+                    console.log(
+                        "Error loading message from /api/productosGaleria",
+                        error
+                    );
+                }
+            },
             // Productos Inicio
             productosInicio: async () => {
                 const options = {
@@ -154,15 +176,11 @@ const getState = ({
                         process.env.BACKEND_URL + "/api/producto",
                         options
                     );
-
                     if (resp.status === 200) {
                         console.log("hola");
                     }
-
                     const data = await resp.json();
-
                     console.log(data, "data");
-
                     setStore({
                         productos: data,
                     });
@@ -184,5 +202,4 @@ const getState = ({
         },
     };
 };
-
 export default getState;
