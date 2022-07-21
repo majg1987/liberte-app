@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar.jsx";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import UseAnimations from "react-useanimations";
+//import UseAnimations from "react-useanimations";
 import { Context } from "../../store/appContext";
 
 import yellow from "../../../img/yellow.png";
@@ -25,11 +25,11 @@ export const Navbar = () => {
             </Link>
           </div>
           <button className="navbar-toggler">
-            <UseAnimations
+            {/*  <UseAnimations
               animationKey="menu"
               size={30}
               style={{ cursor: "pointer", padding: 100 }}
-            />
+            /> */}
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
