@@ -56,6 +56,8 @@ const getState = ({
                 precio,
                 imagenSelect,
                 descripcion) => {
+
+                console.log(getStore().userInfo);
                 try {
                     // fetching data from the backend
                     fetch(process.env.BACKEND_URL + "/api/producto", {
@@ -66,7 +68,7 @@ const getState = ({
                             precio: precio,
                             foto_producto: imagenSelect,
                             descripcion: descripcion,
-                            vendedor_user_id: userInfo.id
+                            vendedor_user_id: userInfo.user_id
                         }),
                         headers: {
                             "Content-Type": "application/json",
@@ -114,7 +116,7 @@ const getState = ({
                         });
                     }
                     const data = await resp.json();
-                    // console.log(data);
+                    console.log(data);
                     sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
                     setStore({
                         userInfo: data.user_info
