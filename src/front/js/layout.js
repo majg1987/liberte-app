@@ -7,6 +7,7 @@ import { Login } from "./pages/login";
 import { Registro } from "./pages/registro";
 import { Perfil } from "./pages/perfil.jsx";
 import { Producto } from "./pages/producto";
+import { SubirProducto } from "./pages/subirProducto";
 import { ConfiguracionUsuario } from "./pages/configuracion.jsx";
 import injectContext from "./store/appContext";
 
@@ -30,15 +31,16 @@ const Layout = () => {
             <Route element={<Registro />} path="/registro" />
             <Route element={<Perfil />} path="/perfil/user_id" />
             <Route element={<Producto />} path="/producto/:theid" />
+            <Route element={<SubirProducto />} path="/subirProducto/" />
             <Route
               element={<ConfiguracionUsuario />}
               path="/configuracion/:theid"
             />
             <Route element={<h1> Not found! </h1>} />
-          </Routes>{" "}
+          </Routes>
           <Footer />
-        </ScrollToTop>{" "}
-      </BrowserRouter>{" "}
+        </ScrollToTop>
+      </BrowserRouter>
     </div>
   );
 };
