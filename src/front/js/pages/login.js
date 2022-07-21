@@ -50,7 +50,7 @@ export const Login = () => {
   return (
     <>
       {store.auth ? (
-        <Navigate to={"/inicio"} />
+        <Navigate to={"/"} />
       ) : (
         <div className=" contenedor-principal pt-5">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center">
