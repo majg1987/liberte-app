@@ -5,7 +5,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { Inicio } from "./pages/inicio";
 import { Login } from "./pages/login";
 import { Registro } from "./pages/registro";
-import { Perfil } from "./pages/perfil";
+import { Perfil } from "./pages/perfil.jsx";
 import { Producto } from "./pages/producto";
 import { SubirProducto } from "./pages/subirProducto";
 import { ConfiguracionUsuario } from "./pages/configuracion.jsx";

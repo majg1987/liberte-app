@@ -1,26 +1,18 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
-import "../../styles/home.css";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { Galeria } from "../component/perfil/Galeria.jsx";
+import { About } from "../component/perfil/About.jsx";
 
-export const Home = () => {
-  const { store, actions } = useContext(Context);
+export const Perfil = () => {
+  const { user_id } = useParams();
 
   return (
-    <div className="text-center mt-5">
-      <h1>Hello Rigo!!</h1>
-      <p>
-        <img src={rigoImageUrl} />
-      </p>
-      <div className="alert alert-info">
-        {store.message ||
-          "Loading message from the backend (make sure your python backend is running)..."}
+    <>
+      <div className=" bg-warning bg-gradient bg-opacity-50">
+        <h1 className="perfil-header">Welcome!</h1>
+        <About user_id={user_id} />
+        <Galeria user_id={user_id} />
       </div>
-      <p>
-        This boilerplate comes with lots of documentation:{" "}
-        <a href="https://github.com/4GeeksAcademy/react-flask-hello/tree/95e0540bd1422249c3004f149825285118594325/docs">
-          Read documentation
-        </a>
-      </p>
-    </div>
+    </>
   );
 };
