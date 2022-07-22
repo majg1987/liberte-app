@@ -1,3 +1,7 @@
+.container-producto-vista-producto {
+    min-height: 94vh;
+}
+
 .row .nombre-obra {
     padding: 3% 0;
     font-size: 2rem;
@@ -18,4 +22,8 @@
     height: 50px;
     width: 50px;
     border-radius: 50%;
+}
+
+.col-nombre-artista .nombre-artista {
+    padding-left: 5%;
 }
