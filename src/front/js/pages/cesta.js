@@ -78,13 +78,12 @@ export const Cesta = () => {
             </div>
           </div>
           <div className="col-md d-flex justify-content-center">
+
             <Link
               to="/producto"
-              className="btn-continuar-comprando d-flex justify-content-center"
+              className="btn-continuar-comprando d-flex justify-content-center align-items-center"
             >
-              <p className="text-btn-continuar-comprando">
-                CONTINUAR COMPRANDO
-              </p>
+              <span>  CONTINUAR COMPRANDO</span>
             </Link>
           </div>
         </div>
