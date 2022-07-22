@@ -132,7 +132,7 @@ def handle_producto():
             'tecnica',
             'precio',
             'foto_producto',
-            'dimensiones'
+            'dimensiones',
             'descripcion',
             'vendedor_user_id',   
         ]}
