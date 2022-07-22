@@ -7,7 +7,7 @@ export const ProductCard = ({ img, nombreArtista, precio, id }) => {
     const { store, actions } = useContext(Context);
 
     return (
-        <div className="grid col-lg-4 col-md-6 col-sm-12 col-productos" key={id}>
+        <div className="col-productos" key={id}>
             <Link to={`/producto/${id}`}>
                 <div
                     className="grid-item container-producto"
@@ -18,7 +18,7 @@ export const ProductCard = ({ img, nombreArtista, precio, id }) => {
                             <p className="nombre-artista">{nombreArtista}</p>
                         </div>
                         <div className="col-2 columna-precio/obra">
-                            <p className="nombre-artista">{precio}</p>
+                            <p className="precio obra">{precio + '€'}</p>
                         </div>
                     </div>
 
