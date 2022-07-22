@@ -20,8 +20,11 @@ export const Inicio = () => {
     };
 
     return (
+
         <div className="container-fluid container-inicio">
+
             {/* Seccion portada */}
+
             <div className="container-portada  d-flex justify-content-center align-items-center">
                 <div className="row row-logo">
                     <img
@@ -34,28 +37,14 @@ export const Inicio = () => {
                 </div>
             </div>
 
+            {/* Seccion productos */}
+
             <div className="container container-titulo-productos">
                 <p className="titulo-seccion-producto">Productos</p>
             </div>
 
             <div className="container container-lista-productos">
                 <div className="row  row-productos">
-                    {/* {
-                        store.productos.map((ele, i) => {
-                            console.log("elee", ele.foto_producto);
-                            let productCard =
-                                <ProductCard
-                                    key={ele.id}
-                                    id={ele.id}
-                                    img={ele.foto_producto}
-
-                                    nombreArtista={ele.nombre}
-                                    precio={ele.precio}
-                                />
-                            return productCard
-                        })
-
-                    } */}
 
                     <Masonry
                         breakpointCols={breakpoints}
@@ -63,8 +52,6 @@ export const Inicio = () => {
                         columnClassName="my-masonry-grid_column"
                     >
                         {store.productos.map((ele, i) => {
-                            // console.log("elee", ele);
-                            // console.log("elee", ele.foto_producto);
                             let productCard = (
                                 <ProductCard
                                     key={ele.id}

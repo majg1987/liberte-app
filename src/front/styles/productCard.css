@@ -40,7 +40,6 @@
     cursor: pointer;
 }
 
-.nombre-artista {
-    /* color: black; */
-    padding-left: 5%;
+.col-productos p {
+    color: #595959;
 }
