@@ -71,6 +71,7 @@ class Producto (db.Model):
             "precio": self.precio,
             "vendido": self.vendido,
             "foto_producto": self.foto_producto,
+            "dimensiones": self.dimensiones,
             "descripcion": self.descripcion,
             "vendedor_user_id" : self.vendedor_user_id,
             "pedido_id": self.pedido_id
