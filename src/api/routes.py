@@ -152,12 +152,14 @@ def handle_producto():
     elif request.method == 'GET':
 
         # Recogemos argumento user_id de la URL. Si no existe, el GET es global
-        user_id = request.args.get('user_id')
+        if request.data != b'':
+            body = json.loads(request.data) 
+            id = body["id"]
 
         # GET con user_id /api/producto?user_id=
-        if user_id:
+
             try:
-                user_id = int(user_id)
+                user_id = int(id)
             except Exception as e:
                 response_body = {
                     "result": f'user_id {user_id} is not an integer',
@@ -174,11 +176,18 @@ def handle_producto():
 
             response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
             response_body = [producto.serialize() for producto in response_body]
+
+            
+            # Devolvemos el nombre del artista en vez de userId
+            for artista in response_body:
+                user = User.query.filter_by(id = artista["vendedor_user_id"]).first()
+                artista["vendedor_user_id"] = user.nombre
             
             return json.dumps(response_body), 200
         
         # GET sin user_id /api/producto
         else:
+            print("no")
             response_body = Producto.query.filter_by(vendido=False).all()
             response_body = [producto.serialize() for producto in response_body]
 
