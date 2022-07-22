@@ -220,6 +220,7 @@ def handle_producto():
                 producto_edit.precio = producto['precio']
                 producto_edit.vendido = producto['vendido']
                 producto_edit.foto_producto = producto['foto_producto']
+                producto_edit.dimensiones = producto['dimensiones']
                 producto_edit.descripcion = producto['descripcion']
                 producto_edit.vendedor_user_id = producto['vendedor_user_id']
                 producto_edit.pedido_id = producto['pedido_id']
