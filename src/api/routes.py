@@ -187,7 +187,6 @@ def handle_producto():
         
         # GET sin user_id /api/producto
         else:
-            print("no")
             response_body = Producto.query.filter_by(vendido=False).all()
             response_body = [producto.serialize() for producto in response_body]
 
