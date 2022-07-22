@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"; // Importo librerias de paypal
 import ScrollToTop from "./component/scrollToTop";
 
 import { Inicio } from "./pages/inicio";
@@ -21,27 +22,34 @@ const Layout = () => {
   const basename = process.env.BASENAME || "";
 
   return (
-    <div>
-      <BrowserRouter basename={basename}>
-        <ScrollToTop>
-          <Navbar />
-          <Routes>
-            <Route element={<Inicio />} path="/" />
-            <Route element={<Login />} path="/login" />
-            <Route element={<Registro />} path="/registro" />
-            <Route element={<Perfil />} path="/perfil/user_id" />
-            <Route element={<Producto />} path="/producto/:theid" />
-            <Route element={<SubirProducto />} path="/subirProducto/" />
-            <Route
-              element={<ConfiguracionUsuario />}
-              path="/configuracion/:theid"
-            />
-            <Route element={<h1> Not found! </h1>} />
-          </Routes>
-          <Footer />
-        </ScrollToTop>
-      </BrowserRouter>
-    </div>
+    <PayPalScriptProvider
+      options={{
+        "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID,
+        currency: "EUR",
+      }}
+    >
+      <div>
+        <BrowserRouter basename={basename}>
+          <ScrollToTop>
+            <Navbar />
+            <Routes>
+              <Route element={<Inicio />} path="/" />
+              <Route element={<Login />} path="/login" />
+              <Route element={<Registro />} path="/registro" />
+              <Route element={<Perfil />} path="/perfil/user_id" />
+              <Route element={<Producto />} path="/producto/:theid" />
+              <Route element={<SubirProducto />} path="/subirProducto/" />
+              <Route
+                element={<ConfiguracionUsuario />}
+                path="/configuracion/:theid"
+              />
+              <Route element={<h1> Not found! </h1>} />
+            </Routes>
+            <Footer />
+          </ScrollToTop>
+        </BrowserRouter>
+      </div>
+    </PayPalScriptProvider>
   );
 };
 
