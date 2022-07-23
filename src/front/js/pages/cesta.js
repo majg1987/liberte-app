@@ -24,16 +24,16 @@ export const Cesta = () => {
         <div className="column-1 col-md-8">
           <div className="decorative-line col-6 position-relative ">
             <div className="col-md d-flex flex-nowrap">
-              <h6 className="item-number">1</h6>&nbsp;
+              <h6 className="item-number">{store.productoSelect.length}</h6>&nbsp;
               <h6 className="item-text">articulo</h6>
             </div>
             <div className="decorative-line position-absolute top-50 start-100 translate-middle">
               <h6 className="item-text2">Subtotal</h6>
             </div>
           </div>
-          <ItemDetails />
-          <ItemDetails />
-          <ItemDetails />
+          <div className=""><ItemDetails /></div>
+          
+
         </div>
         <div className="column-2 col-md-4">
           <div className="card">

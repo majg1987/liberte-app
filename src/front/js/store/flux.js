@@ -11,7 +11,26 @@ const getState = ({
             errorAuth: false,
             artistas: [],
             productos: [],
-            productoSelect: {},
+            productoSelect: [{
+                img: "https://picsum.photos/100",
+                nombreArtista: "Erika Hanns",
+                tituloObra: "Autorretrato",
+                precio: 250,
+                id: 1,
+            }, {
+                img: "https://picsum.photos/100",
+                nombreArtista: "John Hanns",
+                tituloObra: "Autorretrata",
+                precio: 300,
+                id: 2,
+            }, {
+                img: "https://picsum.photos/100",
+                nombreArtista: "Helen Hanns",
+                tituloObra: "Autorretratx",
+                precio: 300,
+                id: 3,
+            }],
+
             userInfo: {},
         },
         actions: {
