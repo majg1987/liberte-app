@@ -181,7 +181,9 @@ def handle_producto():
             # Devolvemos el nombre del artista en vez de userId
             for artista in response_body:
                 user = User.query.filter_by(id = artista["vendedor_user_id"]).first()
-                artista["vendedor_user_id"] = user.nombre
+                artista["vendedor_nombre"] = user.nombre
+                artista["vendedor_foto"] = user.foto_usuario
+
             
             return json.dumps(response_body), 200
         
