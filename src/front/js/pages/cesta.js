@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import ItemDetails from "../component/cesta/ItemDetails.jsx";
 // Importo componente de los botones de paypal
 import { PaypalCheckoutButton } from "../component/PaypalCheckoutButton";
-import "../../styles/cesta.css";
+/* import "../../styles/cesta.css"; */
 
 export const Cesta = () => {
   const { store, actions } = useContext(Context);
@@ -17,23 +17,17 @@ export const Cesta = () => {
   return (
     <>
       {/*  <div className="container"> */}
-      <div className="header-cesta d-flex justify-content-center">
+      <div className="header-cesta text-center mb-5">
         <h1>Cesta de la Compra</h1>
       </div>
       <div className="row row-cols-md-2">
         <div className="column-1 col-md-8">
-          <div className="decorative-line col-6 position-relative ">
-            <div className="col-md d-flex flex-nowrap">
-              <h6 className="item-number">{store.productoSelect.length}</h6>&nbsp;
-              <h6 className="item-text">articulo</h6>
-            </div>
-            <div className="decorative-line position-absolute top-50 start-100 translate-middle">
-              <h6 className="item-text2">Subtotal</h6>
-            </div>
-          </div>
-          <div className=""><ItemDetails /></div>
-          
+          <div className="row border-bottom ms-1 mb-5 text-muted" style={{ maxWidth: `${47}em` }}>
+            <div className="col-3 "><span>{store.productoSelect.length}</span>&nbsp;<span></span>articulo(s)</div>
+           
 
+          </div>
+          <div className="row row-cols-1 row-cols-md-2 g-4"><ItemDetails/></div>
         </div>
         <div className="column-2 col-md-4">
           <div className="card">
