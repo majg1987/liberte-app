@@ -11,8 +11,7 @@ const getState = ({
             errorAuth: false,
             artistas: [],
             productos: [],
-            productoSelect:{} ,
-
+            productoSelect: {},
             userInfo: {},
             productosCesta: [],
         },
@@ -105,26 +104,37 @@ const getState = ({
                     }),
                 };
                 try {
-                    const resp = await fetch(
-                        process.env.BACKEND_URL + "/api/login",
-                        options
-                    );
-                    if (resp.status === 200) {
+                    if (
+                        !localStorage.getItem("productSelect") ||
+                        Object.keys(localStorage.getItem("productSelect")).length === 0
+                    ) {
+                        const resp = await fetch(
+                            process.env.BACKEND_URL + "/api/login",
+                            options
+                        );
+                        if (resp.status === 200) {
+                            setStore({
+                                auth: true,
+                            });
+                        } else {
+                            setStore({
+                                errorAuth: true,
+                            });
+                        }
+                        const data = await resp.json();
+                        console.log(data);
+                        sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
                         setStore({
-                            auth: true,
+                            userInfo: data.user_info,
                         });
+                        const userInfoStrfy = JSON.stringify(getStore().userInfo);
+                        localStorage.setItem("userInfo", userInfoStrfy);
+                        // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
                     } else {
                         setStore({
-                            errorAuth: true,
+                            userInfo: JSON.parse(localStorage.getItem("userInfo")),
                         });
                     }
-                    const data = await resp.json();
-                    console.log(data);
-                    sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
-                    setStore({
-                        userInfo: data.user_info,
-                    });
-                    // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
                 } catch (error) {
                     console.log(error);
                 }
@@ -225,6 +235,7 @@ const getState = ({
                     setStore({
                         productoSelect: JSON.parse(localStorage.getItem("productSelect")),
                     });
+                    console.log("prprprselect");
                 }
             },
 

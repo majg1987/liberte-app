@@ -7,8 +7,6 @@ import Masonry from "react-masonry-css";
 export const Inicio = () => {
     const { store, actions } = useContext(Context);
 
-    console.log(store.productos);
-
     useEffect(() => {
         actions.productosInicio();
     }, []);
@@ -19,10 +17,16 @@ export const Inicio = () => {
         700: 1,
     };
 
+    const prd = store.productos;
+    console.log("prd", prd);
+
+    useEffect(() => {
+        localStorage.getItem("productSelect") &&
+            localStorage.removeItem("productSelect");
+    }, []);
+
     return (
-
         <div className="container-fluid container-inicio">
-
             {/* Seccion portada */}
 
             <div className="container-portada  d-flex justify-content-center align-items-center">
@@ -45,24 +49,33 @@ export const Inicio = () => {
 
             <div className="container container-lista-productos">
                 <div className="row  row-productos">
-
                     <Masonry
                         breakpointCols={breakpoints}
                         className="my-masonry-grid"
                         columnClassName="my-masonry-grid_column"
                     >
-                        {store.productos.map((ele, i) => {
-                            let productCard = (
-                                <ProductCard
-                                    key={ele.id}
-                                    id={ele.id}
-                                    img={ele.foto_producto}
-                                    nombreArtista={ele.nombre}
-                                    precio={ele.precio}
-                                />
-                            );
-                            return productCard;
-                        })}
+                        {prd ? (
+                            prd.map((ele, i) => {
+                                console.log("ele", ele);
+                                let productCard = (
+                                    <ProductCard
+                                        key={ele.id}
+                                        id={ele.id}
+                                        nombre={ele.nombre}
+                                        img={ele.foto_producto}
+                                        precio={ele.precio}
+                                        descripcion={ele.descripcion}
+                                        dimensiones={ele.dimensiones}
+                                        tecnica={ele.tecnica}
+                                        nombreArtista={ele.vendedor_nombre}
+                                        fotoArtista={ele.vendedor_foto}
+                                    />
+                                );
+                                return productCard;
+                            })
+                        ) : (
+                            <div className="no"></div>
+                        )}
                     </Masonry>
                 </div>
             </div>
