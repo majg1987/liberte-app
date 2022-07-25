@@ -1,4 +1,7 @@
 /* Propiedades de Css para Registro y Login */
+.container-principal-login {
+    height: 500px;
+}
 
 .contenedor-formulario {
     max-width: 400px;
