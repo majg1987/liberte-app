@@ -14,12 +14,13 @@ export const Producto = (props) => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 		setScroll(true);
+		actions.productoSelect();
 	}, []);
 
 	const añadirCesta = () => {
 		localStorage.removeItem("cesta");
 		actions.añadirACesta();
-		alert("producto añadido a cesta")
+		alert("producto añadido a cesta");
 	};
 
 	return (
