@@ -1,4 +1,4 @@
-/* h6 {
+h6 {
   font-size: 1em;
   font-weight: bold;
 }
@@ -102,9 +102,9 @@
   margin-bottom: 2em;
   margin-top: 2em;
 }
-/* .text-btn-finalizar-pedido {
+.text-btn-finalizar-pedido {
   margin: auto;
-} */
+}
 .btn-continuar-comprando {
   background-color: #f2cb05;
   border-radius: 4px;
@@ -120,7 +120,7 @@
 }
 .column-1 {
   padding-left: 5em;
-} */
+} 
 .column-2 {
   padding-right: 0.75em;
   padding-left: 1em;

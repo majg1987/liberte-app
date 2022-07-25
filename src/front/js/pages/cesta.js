@@ -36,7 +36,6 @@ export const Cesta = () => {
             />
             ))}
           </div>
-
           <div className="column-2 col-md-4">
             <div className="card">
               <div className="card-body">
