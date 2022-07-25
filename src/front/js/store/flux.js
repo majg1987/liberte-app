@@ -11,9 +11,10 @@ const getState = ({
             errorAuth: false,
             artistas: [],
             productos: [],
-            productoSelect: [],
+            productoSelect:{} ,
 
             userInfo: {},
+            productosCesta: [],
         },
         actions: {
             // Registro
@@ -52,12 +53,13 @@ const getState = ({
             },
 
             // Registro de producto
-            registroProducto: (nombre,
+            registroProducto: (
+                nombre,
                 tecnica,
                 precio,
                 imagenSelect,
-                descripcion) => {
-
+                descripcion
+            ) => {
                 console.log(getStore().userInfo);
                 try {
                     // fetching data from the backend
@@ -69,7 +71,7 @@ const getState = ({
                             precio: precio,
                             foto_producto: imagenSelect,
                             descripcion: descripcion,
-                            vendedor_user_id: userInfo.user_id
+                            vendedor_user_id: userInfo.user_id,
                         }),
                         headers: {
                             "Content-Type": "application/json",
@@ -120,7 +122,7 @@ const getState = ({
                     console.log(data);
                     sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
                     setStore({
-                        userInfo: data.user_info
+                        userInfo: data.user_info,
                     });
                     // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
                 } catch (error) {
@@ -179,11 +181,7 @@ const getState = ({
                         process.env.BACKEND_URL + "/api/producto",
                         options
                     );
-                    if (resp.status === 200) {
-                        console.log("hola");
-                    }
                     const data = await resp.json();
-                    console.log(data, "data");
                     setStore({
                         productos: data,
                     });
@@ -192,15 +190,106 @@ const getState = ({
                 }
             },
             // ProductSelect
-            productoSelect: (img, nombreArtista, precio, id) => {
-                setStore({
-                    productoSelect: {
-                        img: img,
-                        nombreArtista: nombreArtista,
-                        precio: precio,
-                        id: id,
+            productoSelect: (
+                id,
+                nombre,
+                img,
+                precio,
+                descripcion,
+                dimensiones,
+                tecnica,
+                nombreArtista,
+                fotoArtista
+            ) => {
+                if (
+                    !localStorage.getItem("productSelect") ||
+                    Object.keys(localStorage.getItem("productSelect")).length === 0
+                ) {
+                    setStore({
+                        productoSelect: {
+                            id: id,
+                            nombre: nombre,
+                            img: img,
+                            precio: precio,
+                            descripcion: descripcion,
+                            dimensiones: dimensiones,
+                            tecnica: tecnica,
+                            nombreArtista: nombreArtista,
+                            fotoArtista: fotoArtista,
+                        },
+                    });
+
+                    const prctStrfy = JSON.stringify(getStore().productoSelect);
+                    localStorage.setItem("productSelect", prctStrfy);
+                } else {
+                    setStore({
+                        productoSelect: JSON.parse(localStorage.getItem("productSelect")),
+                    });
+                }
+            },
+
+            añadirACesta: async () => {
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
                     },
-                });
+                    body: JSON.stringify({
+                        user_id: getStore().userInfo.user_id,
+                        producto_id: getStore().productoSelect.id,
+                        peticion: "post_cesta",
+                    }),
+                };
+                try {
+                    const resp = await fetch(
+                        process.env.BACKEND_URL + "/api/cesta",
+                        options
+                    );
+                    if (resp.status === 200) {
+                        console.log("producto-añadido");
+                    }
+                    const data = await resp.json();
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
+            obtenerCesta: async () => {
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_user: getStore().userInfo.user_id,
+                        peticion: "get_cesta",
+                    }),
+                };
+                try {
+                    if (
+                        !localStorage.getItem("cesta") ||
+                        localStorage.getItem("cesta").length === 0
+                    ) {
+                        const resp = await fetch(
+                            process.env.BACKEND_URL + "/api/cesta",
+                            options
+                        );
+                        const data = await resp.json();
+
+                        setStore({
+                            productosCesta: data.result,
+                        });
+
+                        const cestaStrfy = JSON.stringify(getStore().productosCesta);
+                        localStorage.setItem("cesta", cestaStrfy);
+                    } else {
+                        setStore({
+                            productosCesta: JSON.parse(localStorage.getItem("cesta")),
+                        });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             },
         },
     };
