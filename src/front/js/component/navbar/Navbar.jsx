@@ -46,7 +46,7 @@ export const Navbar = () => {
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <FiLogOut size={28} />
+                        <FiLogOut size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
                   </li>
@@ -58,7 +58,7 @@ export const Navbar = () => {
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <AiOutlineUser size={28} />
+                        <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
                   </li>
@@ -69,7 +69,7 @@ export const Navbar = () => {
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <AiOutlineUser size={28} />
+                        <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
                   </li>
@@ -78,7 +78,10 @@ export const Navbar = () => {
                 <li className="nav-item active">
                   <Link to="/cart">
                     <button type="button" className="btn btn-sm me-2 border-0">
-                      <AiOutlineShoppingCart size={28} />
+                      <AiOutlineShoppingCart
+                        size={28}
+                        style={{ color: "#e28f2c" }}
+                      />
                     </button>
                   </Link>
                 </li>
