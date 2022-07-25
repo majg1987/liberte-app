@@ -14,30 +14,49 @@ export const Cesta = () => {
     price: 10.0,
   };
 
+  useEffect(() => {
+    console.log("ijij");
+    actions.obtenerCesta();
+    localStorage.getItem("productSelect") &&
+      localStorage.removeItem("productSelect");
+  }, []);
+
   return (
+    <>
+      <div className="row row-container-cesta">
+        <div className="row row-titulo-cesta">
+          <p className="cesta">cesta</p>
+        </div>
 
-    <div className="container">
-      <div className="header-cesta text-center mb-5">
-        <h1>Cesta de la Compra</h1>
-      </div>
-      <div className="row row-cols-md-2">
-        <div className="column-1 col-md-8">
-          <div className="row border-bottom ms-1 mb-5 text-muted" style={{ maxWidth: `${47}em` }}>
-            <div className="col-3 "><span>{store.productoSelect.length}</span>&nbsp;<span></span>articulo(s)</div>
-
-
+        <div className="col-sm-12 col-lg-6 col-lista-productos">
+          <div className="row">
+            {store.productosCesta.map((ele) => {
+              let productoCesta = (
+                <div className="col-6 d-flex justify-content-center">
+                  <ItemDetails
+                    key={ele.id}
+                    id={ele.id}
+                    nombre={ele.nombre}
+                    img={ele.foto_producto}
+                    precio={ele.precio}
+                    description={ele.description}
+                    dimensiones={ele.dimensiones}
+                    tecnica={ele.tecnica}
+                    nombreArtista={ele.vendedor_nombre}
+                    fotoArtista={ele.vendedor_foto}
+                  />
+                </div>
+              );
+              return productoCesta;
+            })}
           </div>
-          <div className="row row-cols-2 row-cols-md-2 g-4">
-            {store.productoSelect.map((producto) => (<ItemDetails
-              img={producto.img}
-              nombreArtista={producto.nombreArtista}
-              tituloObra={producto.tituloObra}
-              precio={producto.precio}
-            />
-            ))}
-          </div>
-          <div className="column-2 col-md-4">
-            <div className="card">
+        </div>
+
+        {/* Resumen Compra */}
+        <div className="col-sm-12 col-lg-6 col-resumen-compra">
+          <div className="container-resumenes">
+            {/* Resumen pedido */}
+            <div className="card card-resumen-pedido">
               <div className="card-body">
                 <p className="card-title">RESUMEN DEL PEDIDO</p>
                 <div className="card-text row">
@@ -59,7 +78,10 @@ export const Cesta = () => {
                 </div>
               </div>
             </div>
-            <div className="card">
+
+            {/*  Paypal */}
+
+            <div className="card card-paypal">
               <div className="card-body">
                 <div className="card-text row">
                   <div className="total-pedido col mt-1">
@@ -73,25 +95,26 @@ export const Cesta = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="d-flex justify-content-center"><Link to="/pedido" className="btn-finalizar-pedido d-flex justify-content-center"><p className="text-btn-finalizar-pedido">FINALIZAR PEDIDO</p></Link> */}
+
               <div className="paypal-button-container">
                 <PaypalCheckoutButton product={product} />
               </div>
             </div>
-            <div className="col-md d-flex justify-content-center">
+          </div>
 
-              <Link
-                to="/producto"
-                className="btn-continuar-comprando d-flex justify-content-center align-items-center"
-              >
-                <span>  CONTINUAR COMPRANDO</span>
-              </Link>
-            </div>
+          <div className="col-md d-flex justify-content-center">
+            <Link
+              to="/producto"
+              className="btn-continuar-comprando d-flex justify-content-center"
+            >
+              <p className="text-btn-continuar-comprando">
+                CONTINUAR COMPRANDO
+              </p>
+            </Link>
           </div>
         </div>
       </div>
-    </div>
-
+    </>
   );
 };
 
