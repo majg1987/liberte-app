@@ -12,6 +12,7 @@ export const SubirProducto = () => {
 
   /* Utilizo useState donde asigno valores de los input*/
   const [nombre, setNombre] = useState("");
+  const [dimensiones, setDimensiones] = useState("");
   const fecha = new Date();
   const [tecnica, setTecnica] = useState("");
   const [precio, setPrecio] = useState("");
@@ -27,6 +28,7 @@ export const SubirProducto = () => {
     "/" +
     fecha.getFullYear();
 
+  // Guardamos la imagen utilizando cloudinary
   const subirImagen = async (foto) => {
     const data = new FormData();
     data.append("file", foto);
@@ -65,6 +67,8 @@ export const SubirProducto = () => {
     console.log(
       nombre +
         " " +
+        dimensiones +
+        " " +
         tecnica +
         " " +
         precio +
@@ -73,9 +77,11 @@ export const SubirProducto = () => {
         " " +
         descripcion
     );
+    // Validacion de formulario para subir producto, y llamo a método de flux para mandar info a la ruta de backend
     if (
       nombre !== "" &&
       /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
+      dimensiones !== "" &&
       tecnica !== "" &&
       precio > 0 &&
       imagenSelect !== "" &&
@@ -83,6 +89,7 @@ export const SubirProducto = () => {
     ) {
       actions.registroProducto(
         nombre,
+        dimensiones,
         tecnica,
         precio,
         imagenSelect,
@@ -99,7 +106,7 @@ export const SubirProducto = () => {
   return (
     <>
       <div className=" contenedor-principal">
-        <div className="contenedor-formulario-producto d-flex justify-content-center align-items-center col-10">
+        <div className="contenedor-formulario-producto d-flex justify-content-center align-items-center col-10 my-3">
           <form onSubmit={handleSubmit} className="formulario-producto col-9">
             <h2 className="titulo-registro"> Subir Producto </h2>
             <div className="row"></div>
@@ -111,6 +118,15 @@ export const SubirProducto = () => {
               onChange={(e) => setNombre(e.target.value)}
               /** Asigno el valor con onChange a la variable nombre */
               value={nombre}
+            />
+            <input
+              type="text"
+              className="input-registro"
+              id="dimensiones"
+              placeholder="Dimensiones: 120x120x5cm (AltoxAnchoxProfundidad)"
+              onChange={(e) => setDimensiones(e.target.value)}
+              /** Asigno el valor con onChange a la variable dimensiones */
+              value={dimensiones}
             />
             <input
               type="text"
