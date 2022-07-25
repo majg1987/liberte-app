@@ -1,3 +1,8 @@
+.col-foto-producto,
+.col-info-producto {
+    min-height: 80vh;
+}
+
 .row .nombre-obra {
     padding: 3% 0;
     font-size: 2rem;
@@ -18,4 +23,8 @@
     height: 50px;
     width: 50px;
     border-radius: 50%;
+}
+
+.nombre-artista {
+    margin-left: 5%;
 }
