@@ -15,7 +15,7 @@ export const Navbar = () => {
       <nav className="navbar navbar-expand-md sticky-top navbar-expand-sm navbar-light bg-light">
         <div className="container d-flex justify-content-around position-relative">
           <div className="navbar-brand m-0">
-            <Link to="/inicio">
+            <Link to="/">
               <img
                 src={yellow}
                 style={{ width: "80%", height: "70%" }}
@@ -46,7 +46,7 @@ export const Navbar = () => {
                 ) : null}
                 {store.auth ? (
                   <li className="nav-item dropdown">
-                    <Link to="/perfil">
+                    <Link to={`/perfil/${store.userInfo.user_id}`}>
                       <button
                         type="button"
                         className="btn btn-sm mx-2 border-0"
@@ -69,7 +69,7 @@ export const Navbar = () => {
                 )}
 
                 <li className="nav-item active">
-                  <Link to="/cart">
+                  <Link to="/cesta">
                     <button type="button" className="btn btn-sm me-2 border-0">
                       <AiOutlineShoppingCart
                         size={28}
