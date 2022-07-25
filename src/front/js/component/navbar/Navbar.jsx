@@ -33,7 +33,7 @@ export const Navbar = () => {
               <div className="d-flex d-inline position-absolute top-50 start-100 translate-middle">
                 {store.auth ? (
                   <li className="nav-item dropdown">
-                    <Link to="/inicio">
+                    <Link to="/">
                       <button
                         onClick={actions.logout}
                         type="button"
