@@ -1,0 +1,22 @@
+.card-card{
+    margin-left: 5em;
+    margin-bottom: 1em;
+}
+.card-card-body{
+    padding-bottom: 0em;
+}
+.card-nombre-artista{
+    padding-top: .5em;
+    font-weight: bold;
+}
+.card-item-titulo{
+    font-size:.9em;
+}
+.card-item-precio{
+    font-weight: bold;
+    padding-top: 1em;
+}
+.card-item-eliminar{
+    font-size: .5em;
+    padding-top: .75em;
+}
