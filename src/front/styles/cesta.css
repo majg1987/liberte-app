@@ -1,13 +1,15 @@
+/*ok*/
 h6 {
   font-size: 1em;
   font-weight: bold;
 }
+/*ok*/
 .header-cesta {
   text-align: center;
   padding-top: 0.5em;
   margin-bottom: 5em;
 }
-
+/*ok*/
 .item-text {
   font-size: 1em;
   color: lightgray;

@@ -27,7 +27,7 @@ export const Cesta = () => {
 
 
           </div>
-          <div className="row row-cols-1 row-cols-md-2 g-4">
+          <div className="row row-cols-2 row-cols-md-2 g-4">
             {store.productoSelect.map((producto) => (<ItemDetails
               img={producto.img}
               nombreArtista={producto.nombreArtista}
