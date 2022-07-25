@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar.jsx";
 import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-//import UseAnimations from "react-useanimations";
 import { Context } from "../../store/appContext";
 
 import yellow from "../../../img/yellow.png";
@@ -16,7 +15,7 @@ export const Navbar = () => {
       <nav className="navbar navbar-expand-md sticky-top navbar-expand-sm navbar-light bg-light">
         <div className="container d-flex justify-content-around position-relative">
           <div className="navbar-brand m-0">
-            <Link to="/inicio">
+            <Link to="/">
               <img
                 src={yellow}
                 style={{ width: "80%", height: "70%" }}
@@ -24,13 +23,7 @@ export const Navbar = () => {
               />
             </Link>
           </div>
-          <button className="navbar-toggler">
-            {/*  <UseAnimations
-              animationKey="menu"
-              size={30}
-              style={{ cursor: "pointer", padding: 100 }}
-            /> */}
-          </button>
+          <button className="navbar-toggler"></button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item active d-inline position-absolute top-50 start-50 translate-middle">
@@ -40,25 +33,25 @@ export const Navbar = () => {
               <div className="d-flex d-inline position-absolute top-50 start-100 translate-middle">
                 {store.auth ? (
                   <li className="nav-item dropdown">
-                    <Link to="/inicio">
+                    <Link to="/">
                       <button
                         onClick={actions.logout}
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <FiLogOut size={28} />
+                        <FiLogOut size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
                   </li>
                 ) : null}
                 {store.auth ? (
                   <li className="nav-item dropdown">
-                    <Link to="/perfil">
+                    <Link to={`/perfil/${store.userInfo.user_id}`}>
                       <button
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <AiOutlineUser size={28} />
+                        <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
                   </li>
@@ -69,16 +62,19 @@ export const Navbar = () => {
                         type="button"
                         className="btn btn-sm mx-2 border-0"
                       >
-                        <AiOutlineUser size={28} />
+                        <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
                   </li>
                 )}
 
                 <li className="nav-item active">
-                  <Link to="/cart">
+                  <Link to="/cesta">
                     <button type="button" className="btn btn-sm me-2 border-0">
-                      <AiOutlineShoppingCart size={28} />
+                      <AiOutlineShoppingCart
+                        size={28}
+                        style={{ color: "#e28f2c" }}
+                      />
                     </button>
                   </Link>
                 </li>
