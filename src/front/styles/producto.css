@@ -1,5 +1,6 @@
-.container-producto-vista-producto {
-    min-height: 94vh;
+.col-foto-producto,
+.col-info-producto {
+    min-height: 80vh;
 }
 
 .row .nombre-obra {
@@ -24,6 +25,6 @@
     border-radius: 50%;
 }
 
-.col-nombre-artista .nombre-artista {
-    padding-left: 5%;
+.nombre-artista {
+    margin-left: 5%;
 }
