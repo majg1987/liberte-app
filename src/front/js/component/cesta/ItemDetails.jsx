@@ -1,26 +1,57 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../../store/appContext";
 import { Link } from "react-router-dom";
 
 import "../../../styles/cesta.css";
 
-export const ItemDetails = () => {
+const ItemDetails = ({
+  id,
+  nombre,
+  img,
+  precio,
+  descripcion,
+  dimensiones,
+  tecnica,
+  nombreArtista,
+  fotoArtista,
+}) => {
+  const { store, actions } = useContext(Context);
+
   return (
-    <div className="row d-flex justify-content-between flex-nowrap">
-      <div className="col-6">
-        <div className="item-seleccionado position-relative d-flex justify-content-start">
-          <div>
-            <img src="https://picsum.photos/100" />
-          </div>
-          <div className="artista">
-            <h6>Erika Hanns</h6>
-            <p className="titulo-obra">Autorretrato con peineta</p>
-            <p className="eliminar-compra" href="#">
-              Eliminar
-            </p>
-          </div>
-          <div className="item-precio position-absolute top-0 start-100">
-            <div>250€</div>
-          </div>
+    <div className="container-intem-detail" key={id}>
+      <div className="col-4 col-foto-info-producto-cesta">
+        <div className="container-foto-info-producto-cesta">
+          <img src={img} />
+        </div>
+      </div>
+
+      <div className="col-8 col-info-producto-cesta">
+        <div className="artista">
+          <Link
+            to={`/producto/${id}`}
+            onClick={() =>
+              actions.productoSelect(
+                id,
+                nombre,
+                img,
+                precio,
+                descripcion,
+                dimensiones,
+                tecnica,
+                nombreArtista,
+                fotoArtista
+              )
+            }
+          >
+            <p className="titulo-obra">{nombre}</p>
+          </Link>
+          <h6>{nombreArtista}</h6>
+          <p className="eliminar-compra" href="#">
+            Eliminar
+          </p>
+        </div>
+        <div className="item-precio position-absolute top-0 start-100">
+          <div>{precio}</div>
         </div>
       </div>
     </div>

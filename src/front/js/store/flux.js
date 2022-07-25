@@ -11,7 +11,8 @@ const getState = ({
             errorAuth: false,
             artistas: [],
             productos: [],
-            productoSelect: {},
+            productoSelect:{} ,
+
             userInfo: {},
             productosCesta: [],
         },

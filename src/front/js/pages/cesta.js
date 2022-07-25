@@ -14,69 +14,94 @@ export const Cesta = () => {
     price: 10.0,
   };
 
+  useEffect(() => {
+    console.log("ijij");
+    actions.obtenerCesta();
+    localStorage.getItem("productSelect") &&
+      localStorage.removeItem("productSelect");
+  }, []);
+
   return (
     <>
-      {/*  <div className="container"> */}
-      <div className="header-cesta d-flex justify-content-center">
-        <h1>Cesta de la Compra</h1>
-      </div>
-      <div className="row row-cols-md-2">
-        <div className="column-1 col-md-8">
-          <div className="decorative-line col-6 position-relative ">
-            <div className="col-md d-flex flex-nowrap">
-              <h6 className="item-number">1</h6>&nbsp;
-              <h6 className="item-text">articulo</h6>
-            </div>
-            <div className="decorative-line position-absolute top-50 start-100 translate-middle">
-              <h6 className="item-text2">Subtotal</h6>
-            </div>
-          </div>
-          <ItemDetails />
-          <ItemDetails />
-          <ItemDetails />
+      <div className="row row-container-cesta">
+        <div className="row row-titulo-cesta">
+          <p className="cesta">cesta</p>
         </div>
-        <div className="column-2 col-md-4">
-          <div className="card">
-            <div className="card-body">
-              <p className="card-title">RESUMEN DEL PEDIDO</p>
-              <div className="card-text row">
-                <div className="card-item col mt-1">
-                  <p>Subtotal</p>
+
+        <div className="col-sm-12 col-lg-6 col-lista-productos">
+          <div className="row">
+            {store.productosCesta.map((ele) => {
+              let productoCesta = (
+                <div className="col-6 d-flex justify-content-center">
+                  <ItemDetails
+                    key={ele.id}
+                    id={ele.id}
+                    nombre={ele.nombre}
+                    img={ele.foto_producto}
+                    precio={ele.precio}
+                    description={ele.description}
+                    dimensiones={ele.dimensiones}
+                    tecnica={ele.tecnica}
+                    nombreArtista={ele.vendedor_nombre}
+                    fotoArtista={ele.vendedor_foto}
+                  />
                 </div>
-                <div className="card-item2 col d-flex justify-content-end">
-                  <p>250€</p>
+              );
+              return productoCesta;
+            })}
+          </div>
+        </div>
+
+        {/* Resumen Compra */}
+        <div className="col-sm-12 col-lg-6 col-resumen-compra">
+          <div className="container-resumenes">
+            {/* Resumen pedido */}
+            <div className="card card-resumen-pedido">
+              <div className="card-body">
+                <p className="card-title">RESUMEN DEL PEDIDO</p>
+                <div className="card-text row">
+                  <div className="card-item col mt-1">
+                    <p>Subtotal</p>
+                  </div>
+                  <div className="card-item2 col d-flex justify-content-end">
+                    <p>250€</p>
+                  </div>
+                </div>
+                <div className="card-text row">
+                  <p className="card-item col">Envio Express</p>
+                  <span className="card-item2 col d-flex justify-content-end">
+                    Gratis
+                  </span>
+                </div>
+                <div className="card-text row">
+                  <p className="card-item3">Introduce tu código de descuento</p>
                 </div>
               </div>
-              <div className="card-text row">
-                <p className="card-item col">Envio Express</p>
-                <span className="card-item2 col d-flex justify-content-end">
-                  Gratis
-                </span>
+            </div>
+
+            {/*  Paypal */}
+
+            <div className="card card-paypal">
+              <div className="card-body">
+                <div className="card-text row">
+                  <div className="total-pedido col mt-1">
+                    <p>Total Pedido</p>
+                  </div>
+                  <div className="total-pedido-precio col d-flex justify-content-end">
+                    <p>250€</p>
+                  </div>
+                  <div>
+                    <p className="total-pedido-iva">Iva Incl.</p>
+                  </div>
+                </div>
               </div>
-              <div className="card-text row">
-                <p className="card-item3">Introduce tu código de descuento</p>
+
+              <div className="paypal-button-container">
+                <PaypalCheckoutButton product={product} />
               </div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-body">
-              <div className="card-text row">
-                <div className="total-pedido col mt-1">
-                  <p>Total Pedido</p>
-                </div>
-                <div className="total-pedido-precio col d-flex justify-content-end">
-                  <p>250€</p>
-                </div>
-                <div>
-                  <p className="total-pedido-iva">Iva Incl.</p>
-                </div>
-              </div>
-            </div>
-            {/* <div className="d-flex justify-content-center"><Link to="/pedido" className="btn-finalizar-pedido d-flex justify-content-center"><p className="text-btn-finalizar-pedido">FINALIZAR PEDIDO</p></Link> */}
-            <div className="paypal-button-container">
-              <PaypalCheckoutButton product={product} />
-            </div>
-          </div>
+
           <div className="col-md d-flex justify-content-center">
             <Link
               to="/producto"
@@ -89,7 +114,6 @@ export const Cesta = () => {
           </div>
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 };
