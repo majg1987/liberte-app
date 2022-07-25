@@ -193,6 +193,12 @@ def handle_producto():
 
         response_body = Producto.query.filter_by(vendido=False).all()
         response_body = [producto.serialize() for producto in response_body]
+
+        for artista in response_body:
+            user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
+            artista["vendedor_nombre"] = user.nombre
+            artista["vendedor_foto"] = user.foto_usuario
+
         return json.dumps(response_body), 200
 
     # Modificar o eliminar productos
