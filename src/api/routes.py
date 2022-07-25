@@ -143,6 +143,7 @@ def handle_producto():
                     "dimensiones",
                     "descripcion",
                     "vendedor_user_id",
+                    "pedido_id",
                 ]
             }
 
@@ -373,8 +374,8 @@ def handle_cesta():
     # Eliminar cesta
     elif request.method == "PUT":
         # Recibimos id_user e id_producto
-        id_user = request.json.get("id_user", None)
-        id_producto = request.json.get("id_producto", None)
+        id_user = request.json.get("user_id", None)
+        id_producto = request.json.get("producto_id", None)
 
         cesta_user = Cesta.query.filter_by(
             user_id=id_user, producto_id=id_producto
@@ -416,9 +417,11 @@ def handle_pedido():
             product_pedido = Producto.query.filter_by(
                 id=product_id["producto_id"]
             ).first()
+
             cestas_con_producto = Cesta.query.filter_by(
                 producto_id=product_id["producto_id"]
             ).all()
+
             for cesta in cestas_con_producto:
                 db.session.delete(cesta)
                 print("cesta borrada")
