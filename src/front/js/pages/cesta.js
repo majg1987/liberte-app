@@ -21,13 +21,19 @@ export const Cesta = () => {
       localStorage.removeItem("productSelect");
   }, []);
 
+  const calculateTotalPrice = () => {
+    console.log(store.productosCesta);
+    return store.productosCesta != undefined && store.productosCesta.length > 0
+      ? store.productosCesta?.reduce(
+          (total, producto) => total + producto.precio
+        )
+      : 0;
+  };
   return (
     <>
+      <h1 className="cesta-header text-center">Cesta de la Compra</h1>
       <div className="row row-container-cesta">
-        <div className="row row-titulo-cesta">
-          <p className="cesta">cesta</p>
-        </div>
-
+        <div></div>
         <div className="col-sm-12 col-lg-6 col-lista-productos">
           <div className="row">
             {store.productosCesta.map((ele) => {
@@ -64,7 +70,7 @@ export const Cesta = () => {
                     <p>Subtotal</p>
                   </div>
                   <div className="card-item2 col d-flex justify-content-end">
-                    <p>250€</p>
+                    <p>{calculateTotalPrice()}€</p>
                   </div>
                 </div>
                 <div className="card-text row">
