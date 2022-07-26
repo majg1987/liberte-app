@@ -1,28 +1,42 @@
+/* importamos la libreria React y los hooks necesarios */
 import React, { useState, useEffect, useContext } from "react";
+/* importamos el destructuring Link */
 import { Link } from "react-router-dom";
+/* destructuring de Context */
 import { Context } from "../store/appContext";
+/* importamos el componente Item Details */
 import ItemDetails from "../component/cesta/ItemDetails.jsx";
-// Importo componente de los botones de paypal
+/* Importamos destructuring del componente de los botones de paypal */
 import { PaypalCheckoutButton } from "../component/PaypalCheckoutButton";
+/* importamos estilos css */
 import "../../styles/cesta.css";
 
 export const Cesta = () => {
+  /* destructuring de store y actions del flux */
+  /* igualamos a useContext(Context) para el trabajo de appContext (consumer/provider)  */
   const { store, actions } = useContext(Context);
-
+  /* constante para botones de paypal */
   const product = {
     description: "Lo vamos a conseguir",
     price: 10.0,
   };
-
+  /* utilizamos useEffect hook */
   useEffect(() => {
-    console.log("ijij");
+    /* comprobamos en consola que entra el hook */
+    console.log("Soy useEffect hook");
+    /* llamamos a la action obtenerCesta desde flux */
     actions.obtenerCesta();
+    /* trabajamos los datos en el navegador con localStorage */
+    /* leemos los pares clave/valor de productSelect en el navegador */
+    /* eliminamos los pares clave/valor de productSelect en el navegador */
     localStorage.getItem("productSelect") &&
       localStorage.removeItem("productSelect");
   }, []);
-
+  /* definimos una funcion para comprobar si hay productos en la cesta */
   const calculateTotalPrice = () => {
     console.log(store.productosCesta);
+    /* si hay producto(s) en la cesta sumamos su(s) precio(s) y lo añadimos al total */
+    /* si NO hay producto(s) en la cesta retornamos 0 */
     return store.productosCesta != undefined && store.productosCesta.length > 0
       ? store.productosCesta?.reduce(
           (total, producto) => total + producto.precio
@@ -30,16 +44,23 @@ export const Cesta = () => {
       : 0;
   };
   return (
+    /* jsx tag */
     <>
       <h1 className="cesta-header text-center">Cesta de la Compra</h1>
+      {/* LISTA PRODUCTOS*/}
+      {/* elemento PADRE */}
       <div className="row row-container-cesta">
-        <div></div>
+        {/*elemento HIJO */}
         <div className="col-sm-12 col-lg-6 col-lista-productos">
           <div className="row">
+            {/* mapeamos los items de productosCesta almacenados en store */}
             {store.productosCesta.map((ele) => {
+              /* almacenamos en una variable (productoCesta) cada item que se va a renderizar */
               let productoCesta = (
                 <div className="col-6 d-flex justify-content-center">
+                  {/* componente Item Details */}
                   <ItemDetails
+                    /* cada propiedad recibe su valor en el componente */
                     key={ele.id}
                     id={ele.id}
                     nombre={ele.nombre}
@@ -53,12 +74,14 @@ export const Cesta = () => {
                   />
                 </div>
               );
+              /* retornamos la variable productoCesta */
               return productoCesta;
             })}
           </div>
         </div>
 
-        {/* Resumen Compra */}
+        {/* RESUMEN PEDIDO */}
+        {/* elemento HIJO */}
         <div className="col-sm-12 col-lg-6 col-resumen-compra">
           <div className="container-resumenes">
             {/* Resumen pedido */}
@@ -85,8 +108,7 @@ export const Cesta = () => {
               </div>
             </div>
 
-            {/*  Paypal */}
-
+            {/* Botones PayPal */}
             <div className="card card-paypal">
               <div className="card-body">
                 <div className="card-text row">
@@ -94,20 +116,18 @@ export const Cesta = () => {
                     <p>Total Pedido</p>
                   </div>
                   <div className="total-pedido-precio col d-flex justify-content-end">
-                    <p>250€</p>
+                    <p>{calculateTotalPrice()}€</p>
                   </div>
                   <div>
                     <p className="total-pedido-iva">Iva Incl.</p>
                   </div>
                 </div>
               </div>
-
               <div className="paypal-button-container">
                 <PaypalCheckoutButton product={product} />
               </div>
             </div>
           </div>
-
           <div className="col-md d-flex justify-content-center">
             <Link
               to="/producto"
@@ -120,6 +140,7 @@ export const Cesta = () => {
           </div>
         </div>
       </div>
+      {/* fin de jsx tag */}
     </>
   );
 };

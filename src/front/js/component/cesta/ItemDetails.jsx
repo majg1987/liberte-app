@@ -30,13 +30,14 @@ const ItemDetails = ({
       {/*elemento HIJO. formateamos el elemento */}
       <div className="col-4 col-foto-info-producto-cesta">
         <div className="container-foto-info-producto-cesta">
-          {/*elemento "SOBRINO". pasamos la imagen*/}
+          {/*elemento HIJO2. pasamos la imagen*/}
           <img src={img} />
         </div>
       </div>
       {/*elemento HIJO. formateamos el elemento*/}
       <div className="col-8 col-info-producto-cesta">
         <div className="artista">
+          {/* elemento HIJO.  */}
           <Link
             to={`/producto/${id}`}
             onClick={() =>
