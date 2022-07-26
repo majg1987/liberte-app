@@ -82,14 +82,14 @@ export const Cesta = () => {
 
         {/* RESUMEN PEDIDO */}
         {/* elemento HIJO */}
+        {/* RESUMEN PEDIDO - CARD1 */}
         <div className="col-sm-12 col-lg-6 col-resumen-compra">
           <div className="container-resumenes">
-            {/* Resumen pedido */}
             <div className="card card-resumen-pedido">
               <div className="card-body">
                 <p className="card-title">RESUMEN DEL PEDIDO</p>
                 <div className="card-text row">
-                  <div className="card-item col mt-1">
+                  <div className="card-item col">
                     <p>Subtotal</p>
                   </div>
                   <div className="card-item2 col d-flex justify-content-end">
@@ -107,8 +107,7 @@ export const Cesta = () => {
                 </div>
               </div>
             </div>
-
-            {/* Botones PayPal */}
+            {/* RESUMEN PEDIDO -CARD2 */}
             <div className="card card-paypal">
               <div className="card-body">
                 <div className="card-text row">
@@ -119,24 +118,21 @@ export const Cesta = () => {
                     <p>{calculateTotalPrice()}€</p>
                   </div>
                   <div>
-                    <p className="total-pedido-iva">Iva Incl.</p>
+                    <p className="total-pedido-iva text-muted">(Iva Incl.)</p>
                   </div>
                 </div>
               </div>
+              {/* Botones PayPal */}
               <div className="paypal-button-container">
                 <PaypalCheckoutButton product={product} />
               </div>
+              <Link to="/producto">
+                <button className="btn-continuar-comprando">
+                  CONTINUAR COMPRANDO
+                </button>
+              </Link>
             </div>
-          </div>
-          <div className="col-md d-flex justify-content-center">
-            <Link
-              to="/producto"
-              className="btn-continuar-comprando d-flex justify-content-center"
-            >
-              <p className="text-btn-continuar-comprando">
-                CONTINUAR COMPRANDO
-              </p>
-            </Link>
+            <div className="nav-margin-bottom"></div>
           </div>
         </div>
       </div>

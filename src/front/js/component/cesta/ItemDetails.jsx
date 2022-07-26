@@ -5,7 +5,7 @@ import { Context } from "../../store/appContext";
 /* destructuring de Link */
 import { Link } from "react-router-dom";
 /* importamos los estilos */
-import "../../../styles/cesta.css";
+import "../../../styles/itemDetails.css";
 
 /* almacenamos las propiedades del objeto en una constante */
 const ItemDetails = ({
