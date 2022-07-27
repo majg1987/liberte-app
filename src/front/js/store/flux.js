@@ -54,23 +54,34 @@ const getState = ({
             // Registro de producto
             registroProducto: (
                 nombre,
-                tecnica,
+                fechaAlta,
+                categoria,
                 precio,
                 imagenSelect,
+                dimensiones,
                 descripcion
             ) => {
-                console.log(getStore().userInfo);
+                setStore({
+                    registroProducto: false,
+                });
+                const store = getStore();
+                const user_info = store.userInfo;
                 try {
                     // fetching data from the backend
                     fetch(process.env.BACKEND_URL + "/api/producto", {
                         method: "POST",
                         body: JSON.stringify({
+                            peticion: "post_producto",
                             nombre: nombre,
-                            tecnica: tecnica,
+                            fecha_alta: fechaAlta,
+                            categoria: categoria,
                             precio: precio,
                             foto_producto: imagenSelect,
+                            vendido: false,
+                            dimensiones: dimensiones,
                             descripcion: descripcion,
-                            vendedor_user_id: userInfo.user_id,
+                            vendedor_user_id: user_info.user_id,
+                            pedido_id: null,
                         }),
                         headers: {
                             "Content-Type": "application/json",
@@ -81,11 +92,9 @@ const getState = ({
                                 registroProducto: true,
                             });
                         }
-                        response.json();
-                        setStore({
-                            registroProducto: false,
-                        });
-                    });
+
+                        return response.json();
+                    }).then(data => console.log("data", data))
                 } catch (error) {
                     console.log("Error loading message from backend", error);
                 }
@@ -207,7 +216,7 @@ const getState = ({
                 precio,
                 descripcion,
                 dimensiones,
-                tecnica,
+                categoria,
                 nombreArtista,
                 fotoArtista
             ) => {
@@ -223,7 +232,7 @@ const getState = ({
                             precio: precio,
                             descripcion: descripcion,
                             dimensiones: dimensiones,
-                            tecnica: tecnica,
+                            categoria: categoria,
                             nombreArtista: nombreArtista,
                             fotoArtista: fotoArtista,
                         },

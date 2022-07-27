@@ -45,7 +45,7 @@ class Producto (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     fecha_alta = db.Column(db.String(10), default=get_current_date, nullable=False)
-    tecnica = db.Column(db.String(20), nullable=False)
+    categoria = db.Column(db.String(20), nullable=False)
     precio = db.Column(db.Float, nullable=False)
     vendido = db.Column(db.Boolean, default=False, nullable=False)
     foto_producto = db.Column(db.String(500), nullable=False)
@@ -67,7 +67,7 @@ class Producto (db.Model):
             "id": self.id,
             "nombre": self.nombre,
             "fecha_alta": self.fecha_alta,
-            "tecnica": self.tecnica,
+            "categoria": self.categoria,
             "precio": self.precio,
             "vendido": self.vendido,
             "foto_producto": self.foto_producto,
