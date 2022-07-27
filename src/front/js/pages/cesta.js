@@ -10,7 +10,6 @@ import ItemDetails from "../component/cesta/ItemDetails.jsx";
 import { PaypalCheckoutButton } from "../component/PaypalCheckoutButton";
 /* importamos estilos css */
 import "../../styles/cesta.css";
-import { GiShoppingBag } from "react-icons/gi";
 
 export const Cesta = () => {
   /* destructuring de store y actions del flux */
@@ -74,7 +73,7 @@ export const Cesta = () => {
                     precio={ele.precio}
                     description={ele.description}
                     dimensiones={ele.dimensiones}
-                    tecnica={ele.tecnica}
+                    categoria={ele.categoria}
                     nombreArtista={ele.vendedor_nombre}
                     fotoArtista={ele.vendedor_foto}
                   />
