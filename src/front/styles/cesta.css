@@ -17,6 +17,7 @@
     flex-direction: column;
     /* justify-content: center; */
     align-items: center;
+    padding-bottom: 2rem;
 }
 
 /* RESUMEN PEDIDO */
@@ -35,6 +36,17 @@
 .cesta-header {
     margin-top: 1em;
     margin-bottom: 2em;
+}
+
+.item-counter {
+    padding-left: 3rem;
+}
+
+.item-counter-line {
+    padding-left: 1rem;
+    border-bottom: 1px solid;
+    padding-top: 0.2rem;
+    padding-bottom: 0.5rem;
 }
 
 .card-resumen-pedido,

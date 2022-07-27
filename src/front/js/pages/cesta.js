@@ -10,6 +10,7 @@ import ItemDetails from "../component/cesta/ItemDetails.jsx";
 import { PaypalCheckoutButton } from "../component/PaypalCheckoutButton";
 /* importamos estilos css */
 import "../../styles/cesta.css";
+import { GiShoppingBag } from "react-icons/gi";
 
 export const Cesta = () => {
   /* destructuring de store y actions del flux */
@@ -47,6 +48,11 @@ export const Cesta = () => {
     /* jsx tag */
     <>
       <h1 className="cesta-header text-center">Cesta de la Compra</h1>
+
+      <div className="item-counter text-muted" style={{ maxWidth: "540px" }}>
+        {store.productosCesta.length}&nbsp;articulo(s)
+        <div className="item-counter-line text-muted"></div>
+      </div>
       {/* LISTA PRODUCTOS*/}
       {/* elemento PADRE */}
       <div className="row row-container-cesta">
@@ -83,7 +89,10 @@ export const Cesta = () => {
         {/* RESUMEN PEDIDO */}
         {/* elemento HIJO */}
         {/* RESUMEN PEDIDO - CARD1 */}
-        <div className="col-sm-12 col-lg-6 col-resumen-compra">
+        <div
+          className="col-sm-12 col-lg-6 col-resumen-compra"
+          style={{ maxWidth: "540px" }}
+        >
           <div className="container-resumenes">
             <div className="card card-resumen-pedido">
               <div className="card-body">
