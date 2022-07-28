@@ -1,22 +1,18 @@
-/* Propiedades de Css para Registro y Login */
-.container-principal-login {
-    height: 500px;
+/* Propiedades de Css para formulario de subir producto*/
+
+.contenedor-principal {
+    height: 770px;
 }
 
-.contenedor-formulario {
-    max-width: 400px;
-    height: 500px;
+.contenedor-formulario-producto {
+    max-width: 500px;
+    height: 750px;
     background-color: #f2f2f2;
-    margin: 5rem auto;
+    margin: auto;
     border-radius: .5em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-/* Reajusto las propiedades del contenedor de Login */
-.contenedor-login {
-    height: 360px;
-    margin: 6rem auto 0 auto
-}
 
 .titulo-registro {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -31,12 +27,7 @@
     margin-bottom: 2rem;
 }
 
-.form-check {
-    margin-bottom: 2rem;
-    font-size: small;
-}
-
-.formulario-registro {
+.formulario-producto {
     width: 80%;
 }
 

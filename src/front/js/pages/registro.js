@@ -17,7 +17,6 @@ export const Registro = () => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [artista, setArtista] = useState(false);
-  const [ok, setOk] = useState(null);
 
   /** Creo las caracteristicas de alert */
   const notify = (mensaje) =>
@@ -41,20 +40,20 @@ export const Registro = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
-    if (nombre === "") {
-      setOk(false);
-    }
-    if (apellidos === "") {
-      setOk(false);
-    }
-    if (password === "" || password !== passwordRepeat) {
-      setOk(false);
-    }
-    if (ok) {
+    if (
+      nombre !== "" &&
+      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
+      apellidos !== "" &&
+      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(apellidos) &&
+      /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email) &&
+      password !== "" &&
+      password === passwordRepeat
+    ) {
       actions.registro(nombre, apellidos, email, password, artista);
     } else {
-      notify("Completa todos los campos");
+      notify(
+        "Completa todos los campos de forma correcta, recuerda que nombre y apellidos solo puede contener letras"
+      );
     }
   };
 
@@ -63,9 +62,12 @@ export const Registro = () => {
       {store.registro ? (
         <Navigate to={"/login"} />
       ) : (
-        <div className=" contenedor-principal pt-5">
-          <div className="contenedor-formulario d-flex justify-content-center align-items-center">
-            <form onSubmit={handleSubmit} className="formulario-registro ">
+        <div className=" contenedor">
+          <div className="contenedor-formulario d-flex justify-content-center align-items-center col-10 ">
+            <form
+              onSubmit={handleSubmit}
+              className="formulario-registro col-9 my-auto"
+            >
               <h2 className="titulo-registro"> Registro </h2>
               <input
                 type="text"
@@ -90,7 +92,7 @@ export const Registro = () => {
                 type="email"
                 className="input-registro"
                 id="email"
-                placeholder="Escribe tu email"
+                placeholder="Introduce tu email (name@gmail.com)"
                 onChange={(e) =>
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
@@ -131,7 +133,7 @@ export const Registro = () => {
             </form>
           </div>
           <div>
-            /** Componente Alert */
+            {/* Componente Alert */}
             <ToastContainer
               position="bottom-center"
               autoClose={5000}

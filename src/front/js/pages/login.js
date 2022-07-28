@@ -13,7 +13,6 @@ export const Login = () => {
   /* Utilizo useState donde asigno valores de los input*/
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [ok, setOk] = useState(null);
 
   /** Creo las caracteristicas de alert */
   const notify = (mensaje) =>
@@ -33,15 +32,8 @@ export const Login = () => {
    */
   const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
 
-    if (email === "") {
-      setOk(false);
-    }
-    if (password === "") {
-      setOk(false);
-    }
-    if (ok) {
+    if (email !== "" && password !== "") {
       actions.login(email, password);
     } else {
       notify("Completa todos los campos");
@@ -58,12 +50,12 @@ export const Login = () => {
   return (
     <>
       {store.auth ? (
-        <Navigate to={"/inicio"} />
+        <Navigate to={"/"} />
       ) : (
-        <div className=" contenedor-principal pt-5">
-          <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center">
+        <div className=" container-principal-login">
+          <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
             <form onSubmit={handleSubmit} className="formulario-registro">
-              <h2 className="titulo-registro"> Login </h2>
+              <h2 className="titulo-registro"> Login </h2>{" "}
               <input
                 type="email"
                 className="input-registro"
@@ -73,7 +65,7 @@ export const Login = () => {
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
                 value={email}
-              />
+              />{" "}
               <input
                 type="password"
                 className="input-registro"
@@ -83,19 +75,20 @@ export const Login = () => {
                   setPassword(e.target.value)
                 } /** Asigno el valor con onChange a la variable password */
                 value={password}
-              />
+              />{" "}
               <div className="d-flex flex-column">
-                <button className="boton-registro mb-2"> Acceder </button>
-                {/* <button className="boton-registro"> */}
+                <button className="boton-registro mb-2"> Acceder </button>{" "}
+                {/* <button className="boton-registro"> */}{" "}
                 <Link to={"/registro"} className="text-center">
-                  Registrarse
-                </Link>
-                {/* </button> */}
-              </div>
-            </form>
-          </div>
+                  Registrarse{" "}
+                </Link>{" "}
+                {/* </button> */}{" "}
+              </div>{" "}
+            </form>{" "}
+          </div>{" "}
           <div>
-            {/* Componente Alert  */}
+            {" "}
+            {/* Componente Alert  */}{" "}
             <ToastContainer
               position="top-center"
               autoClose={5000}
@@ -108,9 +101,9 @@ export const Login = () => {
               pauseOnHover
               className="toast-container-login"
             />
-          </div>
+          </div>{" "}
         </div>
-      )}
+      )}{" "}
     </>
   );
 };
