@@ -28,14 +28,15 @@ export const Cesta = () => {
     actions.obtenerCesta();
     /* trabajamos los datos en el navegador con localStorage */
     /* leemos los pares clave/valor de productSelect en el navegador */
-    /* eliminamos los pares clave/valor de productSelect en el navegador */
+
     localStorage.getItem("productSelect") &&
+      /* eliminamos los pares clave/valor de productSelect en el navegador */
       localStorage.removeItem("productSelect");
   }, []);
   /* definimos una funcion para comprobar si hay productos en la cesta */
   const calculateTotalPrice = () => {
     console.log(store.productosCesta);
-    /* si hay producto(s) en la cesta sumamos su(s) precio(s) y lo añadimos al total */
+    /* si hay producto(s) en la cesta y su tipo es distinto a undefined sumamos su(s) precio(s) y lo añadimos al total */
     /* si NO hay producto(s) en la cesta retornamos 0 */
     return store.productosCesta != undefined && store.productosCesta.length > 0
       ? store.productosCesta?.reduce(
@@ -43,11 +44,19 @@ export const Cesta = () => {
         )
       : 0;
   };
+  const emptyShoppingBagAlert = () => {
+    return store.productosCesta === undefined ||
+      store.productosCesta.length === 0
+      ? alert(
+          "No hay productos en la cesta. Por favor, visita las colecciones de nuestros artistas."
+        )
+      : alert("¿Todo listo? Por favor, finaliza la compra.");
+  };
+  emptyShoppingBagAlert();
   return (
     /* jsx tag */
     <>
       <h1 className="cesta-header text-center">Cesta de la Compra</h1>
-
       <div className="item-counter text-muted" style={{ maxWidth: "540px" }}>
         {store.productosCesta.length}&nbsp;articulo(s)
         <div className="item-counter-line text-muted"></div>

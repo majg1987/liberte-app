@@ -15,7 +15,7 @@ const ItemDetails = ({
   precio,
   descripcion,
   dimensiones,
-  tecnica,
+  categoria,
   nombreArtista,
   fotoArtista,
 }) => {
@@ -48,7 +48,7 @@ const ItemDetails = ({
                 precio,
                 descripcion,
                 dimensiones,
-                tecnica,
+                categoria,
                 nombreArtista,
                 fotoArtista
               )
