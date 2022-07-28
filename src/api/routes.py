@@ -80,6 +80,7 @@ def login():
             "artista": user.artista,
             "foto_usuario": user.foto_usuario,
             "apellido": user.apellido,
+            "descripcion":user.descripcion
         },
     }
 

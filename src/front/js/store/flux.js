@@ -69,32 +69,34 @@ const getState = ({
                 try {
                     // fetching data from the backend
                     fetch(process.env.BACKEND_URL + "/api/producto", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            peticion: "post_producto",
-                            nombre: nombre,
-                            fecha_alta: fechaAlta,
-                            categoria: categoria,
-                            precio: precio,
-                            foto_producto: imagenSelect,
-                            vendido: false,
-                            dimensiones: dimensiones,
-                            descripcion: descripcion,
-                            vendedor_user_id: user_info.user_id,
-                            pedido_id: null,
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }).then((response) => {
-                        if (response.status === 200) {
-                            setStore({
-                                registroProducto: true,
-                            });
-                        }
+                            method: "POST",
+                            body: JSON.stringify({
+                                peticion: "post_producto",
+                                nombre: nombre,
+                                fecha_alta: fechaAlta,
+                                categoria: categoria,
+                                precio: precio,
+                                foto_producto: imagenSelect,
+                                vendido: false,
+                                dimensiones: dimensiones,
+                                descripcion: descripcion,
+                                vendedor_user_id: user_info.user_id,
+                                pedido_id: null,
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
+                        .then((response) => {
+                            if (response.status === 200) {
+                                setStore({
+                                    registroProducto: true,
+                                });
+                            }
 
-                        return response.json();
-                    }).then(data => console.log("data", data))
+                            return response.json();
+                        })
+                        .then((data) => console.log("data", data));
                 } catch (error) {
                     console.log("Error loading message from backend", error);
                 }
@@ -307,6 +309,50 @@ const getState = ({
                             productosCesta: JSON.parse(localStorage.getItem("cesta")),
                         });
                     }
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            //   Configuracion usuario
+            configuracionUsuario: async (
+                nombre,
+                apellido,
+                email,
+                artista,
+                nacimiento,
+                descripcion,
+                foto
+            ) => {
+                console.log("type", typeof artista);
+                const options = {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id: getStore().userInfo.user_id,
+                        nombre: nombre,
+                        apellido: apellido,
+                        email: email,
+                        artista: artista === "true" ? true : false,
+                        nacimiento: nacimiento,
+                        descripcion: descripcion,
+                        foto_usuario: foto,
+                    }),
+                };
+                try {
+                    const resp = await fetch(
+                        process.env.BACKEND_URL + "/api/configuracion",
+                        options
+                    );
+                    const data = await resp.json();
+                    console.log("usuarioModi", data);
+                    localStorage.removeItem("userInfo");
+                    setStore({
+                        userInfo: data.result,
+                    });
+                    const userInfoStrfy = JSON.stringify(getStore().userInfo);
+                    localStorage.setItem("userInfo", userInfoStrfy);
                 } catch (error) {
                     console.log(error);
                 }
