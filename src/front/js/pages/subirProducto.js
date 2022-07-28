@@ -14,7 +14,7 @@ export const SubirProducto = () => {
   const [nombre, setNombre] = useState("");
   const [dimensiones, setDimensiones] = useState("");
   const fecha = new Date();
-  const [tecnica, setTecnica] = useState("");
+  const [categoria, setCategoria] = useState("");
   const [precio, setPrecio] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagenSelect, setImagenSelect] = useState("");
@@ -48,7 +48,19 @@ export const SubirProducto = () => {
     setLoading(false);
   };
 
-  /** Creo las caracteristicas de alert */
+  /** Creo las caracteristicas de alert de producto registrado correctamente */
+  const notifyOk = (mensaje) =>
+    toast.info(mensaje, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      transition: Zoom,
+    });
+  /** Creo las caracteristicas de alert si algun campo no esta completado correctamennte  */
   const notify = (mensaje) =>
     toast.warn(mensaje, {
       position: "bottom-center",
@@ -64,44 +76,38 @@ export const SubirProducto = () => {
   /** Mando datos a Flux para realizar fecth hacia la ruta del backEnd*/
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(
-      nombre +
-        " " +
-        dimensiones +
-        " " +
-        tecnica +
-        " " +
-        precio +
-        " " +
-        imagenSelect +
-        " " +
-        descripcion
-    );
     // Validacion de formulario para subir producto, y llamo a método de flux para mandar info a la ruta de backend
     if (
       nombre !== "" &&
       /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
       dimensiones !== "" &&
-      tecnica !== "" &&
+      categoria !== "" &&
       precio > 0 &&
       imagenSelect !== "" &&
       descripcion !== ""
     ) {
       actions.registroProducto(
         nombre,
-        dimensiones,
-        tecnica,
+        fecha_alta,
+        categoria,
         precio,
         imagenSelect,
+        dimensiones,
         descripcion
       );
-      if (store.registroProducto) {
-        notify("Registro de Producto Completado");
-      }
     } else {
-      notify("Completa todos los campos de forma correcta");
+      notify(
+        "Error!!! Verifica que  todos los campos se han completado de forma correcta"
+      );
     }
   };
+
+  useEffect(() => {
+    if (store.registroProducto) {
+      notifyOk("Producto Registrado");
+    }
+    return () => {};
+  }, [store.registroProducto]);
 
   return (
     <>
@@ -123,7 +129,7 @@ export const SubirProducto = () => {
               type="text"
               className="input-registro"
               id="dimensiones"
-              placeholder="Dimensiones: 120x120x5cm (AltoxAnchoxProfundidad)"
+              placeholder="Dimensiones: 120x120cm (AltoxAnchocm)"
               onChange={(e) => setDimensiones(e.target.value)}
               /** Asigno el valor con onChange a la variable dimensiones */
               value={dimensiones}
@@ -148,14 +154,19 @@ export const SubirProducto = () => {
             <select
               className="form-select mb-5"
               aria-label="Default select example"
-              onChange={(e) => setTecnica(e.target.value)}
+              onChange={(e) => setCategoria(e.target.value)}
             >
               <option defaultValue={"Seleccion de etiqueta"}>
-                Seleccione la técnica
+                Seleccione Categoria
               </option>
-              <option value="Acuarela">Pintura</option>
-              <option value="Lienzo">Lienzo</option>
-              <option value="Oleo">Oleo</option>
+              <option value="Pintura">Pintura</option>
+              <option value="Dibujo">Dibujo</option>
+              <option value="Grabado">Grabado</option>
+              <option value="Escultura">Escultura</option>
+              <option value="Orfebrería">Orfebrería</option>
+              <option value="Evanistería">Evanistería</option>
+              <option value="Cerámica">Cerámica</option>
+              <option value="Fotografía">Fotografía</option>
               <option value="Otro">Otro</option>
             </select>
             <div className="d-flex">
@@ -214,6 +225,7 @@ export const SubirProducto = () => {
             pauseOnHover
             className="mb-4"
           />
+          ;
         </div>
       </div>
     </>

@@ -80,6 +80,7 @@ def login():
             "artista": user.artista,
             "foto_usuario": user.foto_usuario,
             "apellido": user.apellido,
+            "descripcion":user.descripcion
         },
     }
 
@@ -122,22 +123,17 @@ def configuracion():
 # Producto
 @api.route("/producto", methods=["POST", "GET", "PUT"])
 def handle_producto():
-
     # Enviamos variable "peticion": "get_producto_user" para obtener los productos de un usuario (metodo post)
-
     # Publicar producto
     if request.method == "POST":
-
         # DATOS RECIBIDOS = VALORES OBJETO
         body = json.loads(request.data)
-
         if body["peticion"] == "post_producto":
-
             body = {
                 x: body[x]
                 for x in [
                     "nombre",
-                    "tecnica",
+                    "categoria",
                     "precio",
                     "foto_producto",
                     "dimensiones",
@@ -146,19 +142,19 @@ def handle_producto():
                     "pedido_id",
                 ]
             }
-
             # Creamos nuevo producto
             nuevo_producto = Producto(**body)
-
+            nuevo_producto_fotoUser = User.query.filter_by(id=body["vendedor_user_id"]).first()
+            nuevo_producto_srl = nuevo_producto.serialize()
+            nuevo_producto_srl["user_foto"] = nuevo_producto_fotoUser.foto_usuario
             # Guardamos producto
             db.session.add(nuevo_producto)
             db.session.commit()
-
-            response_body = {"result": "Producto creado"}
-
+            # response_body = {"result": nuevo_producto.serialize()}
+            response_body = {"result": nuevo_producto_srl}
+            return json.dumps(response_body), 200
         elif body["peticion"] == "get_producto":
             # Recogemos argumento user_id de la URL. Si no existe, el GET es global
-
             body = json.loads(request.data)
             id = body["id"]
             # GET con user_id /api/producto?user_id=
@@ -183,57 +179,40 @@ def handle_producto():
                 user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
                 artista["vendedor_nombre"] = user.nombre
                 artista["vendedor_foto"] = user.foto_usuario
-
             return json.dumps(response_body), 200
-
     # Obtener todos los  productos
     elif request.method == "GET":
-
         # GET sin user_id /api/producto
-
         response_body = Producto.query.filter_by(vendido=False).all()
         response_body = [producto.serialize() for producto in response_body]
-
         for artista in response_body:
             user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
             artista["vendedor_nombre"] = user.nombre
             artista["vendedor_foto"] = user.foto_usuario
-
         return json.dumps(response_body), 200
-
     # Modificar o eliminar productos
     elif request.method == "PUT":
-
         # RECIBIMOS el id de producto MÁS LA KEY "BORRAR" = true para borrar el producto
         # * if borrar = true => Se borra el producto, else => Se edita
-
         body = json.loads(request.data)
-
         # Busco por producto ID
         producto_edit = Producto.query.filter_by(id=body["id"]).first()
-
         # Obtenemos las keys de la tabla producto para saber qué propiedad se ha cambiado
         keys = Producto.__table__.columns.keys()
-
         # Hacemos un bucle para saber los valores de las claves que han cambiado
         for edit_key in body:
             # Si el valor de la clave ha cambiado (es distinto a none) y las las claves del body coinciden con la del objeto Producto (borrar no entra) asignamos el nuevo valor
             if body[edit_key] != None and edit_key in keys and edit_key != "id":
-
                 # print(edit_key,"editkey")
-
                 # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                 producto = producto_edit.serialize()
                 producto[edit_key] = body[edit_key]
-
                 # print("a",edit_key)
-
                 # producto_edit.edit_key= producto[edit_key]
-
                 # Incorporamos a nuestra clase los valores del producto serializado (los datos que no han cambiado permanecen y los que han cambiado se actualizan)
                 producto_edit.nombre = producto["nombre"]
                 producto_edit.fecha_alta = producto["fecha_alta"]
-                producto_edit.tecnica = producto["tecnica"]
+                producto_edit.categoria = producto["categoria"]
                 producto_edit.precio = producto["precio"]
                 producto_edit.vendido = producto["vendido"]
                 producto_edit.foto_producto = producto["foto_producto"]
@@ -241,21 +220,16 @@ def handle_producto():
                 producto_edit.descripcion = producto["descripcion"]
                 producto_edit.vendedor_user_id = producto["vendedor_user_id"]
                 producto_edit.pedido_id = producto["pedido_id"]
-
                 # Guardamos el producto modificado
                 db.session.commit()
-
                 # Devolvemos el producto modificado
                 response_body = {"result": producto}
-
         # BORRAR PRODUCTO
         if body["borrar"] == True:
             db.session.delete(producto_edit)
             db.session.commit()
             response_body = {"msg": "Producto borrado"}
-
     return response_body, 200
-
 
 # Direccion
 @api.route("/direccion", methods=["POST", "PUT"])
