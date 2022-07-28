@@ -10,6 +10,7 @@ import yellow from "../../../img/yellow.png";
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
 
+
   return (
     <>
       <nav className="navbar navbar-expand-md sticky-top navbar-expand-sm navbar-light bg-light">

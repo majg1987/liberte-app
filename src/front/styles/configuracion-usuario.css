@@ -25,6 +25,10 @@ div[class*="col-titulo"] p {
     text-align: start;
 }
 
+.input-artista-configuracion {
+    margin-left: 3%;
+}
+
 .contenedor-img-user {
     height: 100px;
     width: 100px;

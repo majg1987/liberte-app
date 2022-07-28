@@ -1,11 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/configuracion-usuario.css";
 
 export const ConfiguracionUsuario = () => {
     const { store, actions } = useContext(Context);
+
+
     const [imagenSelect, setImagenSelect] = useState("");
     const [loading, setLoading] = useState(false);
+    const [nombre, setNombre] = useState(store.userInfo.nombre);
+    const [apellido, setApellido] = useState(store.userInfo.apellido);
+    const [email, setEmail] = useState(store.userInfo.email);
+    const [artista, setArtista] = useState(store.userInfo.artista);
+    const [nacimiento, setNacimiento] = useState(store.userInfo.necimiento);
+    const [descripcion, setDescripcion] = useState(store.userInfo.descripcion);
 
     const subirImagen = async (foto) => {
         console.log(foto);
@@ -13,21 +21,43 @@ export const ConfiguracionUsuario = () => {
         data.append("file", foto);
         data.append("upload_preset", "usuarios-liberte");
         setLoading(true);
-        const resp = await fetch(
-            "https://api.cloudinary.com/v1_1/yisusrobles/image/upload",
-            {
-                method: "POST",
-                // mode: "no-cors",
-                body: data,
-            }
-        );
-        const file = await resp.json();
-        console.log(file);
-        setImagenSelect(file.secure_url);
-        setLoading(false);
+
+        try {
+            const resp = await fetch(
+                "https://api.cloudinary.com/v1_1/yisusrobles/image/upload",
+                // `https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`,
+                {
+                    method: "POST",
+                    body: data,
+                }
+            );
+
+            const file = await resp.json();
+
+            setImagenSelect(file.secure_url);
+            setLoading(false);
+
+        } catch (e) {
+            console.log(e)
+        }
 
 
     };
+
+    useEffect(() => {
+        console.log("nombre", nombre)
+        var myBool = Boolean(artista);
+        console.log("ARTIST", myBool)
+        console.log("ARTIST", typeof (myBool))
+
+    }, [nombre])
+
+
+
+    const enviarCambiosUsuario = (e) => {
+        e.preventDefault();
+        actions.configuracionUsuario(nombre, apellido, email, artista, nacimiento, descripcion, imagenSelect);
+    }
 
 
     return (
@@ -41,10 +71,10 @@ export const ConfiguracionUsuario = () => {
 
                     <div className="row row-nombre">
                         <div className="col-3 col-titulo-nombre">
-                            <p className="nombre">Nombre</p>
+                            <p className="nombre" >Nombre</p>
                         </div>
                         <div className="col-9 col-input-nombre">
-                            <input type="text" className="input-registro input-nombre" />
+                            <input type="text" className="input-registro input-nombre" onChange={(e) => setNombre(e.target.value)} defaultValue={store.userInfo.nombre} />
                         </div>
                     </div>
 
@@ -53,7 +83,7 @@ export const ConfiguracionUsuario = () => {
                             <p className="apellido">Apellido</p>
                         </div>
                         <div className="col-9 col-input-apellido">
-                            <input type="text" className="input-registro input-nombre" />
+                            <input type="text" className="input-registro input-nombre" onChange={(e) => setApellido(e.target.value)} defaultValue={store.userInfo.apellido} />
                         </div>
                     </div>
 
@@ -62,43 +92,32 @@ export const ConfiguracionUsuario = () => {
                             <p className="email">Email</p>
                         </div>
                         <div className="col-9 col-input-email">
-                            <input type="email" className="input-registro input-nombre" />
+                            <input type="email" className="input-registro input-nombre" onChange={(e) => setEmail(e.target.value)} defaultValue={store.userInfo.email} />
                         </div>
                     </div>
 
                     <div className="row row-password">
                         <div className="col-3 col-titulo-password">
-                            <p className="password">password</p>
+                            <p className="password">Quieres cuenta de artista?</p>
                         </div>
-                        <div className="col-9 col-input-password">
-                            <input type="password" className="input-registro input-password" />
+                        <div className="col-4 col-input-artista">
+                            <label htmlFor="artista-si">Sí</label>
+                            <input id="artista-si" type="radio" name='artista' value={true} className="input-artista-configuracion" onChange={(e) => setArtista(e.target.value)} />
                         </div>
-                    </div>
-
-                    <div className="row row-DNI">
-                        <div className="col-3 col-titulo-DNI">
-                            <p className="DNI">DNI</p>
-                        </div>
-                        <div className="col-9 col-input-DNI">
-                            <input type="text" className="input-registro input-DNI" />
+                        <div className="col-4 col-input-artista">
+                            <label htmlFor="artista-no">No</label>
+                            <input id="artista-no" type="radio" name='artista' value={false} className="input-artista-configuracion" onChange={(e) => setArtista(e.target.value)} />
                         </div>
                     </div>
 
-                    <div className="row row-nacimiento">
-                        <div className="col-3 col-titulo-nacimiento">
-                            <p className="nombre">Fecha de nacimiento</p>
-                        </div>
-                        <div className="col-9 col-input-nacimiento">
-                            <input type="text" className="input-registro input-nacimiento d-flex align-items-end" />
-                        </div>
-                    </div>
+
 
                     <div className="row row-nacimiento">
                         <div className="col-3 col-titulo-nacimiento">
                             <p className="nacimiento">Nacimiento</p>
                         </div>
                         <div className="col-9 col-input-nacimiento">
-                            <input type="date" className="input-registro input-nacimiento" />
+                            <input type="date" className="input-registro input-nacimiento" onChange={(e) => setNacimiento(e.target.value)} defaultValue={store.userInfo.nacimiento} />
                         </div>
                     </div>
 
@@ -107,14 +126,14 @@ export const ConfiguracionUsuario = () => {
                             <p className="descripcion">Descripcion</p>
                         </div>
                         <div className="col-9 col-input-descripcion ">
-                            <textarea className="input-descripcion"></textarea>
+                            <textarea className="input-descripcion" onChange={(e) => setDescripcion(e.target.value)} defaultValue={store.userInfo.descripcion}></textarea>
                         </div>
                     </div>
 
                     <div className="row row-foto">
                         <div className="col-3 col-titulo-foto">
 
-                            <label className="label-boton-subir-foto" for="boton-subir-foto">Subir foto</label>
+                            <label className="label-boton-subir-foto" htmlFor="boton-subir-foto">Subir foto</label>
 
                             <input
                                 id="boton-subir-foto"
@@ -132,7 +151,7 @@ export const ConfiguracionUsuario = () => {
                                     <div className="contenedor-img-user">
                                         {
                                             imagenSelect == "" ?
-                                                <img className="sin-foto-perfil img-usuario" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
+                                                <img className="sin-foto-perfil img-usuario" src={store.userInfo.foto_usuario} />
                                                 :
                                                 <img src={imagenSelect} alt="" className="img-usuario" />
 
@@ -153,7 +172,7 @@ export const ConfiguracionUsuario = () => {
                             <div className="row row-input-foto">
 
                                 <div className="col-12 pl-2 d-flex justify-content-end">
-                                    <button className="boton-registro mb-2"> Guardar </button>
+                                    <button className="boton-registro mb-2" onClick={(e) => enviarCambiosUsuario(e)}> Guardar </button>
                                 </div>
 
                             </div>
@@ -164,8 +183,8 @@ export const ConfiguracionUsuario = () => {
 
 
                 </form>
-            </div>
-        </div>
+            </div >
+        </div >
 
     );
 };
