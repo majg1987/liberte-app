@@ -28,7 +28,6 @@ export const Cesta = () => {
     actions.obtenerCesta();
     /* trabajamos los datos en el navegador con localStorage */
     /* leemos los pares clave/valor de productSelect en el navegador */
-
     localStorage.getItem("productSelect") &&
       /* eliminamos los pares clave/valor de productSelect en el navegador */
       localStorage.removeItem("productSelect");
