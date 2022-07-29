@@ -39,3 +39,18 @@ def generate_sitemap(app):
         <p>Start working on your project by following the <a href="https://start.4geeksacademy.com/starters/full-stack" target="_blank">Quick Start</a></p>
         <p>Remember to specify a real endpoint path like: </p>
         <ul style="text-align: left;">"""+links_html+"</ul></div>"
+
+def check_user_id(id):
+    try:
+        user_id = int(id)
+        response_body = {}
+    except Exception as e:
+        user_id = 'Error in user_id'
+        response_body = {
+            "result": f'Error in user_id {id}',
+            "flask_error": str(e) 
+        }
+    return user_id, response_body
+
+def get_current_date():
+    return datetime.now().strftime("%d-%m-%Y")
