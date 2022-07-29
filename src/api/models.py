@@ -1,11 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+
 db = SQLAlchemy()
-
-def get_current_date():
-    return datetime.now().strftime("%d-%m-%Y")
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
