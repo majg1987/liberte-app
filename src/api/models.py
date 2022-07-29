@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from api.utils import get_current_date
 
 
 db = SQLAlchemy()
