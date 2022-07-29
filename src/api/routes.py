@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User, Producto, Pedido, Direccion, Cesta
-from api.utils import generate_sitemap, APIException
+from api.utils import generate_sitemap, APIException, check_user_id
 import json
 
 api = Blueprint("api", __name__)
@@ -118,6 +118,49 @@ def configuracion():
         response_body = {"result": usuario_modificado_srlz}
 
     return response_body, 200
+
+
+# GET Artista (perfil)
+# Nos traemos la información del artista para su pagina de perfil
+
+@api.route("/perfil_artista", methods=["POST", "GET"])
+def handle_perfil_artista():
+    user_id = request.args.get('user_id')
+    # GET con user_id /api/perfil_artista?user_id=
+    user_id, response_body = check_user_id(user_id)
+    if len(response_body) != 0:
+        return response_body, 400
+    artista = User.query.filter_by(id=user_id).first()
+    return json.dumps(artista.serialize()), 200
+
+# GET Producto (perfil)
+# Se hace este nuevo GET porque se modificó el GET /producto para que tuviera body (JSON)
+
+@api.route("/perfil_galeria", methods=["POST", "GET"])
+def handle_producto_galeria():
+    # Recogemos argumento user_id de la URL. Si no existe, el GET es global
+    user_id = request.args.get('user_id')
+    # GET con user_id /api/producto?user_id=
+    if user_id:
+        user_id, response_body = check_user_id(user_id)
+        if len(response_body) != 0:
+            return response_body, 400
+        # Este JSON es igual al que debería de retornar el endpoint con las fotos del usuario
+        # Usamos data_gallery.py con datos dummy
+        from api.data_gallery import data
+        return json.dumps([x for x in data if x['user_id'] == user_id]), 200
+        
+        ##### NO BORRAR ####
+        #response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
+        #response_body = [producto.serialize() for producto in response_body]
+        #return json.dumps(response_body), 200
+        ##### NO BORRAR ####
+    
+    # GET sin user_id /api/producto_galeria
+    else:
+        response_body = Producto.query.filter_by(vendido=False).all()
+        response_body = [producto.serialize() for producto in response_body]
+        return json.dumps(response_body), 200
 
 
 # Producto
