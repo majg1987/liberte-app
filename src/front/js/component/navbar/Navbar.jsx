@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar.jsx";
-import { AiOutlineShoppingCart, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
+import { GiShoppingBag } from "react-icons/gi";
 import { FiLogOut } from "react-icons/fi";
 import { Context } from "../../store/appContext";
 
@@ -9,7 +10,6 @@ import yellow from "../../../img/yellow.png";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-
 
   return (
     <>
@@ -68,14 +68,14 @@ export const Navbar = () => {
                     </Link>
                   </li>
                 )}
-
                 <li className="nav-item active">
                   <Link to="/cesta">
                     <button type="button" className="btn btn-sm me-2 border-0">
-                      <AiOutlineShoppingCart
-                        size={28}
-                        style={{ color: "#e28f2c" }}
-                      />
+                      <GiShoppingBag size={28} style={{ color: "#e28f2c" }} />
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {store.productosCesta.length}
+                        <span className="visually-hidden"></span>
+                      </span>
                     </button>
                   </Link>
                 </li>
