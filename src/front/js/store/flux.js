@@ -70,24 +70,24 @@ const getState = ({
                 try {
                     // fetching data from the backend
                     fetch(process.env.BACKEND_URL + "/api/producto", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            peticion: "post_producto",
-                            nombre: nombre,
-                            fecha_alta: fechaAlta,
-                            categoria: categoria,
-                            precio: precio,
-                            foto_producto: imagenSelect,
-                            vendido: false,
-                            dimensiones: dimensiones,
-                            descripcion: descripcion,
-                            vendedor_user_id: user_info.user_id,
-                            pedido_id: null,
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    })
+                            method: "POST",
+                            body: JSON.stringify({
+                                peticion: "post_producto",
+                                nombre: nombre,
+                                fecha_alta: fechaAlta,
+                                categoria: categoria,
+                                precio: precio,
+                                foto_producto: imagenSelect,
+                                vendido: false,
+                                dimensiones: dimensiones,
+                                descripcion: descripcion,
+                                vendedor_user_id: user_info.user_id,
+                                pedido_id: null,
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
                         .then((response) => {
                             if (response.status === 200) {
                                 setStore({
@@ -358,6 +358,30 @@ const getState = ({
                     console.log(error);
                 }
             },
+            /* Fetch getCart */
+            /* method: "GET" */
+            getCart: async () => {
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer" + sessionStorage.getItem("token"),
+                    },
+                };
+                try {
+                    const resp = await fetch(
+                        process.env.BACKEND_URL + "/api/cesta",
+                        options
+                    );
+                    const data = await resp.json();
+                    setStore({
+                        cesta: data,
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+
         },
     };
 };

@@ -11,7 +11,7 @@ api = Blueprint("api", __name__)
 """
 This module takes care of JWT
 """
-# create_access_token(), para crear JSON Web Tokens
+# create_access_token(), para crear JSON Web Token
 # jwt_required(), para proteger rutas
 # get_jwt_identity(), para obtener la identidad de JWT en una ruta protegida
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
@@ -408,8 +408,33 @@ def handle_cesta():
         db.session.commit()
 
         response_body = {"resul": "Producto borrado de cesta"}
+    
 
     return response_body, 200
+
+""" prueba GET cesta """
+# Cesta
+@api.route("/cesta", methods=["GET"])
+# ruta protegida requerida
+@jwt_required()
+# definimos la funcion
+def cesta():  
+    # almacenamos la identidad de JWT de la ruta protegida
+    user_id=get_jwt_identity()
+    # imprimimos user_id en la terminal
+    print(user_id)
+    # obtenemos y almacenamos la consulta sobre user_id de la tabla User
+    # por clave principal (get)
+    user=User.query.get(user_id)
+    print(user)
+    # obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por user_id
+    cesta=Cesta.query.filter_by(user_id=user_id)
+    print(cesta)
+    # serializamos cada uno de los items de cesta (lambda) iterando (map) en cesta (range)
+    # convertimos una salida JSON en un objeto de response con el tipo mime de aplicación/json (jsonify)
+    return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
+    
+
 
 
 # Pedido
