@@ -14,7 +14,7 @@ const getState = ({
             productoSelect: {},
             userInfo: {},
             productosCesta: [],
-
+            pedido: [],
         },
         actions: {
             // Registro
@@ -70,24 +70,23 @@ const getState = ({
                 try {
                     // fetching data from the backend
                     fetch(process.env.BACKEND_URL + "/api/producto", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            peticion: "post_producto",
-                            nombre: nombre,
-                            fecha_alta: fechaAlta,
-                            categoria: categoria,
-                            precio: precio,
-                            foto_producto: imagenSelect,
-                            vendido: false,
-                            dimensiones: dimensiones,
-                            descripcion: descripcion,
-                            vendedor_user_id: user_info.user_id,
-                            pedido_id: null,
-                        }),
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    })
+                            method: "POST",
+                            body: JSON.stringify({
+                                nombre: nombre,
+                                fecha_alta: fechaAlta,
+                                categoria: categoria,
+                                precio: precio,
+                                foto_producto: imagenSelect,
+                                vendido: false,
+                                dimensiones: dimensiones,
+                                descripcion: descripcion,
+                                vendedor_user_id: user_info.user_id,
+                                pedido_id: null,
+                            }),
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
                         .then((response) => {
                             if (response.status === 200) {
                                 setStore({
@@ -117,18 +116,21 @@ const getState = ({
                 };
                 try {
                     if (
-                        !localStorage.getItem("productSelect") ||
-                        Object.keys(localStorage.getItem("productSelect")).length === 0
+                        !localStorage.getItem("userInfo") ||
+                        Object.keys(localStorage.getItem("userInfo")).length === 0
                     ) {
+                        console.log("eee");
                         const resp = await fetch(
                             process.env.BACKEND_URL + "/api/login",
                             options
                         );
                         if (resp.status === 200) {
+                            console.log(resp.status);
                             setStore({
                                 auth: true,
                             });
                         } else {
+                            console.log(resp.status);
                             setStore({
                                 errorAuth: true,
                             });
@@ -158,6 +160,7 @@ const getState = ({
                     userInfo: {},
                 });
                 sessionStorage.removeItem("token");
+                localStorage.removeItem("userInfo");
             },
             //searchBar
             search: async () => {
@@ -247,11 +250,11 @@ const getState = ({
                     setStore({
                         productoSelect: JSON.parse(localStorage.getItem("productSelect")),
                     });
-                    console.log("prprprselect");
                 }
             },
 
             añadirACesta: async () => {
+                console.log(getStore().userInfo.user_id);
                 const options = {
                     method: "POST",
                     headers: {
@@ -260,7 +263,6 @@ const getState = ({
                     body: JSON.stringify({
                         user_id: getStore().userInfo.user_id,
                         producto_id: getStore().productoSelect.id,
-                        peticion: "post_cesta",
                     }),
                 };
                 try {
@@ -279,14 +281,10 @@ const getState = ({
 
             obtenerCesta: async () => {
                 const options = {
-                    method: "POST",
+                    method: "GET",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        id_user: getStore().userInfo.user_id,
-                        peticion: "get_cesta",
-                    }),
                 };
                 try {
                     if (
@@ -294,8 +292,8 @@ const getState = ({
                         localStorage.getItem("cesta").length === 0
                     ) {
                         const resp = await fetch(
-                            process.env.BACKEND_URL + "/api/cesta",
-                            options
+                            process.env.BACKEND_URL +
+                            `/api/cesta?user_id=${getStore().userInfo.user_id}`
                         );
                         const data = await resp.json();
 
@@ -354,6 +352,31 @@ const getState = ({
                     });
                     const userInfoStrfy = JSON.stringify(getStore().userInfo);
                     localStorage.setItem("userInfo", userInfoStrfy);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            // Pedido
+            pedido: async () => {
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                };
+                try {
+                    const resp = await fetch(
+                        process.env.BACKEND_URL +
+                        `/api/pedido?user_id=${getStore().userInfo.user_id}`,
+                        options
+                    );
+                    const data = await resp.json();
+
+                    setStore({
+                        pedido: data.result,
+                    });
+                    const pedidoStrfy = JSON.stringify(getStore().pedido);
+                    localStorage.setItem("pedido", pedidoStrfy);
                 } catch (error) {
                     console.log(error);
                 }
