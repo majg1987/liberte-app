@@ -8,6 +8,8 @@ import { Context } from "../store/appContext";
 import ItemDetails from "../component/cesta/ItemDetails.jsx";
 /* Importamos destructuring del componente de los botones de paypal */
 import { PaypalCheckoutButton } from "../component/PaypalCheckoutButton";
+/* importamos Sweetalert */
+import Swal from "sweetalert2";
 /* importamos estilos css */
 import "../../styles/cesta.css";
 
@@ -43,15 +45,24 @@ export const Cesta = () => {
         )
       : 0;
   };
-  const emptyShoppingBagAlert = () => {
+  const shoppingBagViewAlert = () => {
     return store.productosCesta === undefined ||
       store.productosCesta.length === 0
-      ? alert(
-          "No hay productos en la cesta. Por favor, visita las colecciones de nuestros artistas."
-        )
-      : alert("¿Todo listo? Por favor, finaliza la compra.");
+      ? Swal.fire({
+          icon: "info",
+          title: "La cesta está vacía.",
+          text: "Por favor, visita las colecciones de nuestros artistas.",
+          footer: '<a href="">Continuar comprando</a>',
+        })
+      : Swal.fire({
+          icon: "success",
+          title: "¿Todo listo?",
+          text: "Por favor, finaliza la compra.",
+          footer: '<a href="">¿Has visto nuestros productos?</a>',
+        });
   };
-  emptyShoppingBagAlert();
+  shoppingBagViewAlert();
+
   return (
     /* jsx tag */
     <>
