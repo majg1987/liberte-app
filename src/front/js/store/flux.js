@@ -62,6 +62,7 @@ const getState = ({
                 dimensiones,
                 descripcion
             ) => {
+                let bearer = `Bearer ${sessionStorage.getItem("token")}`;
                 setStore({
                     registroProducto: false,
                 });
@@ -85,6 +86,7 @@ const getState = ({
                             }),
                             headers: {
                                 "Content-Type": "application/json",
+                                Authorization: bearer,
                             },
                         })
                         .then((response) => {
@@ -96,9 +98,26 @@ const getState = ({
 
                             return response.json();
                         })
-                        .then((data) => console.log("data", data));
+                        .then((data) => {
+                            console.log(data);
+                            data.msg === "Missing Authorization Header" &&
+                                alert("Debes iniciar sesión pra publicar un producto");
+                        });
                 } catch (error) {
                     console.log("Error loading message from backend", error);
+                }
+            },
+
+            reloadWindow: () => {
+                if (
+                    sessionStorage.getItem("token") &&
+                    localStorage.getItem("userInfo")
+                ) {
+                    console.log("jojo");
+                    setStore({
+                        auth: true,
+                        userInfo: JSON.parse(localStorage.getItem("userInfo")),
+                    });
                 }
             },
 
@@ -115,43 +134,72 @@ const getState = ({
                     }),
                 };
                 try {
-                    if (
-                        !localStorage.getItem("userInfo") ||
-                        Object.keys(localStorage.getItem("userInfo")).length === 0
-                    ) {
-                        console.log("eee");
-                        const resp = await fetch(
-                            process.env.BACKEND_URL + "/api/login",
-                            options
-                        );
-                        if (resp.status === 200) {
-                            console.log(resp.status);
-                            setStore({
-                                auth: true,
-                            });
-                        } else {
-                            console.log(resp.status);
-                            setStore({
-                                errorAuth: true,
-                            });
-                        }
-                        const data = await resp.json();
-                        console.log(data);
-                        sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+                    const resp = await fetch(
+                        process.env.BACKEND_URL + "/api/login",
+                        options
+                    );
+                    if (resp.status === 200) {
+                        console.log(resp.status);
                         setStore({
-                            userInfo: data.user_info,
+                            auth: true,
                         });
-                        const userInfoStrfy = JSON.stringify(getStore().userInfo);
-                        localStorage.setItem("userInfo", userInfoStrfy);
-                        // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
                     } else {
+                        console.log(resp.status);
                         setStore({
-                            userInfo: JSON.parse(localStorage.getItem("userInfo")),
+                            errorAuth: true,
                         });
                     }
+                    const data = await resp.json();
+                    console.log(data);
+                    sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+
+                    setStore({
+                        userInfo: data.user_info,
+                    });
+
+                    const userInfoStrfy = JSON.stringify(getStore().userInfo);
+                    localStorage.setItem("userInfo", userInfoStrfy);
+                    // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
                 } catch (error) {
                     console.log(error);
                 }
+                //     if (
+                //         !localStorage.getItem("userInfo") ||
+                //         Object.keys(localStorage.getItem("userInfo")).length === 0
+                //     ) {
+                //         console.log("eee");
+                //         const resp = await fetch(
+                //             process.env.BACKEND_URL + "/api/login",
+                //             options
+                //         );
+                //         if (resp.status === 200) {
+                //             console.log(resp.status);
+                //             setStore({
+                //                 auth: true,
+                //             });
+                //         } else {
+                //             console.log(resp.status);
+                //             setStore({
+                //                 errorAuth: true,
+                //             });
+                //         }
+                //         const data = await resp.json();
+                //         console.log(data);
+                //         sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+                //         setStore({
+                //             userInfo: data.user_info,
+                //         });
+                //         const userInfoStrfy = JSON.stringify(getStore().userInfo);
+                //         localStorage.setItem("userInfo", userInfoStrfy);
+                //         // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
+                //     } else {
+                //         setStore({
+                //             userInfo: JSON.parse(localStorage.getItem("userInfo")),
+                //         });
+                //     }
+                // } catch (error) {
+                //     console.log(error);
+                // }
             },
             // logoutButtonNavbar
             logout: () => {
@@ -203,7 +251,7 @@ const getState = ({
                 };
                 try {
                     const resp = await fetch(
-                        process.env.BACKEND_URL + "/api/producto",
+                        process.env.BACKEND_URL + "/api/productosInicio",
                         options
                     );
                     const data = await resp.json();
@@ -322,11 +370,12 @@ const getState = ({
                 descripcion,
                 foto
             ) => {
-                console.log("type", typeof artista);
+                let bearer = `Bearer ${sessionStorage.getItem("token")}`;
                 const options = {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
+                        Authorization: bearer,
                     },
                     body: JSON.stringify({
                         id: getStore().userInfo.user_id,

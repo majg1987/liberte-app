@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { ProductCard } from "../component/ProductCard";
 import "../../styles/inicio.css";
@@ -26,7 +27,18 @@ export const Inicio = () => {
   }, []);
 
   return (
+
     <div className="container-fluid container-inicio">
+
+
+      <div className="navbar-brand m-0">
+        <Link to="/subirProducto">Subir Producto
+        </Link>
+        <br></br>
+        <Link to={`configuracion/${store.userInfo.user_id}`}>Configuracion
+        </Link>
+      </div>
+
       {/* Seccion portada */}
 
       <div className="container-portada  d-flex justify-content-center align-items-center">

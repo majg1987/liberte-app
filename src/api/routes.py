@@ -91,7 +91,10 @@ def login():
 
 # Configuracion usuario
 @api.route("/configuracion", methods=["PUT"])
+@jwt_required()
 def configuracion():
+
+    user = get_jwt_identity()
 
     # Recibimos todos los datos del usuario menos contraseña
     body = json.loads(request.data)
@@ -105,14 +108,16 @@ def configuracion():
         if body[edit_key] != None:
 
             usuario_modificado_srlz = usuario_modificado.serialize()
-            direcion_modificada_srl= direccion_usuario_modificado.serialize()
+            # if direccion_usuario_modificado != None:
+            #     direcion_modificada_srl= direccion_usuario_modificado.serialize()
 
             # print(usuario_modificado_srlz)
 
             if edit_key in user_keys:
 
                 usuario_modificado_srlz[edit_key] = body[edit_key]
-
+                usuario_modificado_srlz["user_id"] = usuario_modificado_srlz["id"]
+                
                 usuario_modificado.nombre = usuario_modificado_srlz["nombre"]
                 usuario_modificado.apellido = usuario_modificado_srlz["apellido"]
                 usuario_modificado.email = usuario_modificado_srlz["email"]
@@ -124,7 +129,9 @@ def configuracion():
                 db.session.commit()
 
             # Cambiamos también su direccion
-            if edit_key in user_direccion_keys:
+            if direccion_usuario_modificado != None and edit_key in user_direccion_keys:
+
+                direcion_modificada_srl= direccion_usuario_modificado.serialize()
 
                 direcion_modificada_srl[edit_key] = body[edit_key]
 
@@ -138,7 +145,7 @@ def configuracion():
 
 
 
-        response_body = {"result": [usuario_modificado_srlz, direcion_modificada_srl]}
+        response_body = {"result": usuario_modificado_srlz}
 
     return response_body, 200
 
@@ -186,9 +193,24 @@ def handle_producto_galeria():
         return json.dumps(response_body), 200
 
 
+@api.route("/productosInicio", methods=["GET"])
+def handle_productosInicio():
+    # GET sin user_id /api/producto
+    response_body = Producto.query.filter_by(vendido=False).all()
+    response_body = [producto.serialize() for producto in response_body]
+    for artista in response_body:
+        user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
+        artista["vendedor_nombre"] = user.nombre
+        artista["vendedor_foto"] = user.foto_usuario
+    return json.dumps(response_body), 200
+
 # Producto
 @api.route("/producto", methods=["POST", "GET", "PUT"])
+@jwt_required()
 def handle_producto():
+    # Ruta protegida
+    user = get_jwt_identity()
+
     # Enviamos variable "peticion": "get_producto_user" para obtener los productos de un usuario (metodo post)
     # Publicar producto
     if request.method == "POST":
@@ -222,17 +244,6 @@ def handle_producto():
         response_body = {"result": nuevo_producto_srl}
         return json.dumps(response_body), 200
 
-
-
-    elif request.method == "GET":
-        # GET sin user_id /api/producto
-        response_body = Producto.query.filter_by(vendido=False).all()
-        response_body = [producto.serialize() for producto in response_body]
-        for artista in response_body:
-            user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
-            artista["vendedor_nombre"] = user.nombre
-            artista["vendedor_foto"] = user.foto_usuario
-        return json.dumps(response_body), 200
     # Modificar o eliminar productos
     elif request.method == "PUT":
         # RECIBIMOS el id de producto MÁS LA KEY "BORRAR" = true para borrar el producto
