@@ -109,9 +109,7 @@ def configuracion():
 
             usuario_modificado_srlz = usuario_modificado.serialize()
             # if direccion_usuario_modificado != None:
-            #     direcion_modificada_srl= direccion_usuario_modificado.serialize()
-
-            # print(usuario_modificado_srlz)
+            # direcion_modificada_srl= direccion_usuario_modificado.serialize()
 
             if edit_key in user_keys:
 
@@ -205,13 +203,12 @@ def handle_productosInicio():
     return json.dumps(response_body), 200
 
 # Producto
-@api.route("/producto", methods=["POST", "GET", "PUT"])
+@api.route("/producto", methods=["POST", "PUT"])
 @jwt_required()
 def handle_producto():
     # Ruta protegida
     user = get_jwt_identity()
 
-    # Enviamos variable "peticion": "get_producto_user" para obtener los productos de un usuario (metodo post)
     # Publicar producto
     if request.method == "POST":
         # DATOS RECIBIDOS = VALORES OBJETO
@@ -261,8 +258,7 @@ def handle_producto():
                 # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                 producto = producto_edit.serialize()
                 producto[edit_key] = body[edit_key]
-                # print("a",edit_key)
-                # producto_edit.edit_key= producto[edit_key]
+
                 # Incorporamos a nuestra clase los valores del producto serializado (los datos que no han cambiado permanecen y los que han cambiado se actualizan)
                 producto_edit.nombre = producto["nombre"]
                 producto_edit.fecha_alta = producto["fecha_alta"]
@@ -272,8 +268,6 @@ def handle_producto():
                 producto_edit.foto_producto = producto["foto_producto"]
                 producto_edit.dimensiones = producto["dimensiones"]
                 producto_edit.descripcion = producto["descripcion"]
-                # producto_edit.vendedor_user_id = producto["vendedor_user_id"]
-                # producto_edit.pedido_id = producto["pedido_id"]
                 # Guardamos el producto modificado
                 db.session.commit()
                 # Devolvemos el producto modificado
@@ -358,7 +352,7 @@ def handle_cesta():
 
         # Recibimos todos los datos de Cesta
         body = json.loads(request.data)
-        print("body", body)
+
         nueva_cesta = Cesta(
             user_id=body["user_id"], producto_id=body["producto_id"]
         )

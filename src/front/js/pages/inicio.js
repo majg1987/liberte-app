@@ -30,15 +30,6 @@ export const Inicio = () => {
 
     <div className="container-fluid container-inicio">
 
-
-      <div className="navbar-brand m-0">
-        <Link to="/subirProducto">Subir Producto
-        </Link>
-        <br></br>
-        <Link to={`configuracion/${store.userInfo.user_id}`}>Configuracion
-        </Link>
-      </div>
-
       {/* Seccion portada */}
 
       <div className="container-portada  d-flex justify-content-center align-items-center">
