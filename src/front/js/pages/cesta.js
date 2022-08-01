@@ -106,11 +106,11 @@ export const Cesta = () => {
                 </div>
               );
             })}
-            {/* <div className="item">
+            <div className="item">
               {store.productosCesta.map((cesta, index) => {
                 return <div key={index}>{cesta.producto.nombreArtista}</div>;
               })}
-            </div> */}
+            </div>
           </div>
         </div>
 
@@ -131,7 +131,7 @@ export const Cesta = () => {
                   </div>
                   <div className="card-item2 col d-flex justify-content-end">
                     {/* llamamos a la funcion para calcular el precio total*/}
-                    {/*   <p>{calculateTotalPrice()}€</p> */}
+                    {/* {calculateTotalPrice()}€ */}
                   </div>
                 </div>
                 {/* <div className="card-text row">

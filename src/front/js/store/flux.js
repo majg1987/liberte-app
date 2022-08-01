@@ -273,9 +273,11 @@ const getState = ({
                         /* almacenamos en productosCesta */
                         /* seteamos store */
                         setStore({
+                            ///// NO BORRAR /////
                             productosCesta: [
                                 ...getStore().productosCesta,
                                 getStore().productoSelect,
+                                ///// NO BORRAR /////
                             ],
                         });
                     }
