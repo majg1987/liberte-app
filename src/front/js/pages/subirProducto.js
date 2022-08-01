@@ -3,9 +3,11 @@ import { Link, Navigate } from "react-router-dom";
 /*Importo el css individual para registro */
 import "../../styles/subir-producto.css";
 import { Context } from "../store/appContext";
+// Importo componente del Alert
+import Alert from "../component/Alert";
 /** Importo las librerias para crear alert de registro de producto*/
-import { ToastContainer, toast, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast, Zoom } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 export const SubirProducto = () => {
   const { store, actions } = useContext(Context);
@@ -48,31 +50,6 @@ export const SubirProducto = () => {
     setLoading(false);
   };
 
-  /** Creo las caracteristicas de alert de producto registrado correctamente */
-  const notifyOk = (mensaje) =>
-    toast.info(mensaje, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      transition: Zoom,
-    });
-  /** Creo las caracteristicas de alert si algun campo no esta completado correctamennte  */
-  const notify = (mensaje) =>
-    toast.warn(mensaje, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      transition: Zoom,
-    });
-
   /** Mando datos a Flux para realizar fecth hacia la ruta del backEnd*/
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -81,6 +58,7 @@ export const SubirProducto = () => {
       nombre !== "" &&
       /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
       dimensiones !== "" &&
+      dimensiones.length < 10 &&
       categoria !== "" &&
       precio > 0 &&
       imagenSelect !== "" &&
@@ -95,19 +73,30 @@ export const SubirProducto = () => {
         dimensiones,
         descripcion
       );
+      setNombre("");
+      setDimensiones("");
+      setPrecio("");
+      setDescripcion("");
     } else {
-      notify(
-        "Error!!! Verifica que  todos los campos se han completado de forma correcta"
+      actions.notify(
+        "Verifica que  todos los campos se han completado de forma correcta"
       );
     }
   };
 
   useEffect(() => {
     if (store.registroProducto) {
-      notifyOk("Producto Registrado");
+      actions.notifyOk("Producto Registrado");
+      actions.registroProductoReset();
     }
-    return () => {};
   }, [store.registroProducto]);
+
+  useEffect(() => {
+    if (store.registroProductoError) {
+      actions.notifyError("Error al realizar el registro del producto");
+      actions.registroProductoErrorReset();
+    }
+  }, [store.registroProductoError]);
 
   return (
     <>
@@ -213,19 +202,7 @@ export const SubirProducto = () => {
         </div>
         <div>
           {/* Componente Alert */}
-          <ToastContainer
-            position="bottom-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            className="mb-4"
-          />
-          ;
+          <Alert />;
         </div>
       </div>
     </>

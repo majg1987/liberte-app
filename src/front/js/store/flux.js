@@ -1,8 +1,14 @@
+/** Importo las librerias para crear alert de registro erroneo */
+import { ToastContainer, toast, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
       registro: false,
+      registroError: false,
       registroProducto: false,
+      registroProductoError: false,
       auth: false,
       errorAuth: false,
       artistas: [],
@@ -13,43 +19,98 @@ const getState = ({ getStore, getActions, setStore }) => {
       pedido: [],
     },
     actions: {
+      // Alerts
+      notify: (mensaje) =>
+        toast.warn(mensaje, {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Zoom,
+        }),
+
+      notifyOk: (mensaje) =>
+        toast.info("🦄 " + mensaje, {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Zoom,
+        }),
+
+      notifyError: (mensaje) =>
+        toast.error(mensaje, {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          transition: Zoom,
+        }),
+
+      // Reinicio valor registroError a false
+      registroErrorReset: () => {
+        setStore({ registroError: false });
+      },
+
       // Registro
-      registro: (nombre, apellidos, email, password, artista) => {
+      registro: async (nombre, apellidos, email, password, artista) => {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nombre: nombre,
+            apellido: apellidos,
+            email: email,
+            password: password,
+            artista: artista,
+            nacimiento: null,
+            foto_usuario: null,
+            descripcion: null,
+          }),
+        };
         try {
           // fetching data from the backend
-          fetch(process.env.BACKEND_URL + "/api/registration", {
-            method: "POST",
-            body: JSON.stringify({
-              nombre: nombre,
-              apellido: apellidos,
-              email: email,
-              password: password,
-              artista: artista,
-              nacimiento: null,
-              foto_usuario: null,
-              descripcion: null,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }).then((response) => {
-            if (response.status === 200) {
-              setStore({
-                registro: true,
-              });
-            }
-            response.json();
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/registration",
+            options
+          );
+          if (response.status === 200) {
             setStore({
-              registro: false,
+              registro: true,
             });
+          }
+          const data = await response.json();
+          setStore({
+            registro: false,
           });
         } catch (error) {
-          console.log("Error loading message from backend", error);
+          console.log(error);
+          setStore({ registroError: true });
         }
       },
 
+      // Reinicio valor registroProducto a false
+      registroProductoReset: () => {
+        setStore({ registroProducto: false });
+      },
+      // Reinicio valor registroProductoError a false
+      registroProductoErrorReset: () => {
+        setStore({ registroProductoError: false });
+      },
+
       // Registro de producto
-      registroProducto: (
+      registroProducto: async (
         nombre,
         fechaAlta,
         categoria,
@@ -59,48 +120,44 @@ const getState = ({ getStore, getActions, setStore }) => {
         descripcion
       ) => {
         let bearer = `Bearer ${sessionStorage.getItem("token")}`;
-        setStore({
-          registroProducto: false,
-        });
         const store = getStore();
         const user_info = store.userInfo;
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: bearer,
+          },
+          body: JSON.stringify({
+            nombre: nombre,
+            fecha_alta: fechaAlta,
+            categoria: categoria,
+            precio: precio,
+            foto_producto: imagenSelect,
+            vendido: false,
+            dimensiones: dimensiones,
+            descripcion: descripcion,
+            vendedor_user_id: user_info.user_id,
+            pedido_id: null,
+          }),
+        };
         try {
           // fetching data from the backend
-          fetch(process.env.BACKEND_URL + "/api/producto", {
-            method: "POST",
-            body: JSON.stringify({
-              nombre: nombre,
-              fecha_alta: fechaAlta,
-              categoria: categoria,
-              precio: precio,
-              foto_producto: imagenSelect,
-              vendido: false,
-              dimensiones: dimensiones,
-              descripcion: descripcion,
-              vendedor_user_id: user_info.user_id,
-              pedido_id: null,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: bearer,
-            },
-          })
-            .then((response) => {
-              if (response.status === 200) {
-                setStore({
-                  registroProducto: true,
-                });
-              }
-
-              return response.json();
-            })
-            .then((data) => {
-              console.log(data);
-              data.msg === "Missing Authorization Header" &&
-                alert("Debes iniciar sesión pra publicar un producto");
+          const response = await fetch(
+            process.env.BACKEND_URL + "/api/producto",
+            options
+          );
+          if (response.status === 200) {
+            setStore({
+              registroProducto: true,
             });
+          }
+          const data = await reponse.json();
+          data.msg === "Missing Authorization Header" &&
+            alert("Debes iniciar sesión para publicar un producto");
         } catch (error) {
           console.log("Error loading message from backend", error);
+          setStore({ registroProductoError: true });
         }
       },
 
@@ -115,6 +172,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             userInfo: JSON.parse(localStorage.getItem("userInfo")),
           });
         }
+      },
+
+      // Reinicio valor errorAuth a false
+      errorAuth: () => {
+        setStore({ errorAuth: false });
       },
 
       // Fecth de Login
@@ -139,11 +201,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({
               auth: true,
             });
-          } else {
-            console.log(resp.status);
-            setStore({
-              errorAuth: true,
-            });
           }
           const data = await resp.json();
           console.log(data);
@@ -158,6 +215,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
         } catch (error) {
           console.log(error);
+          setStore({
+            errorAuth: true,
+          });
         }
       },
       // logoutButtonNavbar
