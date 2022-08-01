@@ -53,7 +53,9 @@ export const Producto = (props) => {
                     <img
                       className="foto-artista"
                       src={
-                        "https://images.pexels.com/photos/12776968/pexels-photo-12776968.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
+                        store.productoSelect.fotoArtista != null
+                          ? store.productoSelect.fotoArtista
+                          : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                       }
                       alt=""
                     />

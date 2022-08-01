@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { ProductCard } from "../component/ProductCard";
 import "../../styles/inicio.css";
@@ -26,7 +27,9 @@ export const Inicio = () => {
   }, []);
 
   return (
+
     <div className="container-fluid container-inicio">
+
       {/* Seccion portada */}
 
       <div className="container-portada  d-flex justify-content-center align-items-center">

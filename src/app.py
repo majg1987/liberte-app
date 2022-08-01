@@ -12,7 +12,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 # JWTManager object, used to hold JWT settings and callback functions for the Flask-JWT-Extended extension
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity)
 # import the class wrapper Bcrypt
 from flask_bcrypt import Bcrypt   
 
