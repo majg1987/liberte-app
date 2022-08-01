@@ -7,8 +7,9 @@ import { Link } from "react-router-dom";
 /* importamos los estilos */
 import "../../../styles/itemDetails.css";
 
-/* almacenamos las propiedades del objeto en una constante */
+/* creamos el componente*/
 const ItemDetails = ({
+  /* propiedades del componente */
   id,
   nombre,
   img,
@@ -22,50 +23,19 @@ const ItemDetails = ({
   /* destructuring de useContext con store y actions de flux */
   /* pasamos datos a través del árbol de componentes sin tener que pasar props manualmente en cada nivel */
   const { store, actions } = useContext(Context);
+  console.log({ nombre });
+  console.log({ nombreArtista });
 
   return (
-    /* elemento PADRE. formateamos el elemento. pasamos la clave id */
-    /* aqui viene la imagen con su id */
-    <div className="container-intem-detail" key={id}>
-      {/*elemento HIJO. formateamos el elemento */}
-      <div className="col-4 col-foto-info-producto-cesta">
-        <div className="container-foto-info-producto-cesta">
-          {/*elemento HIJO2. pasamos la imagen*/}
-          <img src={img} />
-        </div>
+    <div className="card" style={{ width: 18 + "rem" }}>
+      <img src={{ img }} className="card-img-top" alt="card image" />
+      <div className="card-body">
+        <h5 className="card-title"></h5>
+        <p className="card-text"></p>
+        <button href="#" className="btn btn-primary">
+          Eliminar
+        </button>
       </div>
-      {/*elemento HIJO. formateamos el elemento*/}
-      <div className="col-8 col-info-producto-cesta">
-        <div className="artista">
-          {/* elemento HIJO.  */}
-          <Link
-            to={`/producto/${id}`}
-            onClick={() =>
-              actions.productoSelect(
-                id,
-                nombre,
-                img,
-                precio,
-                descripcion,
-                dimensiones,
-                categoria,
-                nombreArtista,
-                fotoArtista
-              )
-            }
-          >
-            <p className="titulo-obra">{nombre}</p>
-          </Link>
-          <h6>{nombreArtista}</h6>
-          <p className="eliminar-compra" href="#">
-            Eliminar
-          </p>
-        </div>
-        <div className="item-precio position-absolute top-0 start-100">
-          <div>{precio}</div>
-        </div>
-      </div>
-      {/* fin del elemento padre*/}
     </div>
   );
 };

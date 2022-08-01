@@ -335,7 +335,42 @@ def handle_direccion():
             response_body = {"result": direccion_modificada_srlz}
 
     return response_body, 200
+##### NO BORRAR #####
+""" prueba GET cesta """
+# Cesta
+@api.route("/cesta", methods=["GET"])
+# ruta protegida
+@jwt_required()
+# definimos la funcion
+def cesta():  
+    # almacenamos la identidad de JWT de la ruta protegida
+    # version user_id: user_id=get_jwt_identity()
+    # imprimimos user_id en la terminal
+    # print(user_id)
 
+    # version email: almacenamos la identidad de JWT de la ruta protegida
+    email = get_jwt_identity()
+    
+    # version user_id: obtenemos y almacenamos la consulta sobre user_id de la tabla User
+    # por clave principal (get)
+    # user=User.query.get(user_id)
+    # print(user)
+    
+    # version email: obtenemos y almacenamos la consulta sobre email de la tabla User
+    user = User.query.filter_by(email=email).first()
+    # print(user)
+
+    # version user_id: obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por la id de user en la tabla Cesta
+    # cesta=Cesta.query.filter_by(user_id=user_id)
+    
+    # version email: obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por la id de user en la tabla Cesta
+    cesta=Cesta.query.filter_by(user_id=user.id)
+    # print(cesta)
+
+    # ambas versiones: serializamos cada uno de los items de cesta (lambda) iterando (map) en cesta (range)
+    # convertimos una salida JSON en un objeto de response con el tipo mime de aplicación/json (jsonify)
+    return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
+###### NO BORRAR #####  
 
 # Cesta
 @api.route("/cesta", methods=["POST", "PUT"])
@@ -411,31 +446,6 @@ def handle_cesta():
     
 
     return response_body, 200
-
-""" prueba GET cesta """
-# Cesta
-@api.route("/cesta", methods=["GET"])
-# ruta protegida requerida
-@jwt_required()
-# definimos la funcion
-def cesta():  
-    # almacenamos la identidad de JWT de la ruta protegida
-    user_id=get_jwt_identity()
-    # imprimimos user_id en la terminal
-    print(user_id)
-    # obtenemos y almacenamos la consulta sobre user_id de la tabla User
-    # por clave principal (get)
-    user=User.query.get(user_id)
-    print(user)
-    # obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por user_id
-    cesta=Cesta.query.filter_by(user_id=user_id)
-    print(cesta)
-    # serializamos cada uno de los items de cesta (lambda) iterando (map) en cesta (range)
-    # convertimos una salida JSON en un objeto de response con el tipo mime de aplicación/json (jsonify)
-    return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
-    
-
-
 
 # Pedido
 @api.route("/pedido", methods=["POST"])

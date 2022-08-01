@@ -116,6 +116,7 @@ class Cesta (db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "producto_id": self.producto_id,
+            "producto":self.producto.serialize()
         }
 
 

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 /* importamos el destructuring Link */
 import { Link } from "react-router-dom";
-/* destructuring de Context */
+/* importamos destructuring de Context */
 import { Context } from "../store/appContext";
 /* importamos el componente Item Details */
 import ItemDetails from "../component/cesta/ItemDetails.jsx";
@@ -22,17 +22,13 @@ export const Cesta = () => {
     description: "Lo vamos a conseguir",
     price: 10.0,
   };
-  const [isVisible, setIsVisible] = useState(true);
-  const handleClick = () => {
-    setIsVisible((current) => !current);
-  };
 
   /* utilizamos useEffect hook */
   useEffect(() => {
     /* comprobamos en consola que entra el hook */
     console.log("Soy useEffect hook");
     /* llamamos a action obtenerCesta desde flux */
-    actions.obtenerCesta();
+    /* actions.obtenerCesta(); */
     /* trabajamos los datos en el navegador con localStorage */
     /* leemos los pares clave/valor de productSelect en el navegador */
     localStorage.getItem("productSelect") &&
@@ -52,7 +48,7 @@ export const Cesta = () => {
       : /* si NO hay producto(s) en la cesta retornamos 0 */
         0;
   };
-  /* definimos una funcion para alertar al usuario */
+  /* definimos una funcion para alertar sobre si hay productos en la cesta o no al usuario */
   const shoppingBagViewAlert = () => {
     return store.productosCesta === undefined ||
       store.productosCesta.length === 0
@@ -91,7 +87,7 @@ export const Cesta = () => {
             {/* mapeamos los items de productosCesta almacenados en store */}
             {store.productosCesta.map((ele) => {
               /* almacenamos en una variable (productoCesta) cada item almacenado */
-              let productoCesta = (
+              return (
                 <div className="col-6 d-flex justify-content-center">
                   {/* componente ItemDetails */}
                   <ItemDetails
@@ -109,16 +105,12 @@ export const Cesta = () => {
                   />
                 </div>
               );
-              /* retornamos la variable productoCesta */
-              return productoCesta;
             })}
-            <div>
-              {store.cesta.map((cesta) => {
-                return {
-                  /* <div>{cesta.}</div> */
-                };
+            {/* <div className="item">
+              {store.productosCesta.map((cesta, index) => {
+                return <div key={index}>{cesta.producto.nombreArtista}</div>;
               })}
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -139,7 +131,7 @@ export const Cesta = () => {
                   </div>
                   <div className="card-item2 col d-flex justify-content-end">
                     {/* llamamos a la funcion para calcular el precio total*/}
-                    <p>{calculateTotalPrice()}€</p>
+                    {/*   <p>{calculateTotalPrice()}€</p> */}
                   </div>
                 </div>
                 {/* <div className="card-text row">
@@ -172,7 +164,7 @@ export const Cesta = () => {
                   </div>
                   <div className="total-pedido-precio col d-flex justify-content-end">
                     {/* llamamos a la funcion calculateTotalPrice */}
-                    <p>{calculateTotalPrice()}€</p>
+                    {/* <p>{calculateTotalPrice()}€</p> */}
                   </div>
                   <div>
                     <p className="total-pedido-iva text-muted">(Iva Incl.)</p>

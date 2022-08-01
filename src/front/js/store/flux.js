@@ -14,7 +14,6 @@ const getState = ({
             productoSelect: {},
             userInfo: {},
             productosCesta: [],
-
         },
         actions: {
             // Registro
@@ -270,6 +269,15 @@ const getState = ({
                     );
                     if (resp.status === 200) {
                         console.log("producto-añadido");
+                        /* expandimos los productos de la cesta en getStore con los productos seleccionados */
+                        /* almacenamos en productosCesta */
+                        /* seteamos store */
+                        setStore({
+                            productosCesta: [
+                                ...getStore().productosCesta,
+                                getStore().productoSelect,
+                            ],
+                        });
                     }
                     const data = await resp.json();
                 } catch (error) {
@@ -358,30 +366,44 @@ const getState = ({
                     console.log(error);
                 }
             },
+
+            ///// NO BORRAR /////
             /* Fetch getCart */
             /* method: "GET" */
+            /* asynchronous fetching */
             getCart: async () => {
+                /* console.log(sessionStorage.getItem("token")); */
                 const options = {
                     method: "GET",
                     headers: {
+                        /* mimetype */
                         "Content-Type": "application/json",
-                        Authorization: "Bearer" + sessionStorage.getItem("token"),
+                        /*  OAuth 2.0 */
+                        /* accedemos al objeto Storage asociado a la sesion actual */
+                        /* sessionStorage elimina la informacion almacenada al finalizar la sesion */
+                        /* devovemos el valor de la clave de token que se le pasa por parametro */
+                        /* concatenamos a Bearer */
+                        Authorization: "Bearer " + sessionStorage.getItem("token"),
                     },
                 };
+                /* handling error try-catch */
                 try {
                     const resp = await fetch(
                         process.env.BACKEND_URL + "/api/cesta",
                         options
                     );
+                    /* respuesta HTTP */
+                    /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
                     const data = await resp.json();
+                    /* seteamos store con productosCesta */
                     setStore({
-                        cesta: data,
+                        productosCesta: data,
                     });
                 } catch (error) {
                     console.log(error);
                 }
             },
-
+            ///// NO BORRAR /////
         },
     };
 };
