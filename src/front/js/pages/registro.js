@@ -3,9 +3,8 @@ import { Link, Navigate } from "react-router-dom";
 /*Importo el css individual para registro */
 import "../../styles/registro.css";
 import { Context } from "../store/appContext";
-/** Importo las librerias para crear alert de registro erroneo */
-import { ToastContainer, toast, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// Importo componente alert
+import Alert from "../component/Alert";
 
 export const Registro = () => {
   const { store, actions } = useContext(Context);
@@ -17,19 +16,6 @@ export const Registro = () => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [artista, setArtista] = useState(false);
-
-  /** Creo las caracteristicas de alert */
-  const notify = (mensaje) =>
-    toast.warn(mensaje, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      transition: Zoom,
-    });
 
   /** Recupero valor true o false segun si quiere perfil de artista o no, y lo asigno a artista */
   const handleInputChange = (e) => {
@@ -51,11 +37,18 @@ export const Registro = () => {
     ) {
       actions.registro(nombre, apellidos, email, password, artista);
     } else {
-      notify(
+      actions.notify(
         "Completa todos los campos de forma correcta, recuerda que nombre y apellidos solo puede contener letras"
       );
     }
   };
+
+  useEffect(() => {
+    if (store.registroError) {
+      actions.notifyError("Error al realizar el registro");
+      actions.registroErrorReset();
+    }
+  }, [store.registroError]);
 
   return (
     <>
@@ -134,18 +127,7 @@ export const Registro = () => {
           </div>
           <div>
             {/* Componente Alert */}
-            <ToastContainer
-              position="bottom-center"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              className="mb-4"
-            />
+            <Alert />
           </div>
         </div>
       )}
