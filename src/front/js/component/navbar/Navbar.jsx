@@ -47,7 +47,7 @@ export const Navbar = () => {
                 ) : null}
                 {store.auth ? (
                   <li className="nav-item dropdown">
-                    <Link to={`/perfil/${store.userInfo.user_id}`}>
+                    <Link to={`/perfil/${store.userInfo.id}`}>
                       <button
                         type="button"
                         className="btn btn-sm mx-2 border-0"
@@ -69,7 +69,7 @@ export const Navbar = () => {
                   </li>
                 )}
                 <li className="nav-item active">
-                  <Link to="/cesta">
+                  <Link to={`/cesta/${store.userInfo.id}`}>
                     <button type="button" className="btn btn-sm me-2 border-0">
                       <GiShoppingBag size={28} style={{ color: "#e28f2c" }} />
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
