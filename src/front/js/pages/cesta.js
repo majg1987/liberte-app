@@ -17,12 +17,13 @@ export const Cesta = () => {
   /* destructuring de store y actions del flux */
   /* igualamos a useContext(Context) para el trabajo de appContext (consumer/provider)  */
   const { store, actions } = useContext(Context);
+  let { user_id } = store.userInfo;
   /* constante para botones de paypal */
   const product = {
     description: "Lo vamos a conseguir",
     price: 10.0,
   };
-
+  console.log(store.productosCesta[0]?.producto.nombre);
   /* utilizamos useEffect hook */
   useEffect(() => {
     /* comprobamos en consola que entra el hook */
@@ -31,11 +32,12 @@ export const Cesta = () => {
     /* actions.obtenerCesta(); */
     /* trabajamos los datos en el navegador con localStorage */
     /* leemos los pares clave/valor de productSelect en el navegador */
-    localStorage.getItem("productSelect") &&
-      /* eliminamos los pares clave/valor de productSelect en el navegador */
-      localStorage.removeItem("productSelect");
+    /* localStorage.getItem("productSelect") && */
+    /* eliminamos los pares clave/valor de productSelect en el navegador */
+    /*  localStorage.removeItem("productSelect"); */
     /* llamamos a action getCart desde flux */
-    actions.getCart();
+    actions.getCart(user_id);
+    console.log(user_id);
   }, []);
   /* definimos una funcion para comprobar si hay productos en la cesta */
   const calculateTotalPrice = () => {
@@ -68,7 +70,7 @@ export const Cesta = () => {
         });
   };
   /* llamamos a la función shoppingBagViewAlert() */
-  shoppingBagViewAlert();
+  /* shoppingBagViewAlert(); */
 
   return (
     /* jsx tag */
@@ -88,29 +90,27 @@ export const Cesta = () => {
             {store.productosCesta.map((ele) => {
               /* almacenamos en una variable (productoCesta) cada item almacenado */
               return (
-                <div className="col-6 d-flex justify-content-center">
+                <div
+                  className="col-6 d-flex justify-content-center"
+                  key={ele.producto.id}
+                >
                   {/* componente ItemDetails */}
                   <ItemDetails
                     /* cada propiedad recibe su valor en el componente */
-                    key={ele.id}
-                    id={ele.id}
-                    nombre={ele.nombre}
-                    img={ele.foto_producto}
-                    precio={ele.precio}
-                    description={ele.description}
-                    dimensiones={ele.dimensiones}
-                    categoria={ele.categoria}
-                    nombreArtista={ele.vendedor_nombre}
-                    fotoArtista={ele.vendedor_foto}
+
+                    id={ele.producto.id}
+                    nombre={ele.producto.nombre}
+                    img={ele.producto.foto_producto}
+                    precio={ele.producto.precio}
+                    description={ele.producto.description}
+                    dimensiones={ele.producto.dimensiones}
+                    categoria={ele.producto.categoria}
+                    /* nombreArtista={ele.producto.vendedor_nombre} */
+                    /* fotoArtista={ele.producto.vendedor_foto} */
                   />
                 </div>
               );
             })}
-            <div className="item">
-              {store.productosCesta.map((cesta, index) => {
-                return <div key={index}>{cesta.producto.nombreArtista}</div>;
-              })}
-            </div>
           </div>
         </div>
 
@@ -190,4 +190,11 @@ export const Cesta = () => {
   );
 };
 
-export default Cesta;
+/* export default Cesta; */
+{
+  /* <div className="item">
+{store.productosCesta.map((cesta, index) => {
+  return <div key={index}>{cesta.producto.nombreArtista}</div>;
+})}
+</div> */
+}

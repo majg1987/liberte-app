@@ -23,13 +23,13 @@ const ItemDetails = ({
   /* destructuring de useContext con store y actions de flux */
   /* pasamos datos a través del árbol de componentes sin tener que pasar props manualmente en cada nivel */
   const { store, actions } = useContext(Context);
-  console.log({ nombre });
-  console.log({ nombreArtista });
-  console.log({ precio });
+  console.log(nombre);
+  /* console.log( nombreArtista });
+  console.log({ precio }); */
 
   return (
     <div className="card" style={{ width: 18 + "rem" }}>
-      <img src="" className="card-img-top" alt="card image" />
+      <img src={img} className="card-img-top" alt="card image" />
       <div className="card-body">
         <h5 className="card-title"></h5>
         <p className="card-text"></p>
