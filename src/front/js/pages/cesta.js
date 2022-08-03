@@ -36,6 +36,7 @@ export const Cesta = () => {
     /* eliminamos los pares clave/valor de productSelect en el navegador */
     /*  localStorage.removeItem("productSelect"); */
     /* llamamos a action getCart desde flux */
+
     actions.getCart(user_id);
     console.log(user_id);
   }, []);
@@ -43,6 +44,7 @@ export const Cesta = () => {
   const calculateTotalPrice = () => {
     console.log(store.productosCesta);
     /* si hay producto(s) en la cesta y su tipo es distinto a undefined sumamos su(s) precio(s) y lo añadimos al total */
+
     return store.productosCesta != undefined && store.productosCesta.length > 0
       ? store.productosCesta?.reduce(
           (total, producto) => total + producto.precio
@@ -70,30 +72,29 @@ export const Cesta = () => {
         });
   };
   /* llamamos a la función shoppingBagViewAlert() */
-  /* shoppingBagViewAlert(); */
-
+  /*shoppingBagViewAlert();*/
   return (
     /* jsx tag */
     <>
       <h1 className="cesta-header text-center">Cesta de la Compra</h1>
-      <div className="item-counter text-muted" style={{ maxWidth: "540px" }}>
-        {store.productosCesta.length}&nbsp;articulo(s)
-        <div className="item-counter-line text-muted"></div>
-      </div>
       {/* LISTA PRODUCTOS*/}
       {/* elemento PADRE */}
-      <div className="row row-container-cesta">
+      <div className="row row-cols-md-2">
         {/*elemento HIJO */}
         <div className="col-sm-12 col-lg-6 col-lista-productos">
-          <div className="row">
+          <div className="row" style={{ maxWidth: "540px" }}>
+            <div
+              className="item-counter text-muted"
+              style={{ maxWidth: "540px" }}
+            >
+              {store.productosCesta.length}&nbsp;articulo(s)
+              <div className="item-counter-line text-muted"></div>
+            </div>
             {/* mapeamos los items de productosCesta almacenados en store */}
             {store.productosCesta.map((ele) => {
               /* almacenamos en una variable (productoCesta) cada item almacenado */
               return (
-                <div
-                  className="col-6 d-flex justify-content-center"
-                  key={ele.producto.id}
-                >
+                <div className="col-6" key={ele.producto.id}>
                   {/* componente ItemDetails */}
                   <ItemDetails
                     /* cada propiedad recibe su valor en el componente */
@@ -131,7 +132,7 @@ export const Cesta = () => {
                   </div>
                   <div className="card-item2 col d-flex justify-content-end">
                     {/* llamamos a la funcion para calcular el precio total*/}
-                    {/* {calculateTotalPrice()}€ */}
+                    {calculateTotalPrice()}€
                   </div>
                 </div>
                 {/* <div className="card-text row">

@@ -1,4 +1,4 @@
-.container-intem-detail {
+/* .container-intem-detail {
     width: 55%;
     margin: 20px 0;
     display: flex;
@@ -23,4 +23,43 @@
 .container-intem-detail a {
     color: black;
     text-decoration: none;
+} */
+.wholeCard {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.itemImg {
+    border-radius: 3px;
+}
+
+.artistName {
+    margin-top: 0.5rem;
+}
+
+.itemPrice {
+    margin-bottom: 0.5rem;
+}
+
+.divButton {
+    padding-left: 3.75rem;
+    padding-top: 1rem;
+}
+
+.deleteItemButton {
+    background: red;
+    color: white;
+    border-radius: 3px;
+    border: none;
+    padding: 0.25rem;
+}
+
+.deleteItemButton:active {
+    background: red;
+    color: white;
+    border-radius: 3px;
+    border: none;
+    padding: 0.25rem;
+    box-shadow: -1px 1px 10px 0.5px #888888;
+    transform: translateY(1px);
 }

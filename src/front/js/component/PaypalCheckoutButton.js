@@ -3,8 +3,10 @@ import ReactDOM from "react-dom";
 // Importamos librerias para botones Paypal
 import { PayPalButtons } from "@paypal/react-paypal-js";
 // Importamos librerias para crear alerts
-import { ToastContainer, toast, Zoom } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast, Zoom } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// Importamos componente Alert
+import Alert from "./Alert";
 // Importamos estilos de Css
 import "../../styles/registro.css";
 
@@ -14,30 +16,6 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
   // Creamos variable por si ocurre algun error
   const [error, setError] = useState(null);
 
-  /** Creo las caracteristicas de alert Ok */
-  const notifyOk = (mensaje) =>
-    toast.info("🦄 " + mensaje, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      transition: Zoom,
-    });
-  /** Creo las caracteristicas de alert Error */
-  const notifyError = (mensaje) =>
-    toast.error(mensaje, {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      transition: Zoom,
-    });
   const handleAprove = (orderId) => {
     // Llamamos a la funcion con el backend para cumplir con el pedido
 
@@ -50,12 +28,12 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
 
   if (paidFor) {
     // Mostramos mensaje indicando al usuario que el pago se ha completado con exito
-    notifyOk("Su pago ha sido realizado correctamente");
+    store.notifyOk("Su pago ha sido realizado correctamente");
   }
 
   if (error) {
     // Mostramos mensaje de error
-    notifyError("Error al realizar el pago!!!");
+    store.notifyError("Error al realizar el pago!!!");
   }
 
   return (
@@ -106,7 +84,7 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
         }}
         onCancel={() => {
           //Mostramos mensaje si hay una cancelacion
-          notifyError("La peticion de pago ha sido cancelada");
+          store.notifyError("La peticion de pago ha sido cancelada");
         }}
         // En caso de Error
         onError={(error) => {
@@ -116,18 +94,7 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
         }}
       />
       <div>
-        {/* Componente Alert  */}
-        <ToastContainer
-          position="bottom-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        {/* Componente Alert  */} <Alert />
       </div>
     </>
   );

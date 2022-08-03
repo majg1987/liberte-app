@@ -24,20 +24,23 @@ const ItemDetails = ({
   /* pasamos datos a través del árbol de componentes sin tener que pasar props manualmente en cada nivel */
   const { store, actions } = useContext(Context);
   console.log(nombre);
-  /* console.log( nombreArtista });
+  /* console.log( nombreArtista);
   console.log({ precio }); */
 
   return (
-    <div className="card" style={{ width: 18 + "rem" }}>
-      <img src={img} className="card-img-top" alt="card image" />
-      <div className="card-body">
-        <h5 className="card-title"></h5>
-        <p className="card-text"></p>
-        <button href="#" className="btn btn-primary">
-          Eliminar
-        </button>
+    <>
+      <div className="wholeCard" style={{ width: 18 + "rem" }}>
+        <img src={img} className="itemImg" alt="card image" />
+        <h5 className="artistName">nombreArtista</h5>
+        <p className="itemTitle">{nombre}</p>
+        <p className="itemPrice">{precio}€</p>
+        <div className="divButton">
+          <button href="#" className="deleteItemButton">
+            Eliminar
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

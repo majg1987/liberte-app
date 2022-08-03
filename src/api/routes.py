@@ -46,7 +46,15 @@ def registration():
 
     user = User(**body)
 
+    print(user.id)
+
+
     db.session.add(user)
+    usuario = User.query.filter_by(email=body["email"]).first()
+
+    print("id",usuario.id)
+    direccion = Direccion(tipo_via="Avenida", nombre_via= "Andalucia", numero=2, piso=1, puerta="2A", user_id=usuario.id)
+    db.session.add(direccion)
     db.session.commit()
 
     response_body = {"message": "Formulario de Registro OK"}
@@ -73,7 +81,7 @@ def login():
     access_token = {
         "token": create_access_token(identity=email),
         "user_info": {
-            "user_id": user.id,
+            "id": user.id,
             "nombre": user.nombre,
             "apellido": user.apellido,
             "email": user.email,
@@ -98,9 +106,12 @@ def configuracion():
 
     # Recibimos todos los datos del usuario menos contraseña
     body = json.loads(request.data)
+    print(body)
 
     usuario_modificado = User.query.filter_by(id=body["id"]).first()
-    direccion_usuario_modificado = Direccion.query.filter_by(user_id=body["id"]).first()
+
+    direccion_usuario_modificado = Direccion.query.filter_by(user_id= usuario_modificado.id).first()
+
     user_keys = User.__table__.columns.keys()
     user_direccion_keys = Direccion.__table__.columns.keys()
 
@@ -108,13 +119,12 @@ def configuracion():
         if body[edit_key] != None:
 
             usuario_modificado_srlz = usuario_modificado.serialize()
-            # if direccion_usuario_modificado != None:
-            # direcion_modificada_srl= direccion_usuario_modificado.serialize()
+
 
             if edit_key in user_keys:
 
-                usuario_modificado_srlz[edit_key] = body[edit_key]
                 usuario_modificado_srlz["user_id"] = usuario_modificado_srlz["id"]
+                usuario_modificado_srlz[edit_key] = body[edit_key]
                 
                 usuario_modificado.nombre = usuario_modificado_srlz["nombre"]
                 usuario_modificado.apellido = usuario_modificado_srlz["apellido"]
@@ -129,8 +139,10 @@ def configuracion():
             # Cambiamos también su direccion
             if direccion_usuario_modificado != None and edit_key in user_direccion_keys:
 
+                print(edit_key,":", body[edit_key])
                 direcion_modificada_srl= direccion_usuario_modificado.serialize()
 
+                direcion_modificada_srl["direccion_id"] = direcion_modificada_srl["id"]
                 direcion_modificada_srl[edit_key] = body[edit_key]
 
                 direccion_usuario_modificado.tipo_via = direcion_modificada_srl["tipo_via"]
@@ -138,12 +150,18 @@ def configuracion():
                 direccion_usuario_modificado.numero = direcion_modificada_srl["numero"]
                 direccion_usuario_modificado.piso = direcion_modificada_srl["piso"]
                 direccion_usuario_modificado.puerta = direcion_modificada_srl["puerta"]
+
+                # print("oficial",direccion_usuario_modificado.serialize())
                 
                 db.session.commit()
 
+    print("srl", direcion_modificada_srl)
 
 
-        response_body = {"result": usuario_modificado_srlz}
+    response_body = {
+        "usuario": usuario_modificado_srlz, 
+        "direccion": direcion_modificada_srl
+    }
 
     return response_body, 200
 
@@ -280,7 +298,7 @@ def handle_producto():
     return response_body, 200
 
 # Direccion
-@api.route("/direccion", methods=["POST", "PUT"])
+@api.route("/direccion", methods=["POST", "PUT","GET"])
 def handle_direccion():
 
     # Publicamos direccion
@@ -303,13 +321,14 @@ def handle_direccion():
         print("nueva_direccion", nueva_direccion.id)
         response_body = {"message": "Formulario de Registro OK"}
 
-        # Para obtener direccion pasamos "get_direccion" + "user_id"
+
     elif request.method == "GET":
-        direccion_user = User.query.filter_by(id=body["user_id"]).first()
-        direccion_user = [
-            direccion.serialize() for direccion in direccion_user.direccion
-        ]
-        response_body = {"result": direccion_user}
+
+        user_id = request.args.get('user_id')
+
+        direccion_user = Direccion.query.filter_by(user_id=user_id).first()
+        direccion_user_srl = direccion_user.serialize()
+        response_body = {"result": direccion_user_srl}
 
     elif request.method == "PUT":
 
@@ -426,14 +445,15 @@ def handle_cesta():
     # Eliminar cesta
     elif request.method == "PUT":
         # Recibimos id_user e id_producto
-        id_user = request.json.get("user_id", None)
+        user_id = request.json.get("user_id", None)
         id_producto = request.json.get("producto_id", None)
 
         cesta_user = Cesta.query.filter_by(
-            user_id=id_user, producto_id=id_producto
-        ).first()
+            user_id=user_id
+        ).all()
 
-        db.session.delete(cesta_user)
+        
+        [db.session.delete(cesta) for cesta in cesta_user]
         db.session.commit()
 
         response_body = {"resul": "Producto borrado de cesta"}
