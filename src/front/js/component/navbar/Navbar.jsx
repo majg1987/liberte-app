@@ -69,11 +69,13 @@ export const Navbar = () => {
                   </li>
                 )}
                 <li className="nav-item active">
-                  <Link to={`/cesta/${store.userInfo.id}`}>
+                  <Link to={`/cesta`}>
                     <button type="button" className="btn btn-sm me-2 border-0">
                       <GiShoppingBag size={28} style={{ color: "#e28f2c" }} />
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {store.productosCesta.length}
+                        {/* {store.productosCesta.length > 0
+                          ? store.productosCesta.length
+                          : null} */}
                         <span className="visually-hidden"></span>
                       </span>
                     </button>

@@ -17,13 +17,14 @@ export const Cesta = () => {
   /* destructuring de store y actions del flux */
   /* igualamos a useContext(Context) para el trabajo de appContext (consumer/provider)  */
   const { store, actions } = useContext(Context);
+  const [total, setTotal] = useState(0);
   let { user_id } = store.userInfo;
   /* constante para botones de paypal */
   const product = {
     description: "Lo vamos a conseguir",
-    price: 10.0,
+    price: calculateTotalPrice(),
   };
-  console.log(store.productosCesta[0]?.producto.nombre);
+  /* console.log(store.productosCesta[0]?.producto.nombre); */
   /* utilizamos useEffect hook */
   useEffect(() => {
     /* comprobamos en consola que entra el hook */
@@ -40,18 +41,20 @@ export const Cesta = () => {
     actions.getCart(user_id);
     console.log(user_id);
   }, []);
-  /* definimos una funcion para comprobar si hay productos en la cesta */
-  const calculateTotalPrice = () => {
-    console.log(store.productosCesta);
-    /* si hay producto(s) en la cesta y su tipo es distinto a undefined sumamos su(s) precio(s) y lo añadimos al total */
 
-    return store.productosCesta != undefined && store.productosCesta.length > 0
-      ? store.productosCesta?.reduce(
-          (total, producto) => total + producto.precio
-        )
-      : /* si NO hay producto(s) en la cesta retornamos 0 */
-        0;
-  };
+  /* definimos una funcion para comprobar si hay productos en la cesta */
+  function calculateTotalPrice() {
+    if (store.productosCesta.length > 0) {
+      const newArr = store.productosCesta.map((item) => item.producto.precio);
+      return newArr.reduce(
+        (valorPrevio, valorActual) => valorPrevio + valorActual
+      );
+    } else {
+      return 0;
+    }
+
+    /* si hay producto(s) en la cesta y su tipo es distinto a undefined sumamos su(s) precio(s) y lo añadimos al total */
+  }
   /* definimos una funcion para alertar sobre si hay productos en la cesta o no al usuario */
   const shoppingBagViewAlert = () => {
     return store.productosCesta === undefined ||
@@ -91,27 +94,29 @@ export const Cesta = () => {
               <div className="item-counter-line text-muted"></div>
             </div>
             {/* mapeamos los items de productosCesta almacenados en store */}
-            {store.productosCesta.map((ele) => {
-              /* almacenamos en una variable (productoCesta) cada item almacenado */
-              return (
-                <div className="col-6" key={ele.producto.id}>
-                  {/* componente ItemDetails */}
-                  <ItemDetails
-                    /* cada propiedad recibe su valor en el componente */
+            {store.productosCesta.length > 0
+              ? store.productosCesta.map((ele) => {
+                  /* almacenamos en una variable (productoCesta) cada item almacenado */
+                  return (
+                    <div className="col-12" key={ele.producto.id}>
+                      {/* componente ItemDetails */}
+                      <ItemDetails
+                        /* cada propiedad recibe su valor en el componente */
 
-                    id={ele.producto.id}
-                    nombre={ele.producto.nombre}
-                    img={ele.producto.foto_producto}
-                    precio={ele.producto.precio}
-                    description={ele.producto.description}
-                    dimensiones={ele.producto.dimensiones}
-                    categoria={ele.producto.categoria}
-                    /* nombreArtista={ele.producto.vendedor_nombre} */
-                    /* fotoArtista={ele.producto.vendedor_foto} */
-                  />
-                </div>
-              );
-            })}
+                        id={ele.producto.id}
+                        nombre={ele.producto.nombre}
+                        img={ele.producto.foto_producto}
+                        precio={ele.producto.precio}
+                        description={ele.producto.description}
+                        dimensiones={ele.producto.dimensiones}
+                        categoria={ele.producto.categoria}
+                        /* nombreArtista={ele.producto.vendedor_nombre} */
+                        /* fotoArtista={ele.producto.vendedor_foto} */
+                      />
+                    </div>
+                  );
+                })
+              : "No hay productos agregados"}
           </div>
         </div>
 
@@ -132,7 +137,7 @@ export const Cesta = () => {
                   </div>
                   <div className="card-item2 col d-flex justify-content-end">
                     {/* llamamos a la funcion para calcular el precio total*/}
-                    {calculateTotalPrice()}€
+                    {calculateTotalPrice()} €
                   </div>
                 </div>
                 {/* <div className="card-text row">
@@ -165,7 +170,7 @@ export const Cesta = () => {
                   </div>
                   <div className="total-pedido-precio col d-flex justify-content-end">
                     {/* llamamos a la funcion calculateTotalPrice */}
-                    {/* <p>{calculateTotalPrice()}€</p> */}
+                    <p>{calculateTotalPrice()} €</p>
                   </div>
                   <div>
                     <p className="total-pedido-iva text-muted">(Iva Incl.)</p>

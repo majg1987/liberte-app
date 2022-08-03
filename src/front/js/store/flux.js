@@ -596,6 +596,39 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
+      deleteProducto: async (id) => {
+        console.log(id);
+        /* const options = {
+          method: "GET",
+          headers: { */
+        /* mimetype */
+        /*  "Content-Type": "application/json", */
+        /*  OAuth 2.0 */
+        /* accedemos al objeto Storage asociado a la sesion actual */
+        /* sessionStorage elimina la informacion almacenada al finalizar la sesion */
+        /* devovemos el valor de la clave de token que se le pasa por parametro */
+        /* concatenamos a Bearer */
+        /* Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        }; */
+        /* handling error try-catch */
+        /*  try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/cesta?user_id" + id,
+            options
+          ); */
+        /* respuesta HTTP */
+        /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
+        /*  const data = await resp.json(); */
+        /* seteamos store con productosCesta */
+        /* setStore({
+            productosCesta: data,
+          });
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        } */
+      },
     },
   };
 };
