@@ -27,7 +27,7 @@ const getState = ({
             pedido: [],
             precioCesta: true,
             direccion: {},
-            configuacion: {},
+            configuracion: {},
         },
         actions: {
             // Alerts
@@ -166,12 +166,13 @@ const getState = ({
                         process.env.BACKEND_URL + "/api/producto",
                         options
                     );
+                    console.log(response);
                     if (response.status === 200) {
                         setStore({
                             registroProducto: true,
                         });
                     }
-                    const data = await reponse.json();
+                    const data = await response.json();
                     data.msg === "Missing Authorization Header" &&
                         alert("Debes iniciar sesión para publicar un producto");
                 } catch (error) {
@@ -449,7 +450,7 @@ const getState = ({
                     console.log("result", data.result);
                     setStore({
                         direccion: data.result,
-                        configuacion: data.result.user_id,
+                        configuracion: data.result.user_id,
                     });
 
                     const direccionStrfy = JSON.stringify(getStore().direccion);
