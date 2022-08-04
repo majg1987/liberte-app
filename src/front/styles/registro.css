@@ -1,7 +1,4 @@
-/* Propiedades de Css para Registro y Login */
-.container-principal-login {
-    height: 500px;
-}
+/* Propiedades de Css para Registro, Login y Recuperacion de Password */
 
 .contenedor-formulario {
     max-width: 400px;
@@ -13,6 +10,10 @@
 }
 
 /* Reajusto las propiedades del contenedor de Login */
+.container-principal-login {
+    height: 500px;
+}
+
 .contenedor-login {
     height: 360px;
     margin: 6rem auto 0 auto
@@ -49,6 +50,16 @@
     padding: .5rem;
 }
 
-.toast-container-login {
-    margin-bottom: 5rem;
+.button-login {
+    text-decoration: none;
+    font-size: small;
+}
+
+/* Estilos de page para recuperar Password */
+.contenedor-recuperacionPassword {
+    height: 300px;
+}
+
+.container-principal-recuperacionPassword {
+    height: 530px;
 }

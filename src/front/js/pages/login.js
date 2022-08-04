@@ -65,11 +65,15 @@ export const Login = () => {
               />
               <div className="d-flex flex-column">
                 <button className="boton-registro mb-2"> Acceder </button>
-                {/* <button className="boton-registro"> */}
-                <Link to={"/registro"} className="text-center">
+                <Link
+                  to={"/recuperacionPassword"}
+                  className="text-center button-login"
+                >
+                  ¿Has olvidado tu contraseña? Recuperala
+                </Link>
+                <Link to={"/registro"} className="text-center button-login">
                   Registrarse
                 </Link>
-                {/* </button> */}
               </div>
             </form>
           </div>
