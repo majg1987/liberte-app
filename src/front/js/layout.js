@@ -5,6 +5,8 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Inicio } from "./pages/inicio";
 import { Login } from "./pages/login";
+<Route element={<RecuperacionPassword />} path="/recuperacionPassword" />;
+import { RecuperacionPassword } from "./pages/recuperacionPassword";
 import { Registro } from "./pages/registro";
 import { Perfil } from "./pages/perfil.jsx";
 import { Producto } from "./pages/producto";
@@ -37,6 +39,10 @@ const Layout = () => {
             <Routes>
               <Route element={<Inicio />} path="/" />
               <Route element={<Login />} path="/login" />
+              <Route
+                element={<RecuperacionPassword />}
+                path="/recuperacionPassword"
+              />
               <Route element={<Registro />} path="/registro" />
               <Route element={<Perfil />} path="/perfil/:user_id" />
               <Route element={<Producto />} path="/producto/:theid" />

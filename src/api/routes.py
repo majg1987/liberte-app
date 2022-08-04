@@ -4,7 +4,9 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User, Producto, Pedido, Direccion, Cesta
 from api.utils import generate_sitemap, APIException, check_user_id
-import json
+import json, random, string, bcrypt
+from flask_mail import Mail, Message
+
 
 api = Blueprint("api", __name__)
 
@@ -16,6 +18,31 @@ This module takes care of JWT
 # get_jwt_identity(), para obtener la identidad de JWT en una ruta protegida
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
+# restablecer contraseña por mail
+@api.route("/recuperarPassword", methods=["POST"])
+def recuperarPassword():
+    # Recibimos los datos del front
+    body = json.loads(request.data)
+    email = body["email"]
+    # Creamos password de forma aleatoria
+    new_password = "".join(random.choice(string.ascii_uppercase + string.digits)for x in range(10))
+    # Hash password
+    hashed_password = current_app.bcrypt.generate_password_hash(new_password).decode("utf-8")
+    # Almacenamos la info del user con el email recibido
+    user = User.query.filter_by(email=email).first()
+    # Asignamos el nuevo password generado aleatoriamente al usuario
+    if user != None:
+        user.password = hashed_password
+        db.session.commit()
+
+        mail = Mail() 
+        msg = Message('Recuperación de Password', sender = 'liberte', recipients = [user.email])
+        msg.body = "Hola " + user.nombre + " tu nuevo password es " + new_password + "."
+        msg.html = "<h1>Libertè</h1><h2> Hola " + user.nombre + "</h2> <p> Tu nuevo password es <b> " + new_password + "</b></p><p>Si usted no ha solicitado el cambio de contraseña ignore y elimine el mensaje por favor.</p> <p> Mensaje enviado automáticamente, no responda</p>" 
+        mail.send(msg)
+        return "Message sent!"
+    else:
+        return jsonify({"msg":"El correo introducido no esta registrado"}), 400
 
 # registration
 @api.route("/registration", methods=["POST"])

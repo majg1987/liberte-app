@@ -52,3 +52,17 @@
 .toast-container-login {
     margin-bottom: 5rem;
 }
+
+/* Estilos de page para recuperar Password */
+.contenedor-recuperacionPassword {
+    height: 300px;
+}
+
+.container-principal-recuperacionPassword {
+    height: 530px;
+}
+
+.buttons-login {
+    text-decoration: none;
+    font-size: small;
+}

@@ -15,7 +15,8 @@ from api.commands import setup_commands
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity)
 # import the class wrapper Bcrypt
 from flask_bcrypt import Bcrypt   
-
+# Importacion de Mail
+from flask_mail import Mail
 
 #from models import Person
 
@@ -49,6 +50,16 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 print(bcrypt)
 app.bcrypt = bcrypt
+
+# Configuracion MailTrap
+app.config['MAIL_SERVER']='smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+mail = Mail()
+mail.init_app(app)
 
 # add the admin
 setup_admin(app)
