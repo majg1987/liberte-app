@@ -5,7 +5,6 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Inicio } from "./pages/inicio";
 import { Login } from "./pages/login";
-<Route element={<RecuperacionPassword />} path="/recuperacionPassword" />;
 import { RecuperacionPassword } from "./pages/recuperacionPassword";
 import { Registro } from "./pages/registro";
 import { Perfil } from "./pages/perfil.jsx";
