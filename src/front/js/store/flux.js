@@ -343,7 +343,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            user_id: getStore().userInfo.id,
+            id: getStore().userInfo.id,
             producto_id: getStore().productoSelect.id,
           }),
         };
@@ -425,6 +425,39 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
+      /* borrarCesta: async (idProducto) => {
+        console.log("is", idProducto);
+        const options = {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: getStore().userInfo.id,
+            producto_id: idProducto,
+          }),
+        };
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/cesta",
+            options
+          );
+          // if (resp.status === 200) {
+          //     console.log("producto-añadido");
+          // }
+          const data = await resp.json();
+
+          const nuevaCesta = getStore().productosCesta.filter((ele) => {
+            return ele.id != idProducto;
+          });
+
+          setStore({
+            productosCesta: nuevaCesta,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }, */
 
       obtenerDireccion: async () => {
         const options = {
@@ -600,8 +633,41 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-      deleteProducto: async (id) => {
-        console.log(id);
+      deleteProducto: async (user_id, producto_id) => {
+        console.log(user_id);
+        console.log(producto_id);
+        const options = {
+          method: "DELETE",
+          body: JSON.stringify({
+            producto_id: producto_id,
+          }),
+
+          headers: {
+            "Content-Type": "application/json",
+
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        };
+        /* handling error try-catch */
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/cesta?user_id=" + user_id,
+            options
+          );
+          if (resp.status === 200) {
+            // console.log("producto-añadido");
+            getActions().getCart();
+          }
+          const data = await resp.json();
+          /* respuesta HTTP */
+          /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
+          /* const data = await resp.json(); */
+          /* seteamos store con productosCesta */
+
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
       },
     },
   };

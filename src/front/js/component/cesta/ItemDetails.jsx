@@ -10,7 +10,8 @@ import "../../../styles/itemDetails.css";
 /* creamos el componente*/
 const ItemDetails = ({
   /* propiedades del componente */
-  id,
+  user_id,
+  productId,
   nombre,
   img,
   precio,
@@ -23,27 +24,25 @@ const ItemDetails = ({
   /* destructuring de useContext con store y actions de flux */
   /* pasamos datos a través del árbol de componentes sin tener que pasar props manualmente en cada nivel */
   const { store, actions } = useContext(Context);
+
   console.log(nombre);
   /* console.log( nombreArtista);
   console.log({ precio }); */
 
   return (
     <>
-      {/* <div className="wholeCard" style={{ width: 18 + "rem" }}>
-        <img src={img} className="itemImg" alt="card image" />
-        <h5 className="artistName">nombreArtista</h5>
-        <p className="itemTitle">{nombre}</p>
-        <p className="itemPrice">{precio}€</p>
-        <div className="divButton">
-          <button href="#" className="deleteItemButton">
-            Eliminar
-          </button>
-        </div>
-      </div> */}
-      <div className="card mb-3" style={{ maxWidth: "540px" }}>
+      <div
+        className="card mb-3"
+        style={{ maxWidth: "540px", height: 5 + "rem" }}
+      >
         <div className="row g-0">
           <div className="col-md-4">
-            <img src={img} className="img-fluid rounded-start" alt="..." />
+            <img
+              src={img}
+              className="img-fluid rounded-start"
+              alt="item image"
+              style={{ width: 10 + "rem", height: 5 + "rem" }}
+            />
           </div>
           <div className="col-md-8">
             <div className="card-body">
@@ -51,7 +50,7 @@ const ItemDetails = ({
               <p className="card-text">{precio}</p>
               <div className="divButton">
                 <button
-                  onClick={() => actions.deleteProducto(id)}
+                  onClick={() => actions.deleteProducto(user_id, productId)}
                   className="deleteItemButton"
                 >
                   Eliminar

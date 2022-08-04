@@ -397,7 +397,7 @@ def cesta():
 ###### NO BORRAR #####  
 
 # Cesta
-@api.route("/cesta", methods=["GET", "POST", "PUT"])
+@api.route("/cesta", methods=["GET", "POST", "DELETE"])
 def handle_cesta():
 
 
@@ -408,11 +408,11 @@ def handle_cesta():
         body = json.loads(request.data)
 
         nueva_cesta = Cesta(
-            user_id=body["user_id"], producto_id=body["producto_id"]
+            user_id=body["id"], producto_id=body["producto_id"]
         )
         # Vemos si el registro de esa cesta esta ya hecho
         cesta_usuario = Cesta.query.filter_by(
-            user_id=body["user_id"], producto_id=body["producto_id"]
+            user_id=body["id"], producto_id=body["producto_id"]
         ).first()
         if cesta_usuario != None:
             response_body = {"msg": "Este producto ya está guardado en la cesta"}
@@ -420,7 +420,7 @@ def handle_cesta():
             db.session.add(nueva_cesta)
             db.session.commit()
             response_body = {"result": nueva_cesta.serialize()}
-
+            return response_body, 200
 
     # Obtener cesta
 
@@ -443,17 +443,22 @@ def handle_cesta():
         return response_body, 200
 
     # Eliminar cesta
-    elif request.method == "PUT":
+    elif request.method == "DELETE":
         # Recibimos id_user e id_producto
-        user_id = request.json.get("user_id", None)
+        user_id = request.args.get('user_id')
+        # user_id = request.json.get("user_id", None)
         id_producto = request.json.get("producto_id", None)
-
-        cesta_user = Cesta.query.filter_by(
+        producto_cesta = Cesta.query.filter_by(
+            user_id=user_id, producto_id= id_producto
+        ).first()
+        """ cesta_user = Cesta.query.filter_by(
             user_id=user_id
-        ).all()
-
+        ).all() """
+        # print(cesta_usuario)
         
-        [db.session.delete(cesta) for cesta in cesta_user]
+        """ [db.session.delete(cesta) for cesta in cesta_user]
+        db.session.commit() """
+        db.session.delete(producto_cesta)
         db.session.commit()
 
         response_body = {"resul": "Producto borrado de cesta"}

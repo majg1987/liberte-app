@@ -18,7 +18,7 @@ export const Cesta = () => {
   /* igualamos a useContext(Context) para el trabajo de appContext (consumer/provider)  */
   const { store, actions } = useContext(Context);
   const [total, setTotal] = useState(0);
-  let { user_id } = store.userInfo;
+  let { id } = store.userInfo;
   /* constante para botones de paypal */
   const product = {
     description: "Lo vamos a conseguir",
@@ -36,11 +36,21 @@ export const Cesta = () => {
     /* localStorage.getItem("productSelect") && */
     /* eliminamos los pares clave/valor de productSelect en el navegador */
     /*  localStorage.removeItem("productSelect"); */
-    /* llamamos a action getCart desde flux */
 
-    actions.getCart(user_id);
-    console.log(user_id);
+    /* llamamos a action getCart desde flux */
+    actions.getCart(id);
+    console.log(id);
   }, []);
+  console.log(store.userInfo);
+  /* useEffect(() => {
+    const fetc = async () => {
+      actions.obtenerCesta();
+
+      localStorage.getItem("productSelect") &&
+        localStorage.removeItem("productSelect");
+    };
+    fetc();
+  }, []); */
 
   /* definimos una funcion para comprobar si hay productos en la cesta */
   function calculateTotalPrice() {
@@ -102,8 +112,8 @@ export const Cesta = () => {
                       {/* componente ItemDetails */}
                       <ItemDetails
                         /* cada propiedad recibe su valor en el componente */
-
-                        id={ele.producto.id}
+                        user_id={id}
+                        productId={ele.producto.id}
                         nombre={ele.producto.nombre}
                         img={ele.producto.foto_producto}
                         precio={ele.producto.precio}
