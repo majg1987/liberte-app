@@ -84,6 +84,7 @@
 		"react-masonry-css": "^1.0.16",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^6.3.0",
-		"react-toastify": "^9.0.5"
+		"react-toastify": "^9.0.5",
+		"sweetalert2": "^11.4.24"
 	}
 }

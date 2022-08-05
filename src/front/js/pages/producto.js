@@ -20,7 +20,6 @@ export const Producto = (props) => {
   const añadirCesta = () => {
     localStorage.removeItem("cesta");
     actions.añadirACesta();
-    alert("producto añadido a cesta");
   };
 
   return (

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ReactDOM from "react-dom";
+import { Context } from "../store/appContext";
+
 // Importamos librerias para botones Paypal
 import { PayPalButtons } from "@paypal/react-paypal-js";
 // Importamos librerias para crear alerts
@@ -11,6 +13,8 @@ import Alert from "./Alert";
 import "../../styles/registro.css";
 
 export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
+  console.log(product);
+  const { store, actions } = useContext(Context);
   // Creamos variable donde guardamos si el pago esta realizado
   const [paidFor, setPaidFor] = useState(false);
   // Creamos variable por si ocurre algun error
@@ -28,12 +32,12 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
 
   if (paidFor) {
     // Mostramos mensaje indicando al usuario que el pago se ha completado con exito
-    store.notifyOk("Su pago ha sido realizado correctamente");
+    actions.notifyOk("Su pago ha sido realizado correctamente");
   }
 
   if (error) {
     // Mostramos mensaje de error
-    store.notifyError("Error al realizar el pago!!!");
+    actions.notifyError("Error al realizar el pago!!!");
   }
 
   return (
@@ -51,6 +55,7 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
         }}
         // Creamos la orden
         createOrder={(data, actions) => {
+          console.log(data);
           return actions.order.create({
             purchase_units: [
               {
