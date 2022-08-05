@@ -386,9 +386,62 @@ def handle_direccion():
             response_body = {"result": direccion_modificada_srlz}
 
     return response_body, 200
-    
+##### NO BORRAR #####
+""" prueba GET cesta """
 # Cesta
-@api.route("/cesta", methods=["GET", "POST", "PUT"])
+@api.route("/cesta", methods=["GET", "PUT"])
+
+def cesta():
+# @jwt_required()
+    if request.method=="PUT": 
+        user_id = request.args.get('user_id')
+        Cesta.query.filter_by(user_id=user_id).delete()
+        
+        db.session.commit()
+        response_body = {"message": "Cesta borrada OK"}
+        return jsonify(response_body), 200
+       
+    elif request.method=="GET":
+        user_id = request.args.get('user_id')
+        cesta=Cesta.query.filter_by(user_id=user_id).all()
+        return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
+
+        
+# ruta protegida
+
+# definimos la funcion
+# def cesta():  
+    # almacenamos la identidad de JWT de la ruta protegida
+    # version user_id: user_id=get_jwt_identity()
+    # imprimimos user_id en la terminal
+    # print(user_id)
+
+    # version email: almacenamos la identidad de JWT de la ruta protegida
+    # email = get_jwt_identity()
+    
+    # version user_id: obtenemos y almacenamos la consulta sobre user_id de la tabla User
+    # por clave principal (get)
+    # user=User.query.get(user_id)
+    # print(user)
+    
+    # version email: obtenemos y almacenamos la consulta sobre email de la tabla User
+    # user = User.query.filter_by(email=email).first()
+    # print(user)
+
+    # version user_id: obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por la id de user en la tabla Cesta
+    # cesta=Cesta.query.filter_by(user_id=user_id)
+    
+    # version email: obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por la id de user en la tabla Cesta
+    # cesta=Cesta.query.filter_by(user_id=user.id)
+    
+    # ambas versiones: serializamos cada uno de los items de cesta (lambda) iterando (map) en cesta (range)
+    # convertimos una salida JSON en un objeto de response con el tipo mime de aplicación/json (jsonify)
+        # return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
+       
+###### NO BORRAR #####    
+
+# Cesta
+@api.route("/cesta", methods=["GET", "POST", "DELETE"])
 def handle_cesta():
 
 
@@ -407,10 +460,12 @@ def handle_cesta():
         ).first()
         if cesta_usuario != None:
             response_body = {"msg": "Este producto ya está guardado en la cesta"}
+            return response_body, 208
         else:
             db.session.add(nueva_cesta)
             db.session.commit()
             response_body = {"result": nueva_cesta.serialize()}
+            return response_body, 200
 
 
     # Obtener cesta
@@ -433,23 +488,20 @@ def handle_cesta():
         response_body = {"result": lista_productos_cesta}
         return response_body, 200
 
-    # Eliminar cesta
-    elif request.method == "PUT":
-        # Recibimos id_user e id_producto
-        user_id = request.json.get("user_id", None)
+    # NUEVA Eliminar cesta
+    elif request.method == "DELETE":
+        user_id = request.args.get('user_id')
         id_producto = request.json.get("producto_id", None)
-
-        cesta_user = Cesta.query.filter_by(
-            user_id=user_id
-        ).all()
-
+        producto_cesta = Cesta.query.filter_by(
+            user_id=user_id, producto_id= id_producto
+        ).first()
         
-        [db.session.delete(cesta) for cesta in cesta_user]
+        db.session.delete(producto_cesta)
         db.session.commit()
 
-        response_body = {"resul": "Producto borrado de cesta"}
+        response_body = {"result": "Producto borrado de cesta"}
 
-    return response_body, 200
+        return response_body, 200
 
 # Pedido
 @api.route("/pedido", methods=["GET", "POST"])

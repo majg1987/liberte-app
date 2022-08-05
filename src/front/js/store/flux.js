@@ -393,8 +393,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            /* cambio */
             user_id: getStore().userInfo.id,
             producto_id: getStore().productoSelect.id,
+            /* id: getStore().userInfo.id,
+            producto_id: getStore().productoSelect.id, */
           }),
         };
         try {
@@ -403,20 +406,61 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           if (resp.status === 200) {
-            console.log("producto-añadido");
+            alert("producto añadido a cesta");
+          } else if (resp.status == 208) {
+            alert("producto ya ha sido agregado");
           }
           const data = await resp.json();
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
       },
 
-      obtenerCesta: async () => {
+      /*  obtenerCesta: async () => {
+                const options = {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                };
+                try {
+                    if (
+                        !localStorage.getItem("cesta") ||
+                        localStorage.getItem("cesta").length === 0
+                    ) {
+                        const resp = await fetch(
+                            process.env.BACKEND_URL +
+                            `/api/cesta?user_id=${getStore().userInfo.id}`
+                        );
+                        const data = await resp.json();
+
+                        setStore({
+                            productosCesta: data.result,
+                        });
+
+                        const cestaStrfy = JSON.stringify(getStore().productosCesta);
+                        localStorage.setItem("cesta", cestaStrfy);
+                    } else {
+                        setStore({
+                            productosCesta: JSON.parse(localStorage.getItem("cesta")),
+                        });
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            }, */
+
+      /* obtenerCesta: async () => {
         const options = {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            id_user: getStore().userInfo.user_id,
+            peticion: "get_cesta",
+          }),
         };
         try {
           if (
@@ -424,8 +468,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             localStorage.getItem("cesta").length === 0
           ) {
             const resp = await fetch(
-              process.env.BACKEND_URL +
-                `/api/cesta?user_id=${getStore().userInfo.id}`
+              process.env.BACKEND_URL + "/api/cesta",
+              options
             );
             const data = await resp.json();
 
@@ -443,7 +487,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log(error);
         }
-      },
+      }, */
       borrarCesta: async () => {
         const options = {
           method: "PUT",
@@ -471,7 +515,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-
       obtenerDireccion: async () => {
         const options = {
           method: "GET",
@@ -607,6 +650,61 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           console.log("datita", data);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      getCart: async (id) => {
+        console.log(id);
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            /* Authorization: "Bearer " + sessionStorage.getItem("token"), */
+          },
+        };
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/cesta?user_id=" + id,
+            options
+          );
+          const data = await resp.json();
+          setStore({
+            productosCesta: data,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      deleteProducto: async (user_id, producto_id) => {
+        const options = {
+          method: "DELETE",
+          body: JSON.stringify({
+            producto_id: producto_id,
+          }),
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
+        };
+        /* handling error try-catch */
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/cesta?user_id=" + user_id,
+            options
+          );
+          if (resp.status === 200) {
+            // console.log("producto-añadido");
+            getActions().getCart(user_id);
+          }
+          const data = await resp.json();
+          /* respuesta HTTP */
+          /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
+          /* const data = await resp.json(); */
+          /* seteamos store con productosCesta */
+
+          console.log(data);
         } catch (error) {
           console.log(error);
         }
