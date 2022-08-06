@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import ItemDetails from "../component/cesta/ItemDetails.jsx";
 import { PaypalCheckoutButton } from "../component/PaypalCheckoutButton";
 
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 import "../../styles/cesta.css";
 
