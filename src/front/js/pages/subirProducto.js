@@ -37,7 +37,9 @@ export const SubirProducto = () => {
     data.append("upload_preset", "usuarios-liberte");
     setLoading(true);
     const resp = await fetch(
-      "https://api.cloudinary.com/v1_1/yisusrobles/image/upload",
+      "https://api.cloudinary.com/v1_1/" +
+        process.env.CLOUD_NAME +
+        "/image/upload",
       {
         method: "POST",
         // mode: "no-cors",
