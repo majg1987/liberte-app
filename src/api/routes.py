@@ -133,7 +133,12 @@ def configuracion():
 
     # Recibimos todos los datos del usuario menos contraseña
     body = json.loads(request.data)
-    print(body)
+
+    if body["password"]:
+
+        hashed_password = current_app.bcrypt.generate_password_hash(
+        body["password"]
+        ).decode("utf-8")
 
     usuario_modificado = User.query.filter_by(id=body["id"]).first()
 
@@ -149,13 +154,15 @@ def configuracion():
 
 
             if edit_key in user_keys:
-
                 usuario_modificado_srlz["user_id"] = usuario_modificado_srlz["id"]
                 usuario_modificado_srlz[edit_key] = body[edit_key]
+                if body["password"]:
+                    usuario_modificado_srlz["password"] = hashed_password
+                    usuario_modificado.password = usuario_modificado_srlz["password"]
                 
                 usuario_modificado.nombre = usuario_modificado_srlz["nombre"]
                 usuario_modificado.apellido = usuario_modificado_srlz["apellido"]
-                usuario_modificado.email = usuario_modificado_srlz["email"]
+                
                 usuario_modificado.artista = usuario_modificado_srlz["artista"]
                 usuario_modificado.nacimiento = usuario_modificado_srlz["nacimiento"]
                 usuario_modificado.foto_usuario = usuario_modificado_srlz["foto_usuario"]
@@ -177,18 +184,18 @@ def configuracion():
                 direccion_usuario_modificado.numero = direcion_modificada_srl["numero"]
                 direccion_usuario_modificado.piso = direcion_modificada_srl["piso"]
                 direccion_usuario_modificado.puerta = direcion_modificada_srl["puerta"]
-
-                # print("oficial",direccion_usuario_modificado.serialize())
                 
                 db.session.commit()
 
-    print("srl", direcion_modificada_srl)
 
 
     response_body = {
         "usuario": usuario_modificado_srlz, 
         "direccion": direcion_modificada_srl
     }
+
+    print(response_body)
+
 
     return response_body, 200
 
@@ -389,22 +396,22 @@ def handle_direccion():
 ##### NO BORRAR #####
 """ prueba GET cesta """
 # Cesta
-@api.route("/cesta", methods=["GET", "PUT"])
+# @api.route("/cesta", methods=["GET", "PUT"])
 
-def cesta():
-# @jwt_required()
-    if request.method=="PUT": 
-        user_id = request.args.get('user_id')
-        Cesta.query.filter_by(user_id=user_id).delete()
+# def cesta():
+# # @jwt_required()
+#     if request.method=="PUT": 
+#         user_id = request.args.get('user_id')
+#         Cesta.query.filter_by(user_id=user_id).delete()
         
-        db.session.commit()
-        response_body = {"message": "Cesta borrada OK"}
-        return jsonify(response_body), 200
+#         db.session.commit()
+#         response_body = {"message": "Cesta borrada OK"}
+#         return jsonify(response_body), 200
        
-    elif request.method=="GET":
-        user_id = request.args.get('user_id')
-        cesta=Cesta.query.filter_by(user_id=user_id).all()
-        return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
+#     elif request.method=="GET":
+#         user_id = request.args.get('user_id')
+#         cesta=Cesta.query.filter_by(user_id=user_id).all()
+#         return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
 
         
 # ruta protegida
@@ -441,7 +448,7 @@ def cesta():
 ###### NO BORRAR #####    
 
 # Cesta
-@api.route("/cesta", methods=["GET", "POST", "DELETE"])
+@api.route("/cesta", methods=["GET", "POST", "PUT"])
 def handle_cesta():
 
 
@@ -460,12 +467,11 @@ def handle_cesta():
         ).first()
         if cesta_usuario != None:
             response_body = {"msg": "Este producto ya está guardado en la cesta"}
-            return response_body, 208
+            return response_body,208
         else:
             db.session.add(nueva_cesta)
             db.session.commit()
             response_body = {"result": nueva_cesta.serialize()}
-            return response_body, 200
 
 
     # Obtener cesta
@@ -488,20 +494,23 @@ def handle_cesta():
         response_body = {"result": lista_productos_cesta}
         return response_body, 200
 
-    # NUEVA Eliminar cesta
-    elif request.method == "DELETE":
-        user_id = request.args.get('user_id')
+    # Eliminar cesta
+    elif request.method == "PUT":
+        # Recibimos id_user e id_producto
+        user_id = request.json.get("user_id", None)
         id_producto = request.json.get("producto_id", None)
-        producto_cesta = Cesta.query.filter_by(
-            user_id=user_id, producto_id= id_producto
+
+        cesta_user = Cesta.query.filter_by(
+            user_id=user_id, producto_id = id_producto
         ).first()
-        
-        db.session.delete(producto_cesta)
+
+        db.session.delete(cesta_user)
+
         db.session.commit()
 
-        response_body = {"result": "Producto borrado de cesta"}
+        response_body = {"resul": "Producto borrado de cesta"}
 
-        return response_body, 200
+    return response_body, 200
 
 # Pedido
 @api.route("/pedido", methods=["GET", "POST"])

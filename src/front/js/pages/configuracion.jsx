@@ -10,7 +10,8 @@ export const ConfiguracionUsuario = () => {
     const [loading, setLoading] = useState(false);
     const [nombre, setNombre] = useState(store.userInfo.nombre);
     const [apellido, setApellido] = useState(store.userInfo.apellido);
-    const [email, setEmail] = useState(store.userInfo.email);
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
     const [artista, setArtista] = useState(store.userInfo.artista);
     const [nacimiento, setNacimiento] = useState(store.userInfo.nacimiento);
     const [descripcion, setDescripcion] = useState(store.userInfo.descripcion);
@@ -37,9 +38,7 @@ export const ConfiguracionUsuario = () => {
                     body: data,
                 }
             );
-
             const file = await resp.json();
-
             setImagenSelect(file.secure_url);
             console.log(imagenSelect)
             setLoading(false);
@@ -63,8 +62,14 @@ export const ConfiguracionUsuario = () => {
         e.preventDefault();
 
         // Antes de llamar al método mantenemos la imagen de usuario si no ha puesto una nueva
-        const img = imagenSelect === "" ? store.userInfo.foto_usuario : imagenSelect
-        actions.configuracionUsuario(nombre, apellido, email, artistProvisional, nacimiento, descripcion, img, tipo_via, nombre_via, numero, piso, puerta);
+        if (password === password2) {
+
+            const img = imagenSelect === "" ? store.userInfo.foto_usuario : imagenSelect
+            actions.configuracionUsuario(nombre, apellido, password, artistProvisional, nacimiento, descripcion, img, tipo_via, nombre_via, numero, piso, puerta);
+        }
+        else {
+            alert("Su nueva contraseña no ha sido respetida correctamente")
+        }
     }
 
 
@@ -78,34 +83,44 @@ export const ConfiguracionUsuario = () => {
 
 
                     <div className="row row-nombre">
-                        <div className="col-md-12 col-lg-3 col-titulo-nombre">
+                        <div className="col-3 col-titulo-nombre">
                             <p className="nombre" >Nombre</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-nombre">
+                        <div className="col-9 col-input-nombre">
                             <input type="text" className="input-registro input-nombre" onChange={(e) => setNombre(e.target.value)} defaultValue={store.userInfo.nombre} />
                         </div>
                     </div>
 
                     <div className="row row-apellido">
-                        <div className="col-md-12 col-lg-3 col-titulo-apellido">
+                        <div className="col-3 col-titulo-apellido">
                             <p className="apellido">Apellido</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-apellido">
+                        <div className="col-9 col-input-apellido">
                             <input type="text" className="input-registro input-nombre" onChange={(e) => setApellido(e.target.value)} defaultValue={store.userInfo.apellido} />
                         </div>
                     </div>
 
-                    <div className="row row-email">
-                        <div className="col-md-12 col-lg-3 col-titulo-email">
-                            <p className="email">Email</p>
+                    <div className="row row-contraseña">
+                        <div className="col-3 col-titulo-password">
+                            <p className="password">Nueva contraseña</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-email">
-                            <input type="email" className="input-registro input-nombre" onChange={(e) => setEmail(e.target.value)} defaultValue={store.userInfo.email} />
+                        <div className="col-9 col-input-password">
+                            <input type="password" className="input-registro input-nombre" onChange={(e) => setPassword(e.target.value)} />
                         </div>
                     </div>
 
+                    <div className="row row-contraseña">
+                        <div className="col-3 col-titulo-password">
+                            <p className="password">Repita su nueva contraseña</p>
+                        </div>
+                        <div className="col-9 col-input-password">
+                            <input type="password" className="input-registro input-nombre" onChange={(e) => setPassword2(e.target.value)} />
+                        </div>
+                    </div>
+
+
                     <div className="row row-artista">
-                        <div className="col-md-12 col-lg-3 col-titulo-artista">
+                        <div className="col-3 col-titulo-artista">
                             <p className="password">Quieres cuenta de artista?</p>
                         </div>
 
@@ -144,70 +159,70 @@ export const ConfiguracionUsuario = () => {
 
 
                     <div className="row row-nacimiento">
-                        <div className="col-md-12 col-lg-3 col-titulo-nacimiento">
+                        <div className="col-3 col-titulo-nacimiento">
                             <p className="nacimiento">Nacimiento</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-nacimiento">
+                        <div className="col-9 col-input-nacimiento">
                             <input type="date" className="input-registro input-nacimiento" onChange={(e) => setNacimiento(e.target.value)} defaultValue={store.userInfo.nacimiento} />
                         </div>
                     </div>
 
                     <div className="row row-tipo_via">
-                        <div className="col-md-12 col-lg-3 col-titulo-tipo_via">
-                            <p className="tipo_via">tipo_via</p>
+                        <div className="col-3 col-titulo-tipo_via">
+                            <p className="tipo_via">tipo de vía</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-tipo_via">
+                        <div className="col-9 col-input-tipo_via">
                             <input type="text" className="input-registro input-tipo_via" onChange={(e) => setTipo_via(e.target.value)} defaultValue={store.direccion.tipo_via} />
                         </div>
                     </div>
 
                     <div className="row row-nombre_via">
-                        <div className="col-md-12 col-lg-3 col-titulo-nombre_via">
-                            <p className="nombre_via">nombre_via</p>
+                        <div className="col-3 col-titulo-nombre_via">
+                            <p className="nombre_via">nombre de vía</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-tipo_via">
+                        <div className="col-9 col-input-tipo_via">
                             <input type="text" className="input-registro input-nombre_via" onChange={(e) => setNombre_via(e.target.value)} defaultValue={store.direccion.nombre_via} />
                         </div>
                     </div>
 
                     <div className="row row-numero">
-                        <div className="col-md-12 col-lg-3 col-titulo-numero">
-                            <p className="numero">numero</p>
+                        <div className="col-3 col-titulo-numero">
+                            <p className="numero">Número</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-tipo_via">
+                        <div className="col-9 col-input-tipo_via">
                             <input type="number" className="input-registro input-numero" onChange={(e) => setNumero(e.target.value)} defaultValue={store.direccion.numero} />
                         </div>
                     </div>
 
                     <div className="row row-piso">
-                        <div className="col-md-12 col-lg-3 col-titulo-piso">
-                            <p className="piso">piso</p>
+                        <div className="col-3 col-titulo-piso">
+                            <p className="piso">Piso</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-piso">
+                        <div className="col-9 col-input-piso">
                             <input type="number" className="input-registro input-piso" onChange={(e) => setPiso(e.target.value)} defaultValue={store.direccion.piso} />
                         </div>
                     </div>
 
                     <div className="row row-puerta">
-                        <div className="col-md-12 col-lg-3 col-titulo-puerta">
-                            <p className="puerta">puerta</p>
+                        <div className="col-3 col-titulo-puerta">
+                            <p className="puerta">Puerta</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-puerta">
+                        <div className="col-9 col-input-puerta">
                             <input type="text" className="input-registro input-puerta" onChange={(e) => setPuerta(e.target.value)} defaultValue={store.direccion.puerta} />
                         </div>
                     </div>
 
                     <div className="row row-descripcion">
-                        <div className="col-md-12 col-lg-3 col-titulo-descripcion">
+                        <div className="col-3 col-titulo-descripcion">
                             <p className="descripcion">Descripcion</p>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-descripcion ">
+                        <div className="col-9 col-input-descripcion ">
                             <textarea className="input-descripcion" onChange={(e) => setDescripcion(e.target.value)} defaultValue={store.userInfo.descripcion}></textarea>
                         </div>
                     </div>
 
                     <div className="row row-foto">
-                        <div className="col-md-12 col-lg-3 col-titulo-foto">
+                        <div className="col-3 col-titulo-foto">
 
                             <label className="label-boton-subir-foto" htmlFor="boton-subir-foto">Subir foto</label>
 
@@ -220,10 +235,10 @@ export const ConfiguracionUsuario = () => {
                                 }}
                             ></input>
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-foto ">
+                        <div className="col-9 col-input-foto ">
                             <div className="row row-input-foto">
 
-                                <div className="col-md-12 col-lg-3 pl-2">
+                                <div className="col-3 pl-2">
                                     <div className="contenedor-img-user">
                                         {
                                             imagenSelect == "" ?
@@ -242,9 +257,9 @@ export const ConfiguracionUsuario = () => {
                     </div>
 
                     <div className="row row-boton">
-                        <div className="col-md-12 col-lg-3 col-titulo-boton">
+                        <div className="col-3 col-titulo-boton">
                         </div>
-                        <div className="col-md-12 col-lg-9 col-input-foto ">
+                        <div className="col-9 col-input-foto ">
                             <div className="row row-input-foto">
 
                                 <div className="col-12 pl-2 d-flex justify-content-end">
