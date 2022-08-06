@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/producto.css";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import Alert from "../component/Alert";
 
 export const Producto = (props) => {
   const { store, actions } = useContext(Context);
@@ -19,7 +20,7 @@ export const Producto = (props) => {
   }, []);
 
   const añadirCesta = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     localStorage.removeItem("cesta");
     actions.añadirACesta();
     // alert("producto añadido a cesta");
@@ -54,9 +55,29 @@ export const Producto = (props) => {
         productoTarget.vendedor_foto
       );
 
-    navigate(`../producto/${productoTarget.id}`)
-
+    navigate(`../producto/${productoTarget.id}`);
   };
+
+  useEffect(() => {
+    if (store.okAñadirProducto) {
+      actions.notifyOk("Producto añadido a cesta correctamente");
+      actions.okAñadirProductoReset();
+    }
+  }, [store.okAñadirProducto]);
+
+  useEffect(() => {
+    if (store.errorAñadirProducto) {
+      actions.notifyError("Error al añadir el producto a cesta");
+      actions.errorAñadirProductoReset();
+    }
+  }, [store.errorAñadirProducto]);
+
+  useEffect(() => {
+    if (store.yaAñadidoProducto) {
+      actions.notifyOk("Este producto ya esta añadido en la cesta");
+      actions.yaAñadidoProductoReset();
+    }
+  }, [store.yaAñadidoProducto]);
 
   return (
     <>
@@ -171,6 +192,7 @@ export const Producto = (props) => {
               </div>
             </div>
           </div>
+          <Alert />
         </div>
       ) : (
         <div></div>
