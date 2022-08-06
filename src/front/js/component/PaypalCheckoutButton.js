@@ -1,25 +1,46 @@
-import React, { useState, useContext } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 
+import ReactDOM from "react-dom";
 // Importamos librerias para botones Paypal
 import { PayPalButtons } from "@paypal/react-paypal-js";
 // Importamos librerias para crear alerts
-// import { ToastContainer, toast, Zoom } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// Importamos componente Alert
-import Alert from "./Alert";
+import { ToastContainer, toast, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Importamos estilos de Css
 import "../../styles/registro.css";
 
-export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
-  console.log(product);
+export const PaypalCheckoutButton = ({ product }) => {
   const { store, actions } = useContext(Context);
   // Creamos variable donde guardamos si el pago esta realizado
   const [paidFor, setPaidFor] = useState(false);
   // Creamos variable por si ocurre algun error
   const [error, setError] = useState(null);
 
+  /** Creo las caracteristicas de alert Ok */
+  const notifyOk = (mensaje) =>
+    toast.info("🦄 " + mensaje, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      transition: Zoom,
+    });
+  /** Creo las caracteristicas de alert Error */
+  const notifyError = (mensaje) =>
+    toast.error(mensaje, {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      transition: Zoom,
+    });
   const handleAprove = (orderId) => {
     // Llamamos a la funcion con el backend para cumplir con el pedido
 
@@ -32,12 +53,19 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
 
   if (paidFor) {
     // Mostramos mensaje indicando al usuario que el pago se ha completado con exito
-    actions.notifyOk("Su pago ha sido realizado correctamente");
+    notifyOk("Su pago ha sido realizado correctamente");
+    actions.borrarCesta();
+    actions.hacerPedido();
+    localStorage.removeItem("cesta");
+    // setTimeout(() => {
+    //   location.reload();
+    // }, 5000);
   }
+
 
   if (error) {
     // Mostramos mensaje de error
-    actions.notifyError("Error al realizar el pago!!!");
+    notifyError("Error al realizar el pago!!!");
   }
 
   return (
@@ -55,15 +83,44 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
         }}
         // Creamos la orden
         createOrder={(data, actions) => {
-          console.log(data);
+
           return actions.order.create({
             purchase_units: [
               {
-                description: product.description,
+
+                // description: product.description,
                 amount: {
-                  value: product.price,
+                  currency_code: "EUR",
+                  value: store.precioCesta
+                  // breakdown: {
+                  //   item_total: {
+                  //     currency_code: "EUR",
+                  //     value: numero
+                  //   }
                 },
+                // items: [
+                //   {
+                //     name: "MY PRODUCT NAME",
+                //     unit_amount: {
+                //       currency_code: "EUR",
+                //       value: product.price
+                //     },
+                //     quantity: 1
+                //   }
+                // ]
+
+                // amount: {
+                //   currency_code: "EUR",
+                //   // value: product.price,
+                //   value: "30.00",
+                //   breakdown: {
+                //     item_total: { currency_code: "EUR", value: "100.00" },
+                //     tax_total: { currency_code: "EUR", value: "10.00" }
+                //   }
+
+                // },
               },
+
             ],
           });
         }}
@@ -89,7 +146,7 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
         }}
         onCancel={() => {
           //Mostramos mensaje si hay una cancelacion
-          store.notifyError("La peticion de pago ha sido cancelada");
+          notifyError("La peticion de pago ha sido cancelada");
         }}
         // En caso de Error
         onError={(error) => {
@@ -99,7 +156,18 @@ export const PaypalCheckoutButton = ({ product } /*{ order }*/) => {
         }}
       />
       <div>
-        {/* Componente Alert  */} <Alert />
+        {/* Componente Alert  */}
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </div>
     </>
   );

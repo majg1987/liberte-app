@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/producto.css";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 export const Producto = (props) => {
   const { store, actions } = useContext(Context);
-  const params = useParams();
   console.log("productoSelect", store.productoSelect);
+  let navigate = useNavigate();
 
   const [scroll, setScroll] = useState(null);
 
@@ -17,22 +18,68 @@ export const Producto = (props) => {
     actions.productoSelect();
   }, []);
 
-  const añadirCesta = () => {
+  const añadirCesta = (e) => {
+    e.preventDefault()
     localStorage.removeItem("cesta");
     actions.añadirACesta();
+    // alert("producto añadido a cesta");
+  };
+
+  const siguiente = (direccion) => {
+    let indexProducto;
+
+    for (let i = 0; i < store.productos.length; i++) {
+      if (store.productos[i].id === store.productoSelect.id) {
+        indexProducto = i;
+        break;
+      }
+    }
+    let productoTarget;
+    direccion === "right"
+      ? (productoTarget = store.productos[indexProducto + 1])
+      : (productoTarget = store.productos[indexProducto - 1]);
+
+    localStorage.removeItem("productSelect");
+
+    productoTarget !== undefined &&
+      actions.productoSelect(
+        productoTarget.id,
+        productoTarget.nombre,
+        productoTarget.foto_producto,
+        productoTarget.precio,
+        productoTarget.descripcion,
+        productoTarget.dimensiones,
+        productoTarget.categoria,
+        productoTarget.vendedor_nombre,
+        productoTarget.vendedor_foto
+      );
+
+    navigate(`../producto/${productoTarget.id}`)
+
   };
 
   return (
     <>
       {scroll ? (
         <div className="container-producto-vista-producto">
+          <AiOutlineArrowRight
+            className="icono-right icono-direccion"
+            size={28}
+            onClick={() => siguiente("right")}
+          />
+
+          <AiOutlineArrowLeft
+            className="icono-left icono-direccion"
+            size={28}
+            onClick={() => siguiente("left")}
+          />
           <div className="container">
             <div className="row row-producto">
               <div className="row row-titulo-obra">
                 <p className="nombre-obra">{store.productoSelect.nombre}</p>
               </div>
 
-              <div className="col-lg-6 col-md-12 col-sm-12 col-foto-producto p-0 pr-2">
+              <div className="col-lg-6 col-md-12 col-sm-12 col-foto-producto p-0 productoTarget-2">
                 <div className="container-foto-producto">
                   <img
                     className="foto-producto"
@@ -67,7 +114,10 @@ export const Producto = (props) => {
                   </div>
 
                   <div className="col-6 col-boton-cesta d-flex justify-content-end">
-                    <button className="boton-registro" onClick={añadirCesta}>
+                    <button
+                      className="boton-registro"
+                      onClick={(e) => añadirCesta(e)}
+                    >
                       añadir a carrito
                     </button>
                   </div>

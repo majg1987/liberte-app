@@ -1,6 +1,7 @@
 .col-foto-producto,
 .col-info-producto {
     min-height: 80vh;
+    padding-left: 2rem;
 }
 
 .row .nombre-obra {
@@ -10,7 +11,7 @@
 
 .foto-producto {
     width: 100%;
-    height: 50vh;
+    height: 65vh;
     object-fit: cover;
 }
 
@@ -23,8 +24,25 @@
     height: 50px;
     width: 50px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .nombre-artista {
     margin-left: 5%;
+}
+
+.icono-direccion {
+    height: 2rem;
+}
+
+.icono-left {
+    position: absolute;
+    top: 50%;
+    left: 1%;
+}
+
+.icono-right {
+    position: absolute;
+    top: 50%;
+    right: 1%;
 }

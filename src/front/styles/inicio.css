@@ -19,7 +19,7 @@ h5[class*="titulo"] {
     background: linear-gradient(-45deg, #f2cb05, #f7750f, #7c0ff7, #0e75ed);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-    min-height: 94vh;
+    min-height: 40vh;
 }
 
 @keyframes gradient {
@@ -37,8 +37,8 @@ h5[class*="titulo"] {
 }
 
 .row-logo {
-    height: 30vh;
-    width: 30vh;
+    height: 20vh;
+    width: 20vh;
     background-color: white;
 }
 
