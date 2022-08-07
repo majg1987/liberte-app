@@ -47,7 +47,6 @@ export const SubirProducto = () => {
       }
     );
     const file = await resp.json();
-    console.log(file);
     setImagenSelect(file.secure_url);
     setLoading(false);
   };

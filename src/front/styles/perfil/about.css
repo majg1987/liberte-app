@@ -1,0 +1,49 @@
+#profile-pic-wrapper {
+  max-width: 400px;
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#profile-pic {
+  max-width: 100%;
+  height: auto;
+}
+
+.social-icons {
+  color: #fff;
+  background: #f3d25b;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 28px;
+  padding-top: 3px;
+  margin: 0 2px;
+  -o-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.social-icons span {
+  color: rgba(225, 170, 30, 0.992);
+  position: absolute;
+  font-family: sans-serif;
+  bottom: 0;
+  left: -25px;
+  right: -25px;
+  padding: 5px 7px;
+  z-index: -1;
+  font-size: 12px;
+  border-radius: 2px;
+  background: rgb(248, 238, 104);
+  visibility: hidden;
+  opacity: 0;
+  -o-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -webkit-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  -moz-transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}

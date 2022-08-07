@@ -25,7 +25,6 @@ export const ConfiguracionUsuario = () => {
   const [puerta, setPuerta] = useState(store.direccion.puerta);
 
   const subirImagen = async (foto) => {
-    console.log(foto);
     const data = new FormData();
     data.append("file", foto);
     data.append("upload_preset", "usuarios-liberte");
@@ -41,7 +40,6 @@ export const ConfiguracionUsuario = () => {
       );
       const file = await resp.json();
       setImagenSelect(file.secure_url);
-      console.log(imagenSelect);
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -50,8 +48,6 @@ export const ConfiguracionUsuario = () => {
 
   useEffect(() => {
     actions.obtenerDireccion();
-    console.log("userInfo", store.userInfo);
-    console.log("direccion", store.direccion);
   }, []);
 
   const enviarCambiosUsuario = (e) => {

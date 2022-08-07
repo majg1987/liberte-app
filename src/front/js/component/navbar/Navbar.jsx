@@ -10,12 +10,14 @@ import yellow from "../../../img/yellow.png";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-  const [lengthCesta, setLengthCesta] = useState(0)
+  const [lengthCesta, setLengthCesta] = useState(0);
 
   useEffect(() => {
-    actions.obtenerCesta();
-    setLengthCesta(store.numeroProductosCesta)
-  }, [localStorage.getItem("cesta")])
+    if (typeof store.userInfo.id !== "undefined") {
+      actions.obtenerCesta();
+      setLengthCesta(store.numeroProductosCesta);
+    }
+  }, [localStorage.getItem("cesta")]);
 
   return (
     <>
@@ -49,15 +51,6 @@ export const Navbar = () => {
                         <FiLogOut size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
-                    {/* <Link to={`/configuracion/${store.userInfo.id}`}>
-                      <button type="button" className="btn btn-sm me-2 border-0">
-                        <GiShoppingBag size={28} style={{ color: "#e28f2c" }} />
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                          {store.productosCesta.length}
-                          <span className="visually-hidden"></span>
-                        </span>
-                      </button>
-                    </Link> */}
                   </li>
                 ) : null}
                 {store.auth ? (
@@ -86,27 +79,17 @@ export const Navbar = () => {
                 <li className="nav-item active">
                   <Link to={`/cesta2/${store.userInfo.id}`}>
                     <button type="button" className="btn btn-sm me-2 border-0">
-                      <GiShoppingBag size={28} style={{ color: "#e28f2c" }} />
-                      {
-                        store.productosCesta.length &&
-
-                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                          {lengthCesta}
-                          <span className="visually-hidden"></span>
-                        </span>
-                      }
-                    </button>
-                  </Link>
-                  {/* <Link to={`/subirProducto`}>
-                    <button type="button" className="btn btn-sm me-2 border-0">
-                      <GiShoppingBag size={28} style={{ color: "#e28f2c" }} />
+                      <GiShoppingBag
+                        size={28}
+                        style={{ color: "#e28f2c" }}
+                        title="Cesta"
+                      />
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         {store.productosCesta.length}
                         <span className="visually-hidden"></span>
                       </span>
                     </button>
-                  </Link> */}
-
+                  </Link>
                 </li>
               </div>
             </ul>

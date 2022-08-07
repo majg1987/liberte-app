@@ -73,9 +73,6 @@ def registration():
 
     user = User(**body)
 
-    print(user.id)
-
-
     db.session.add(user)
     usuario = User.query.filter_by(email=body["email"]).first()
 
@@ -99,7 +96,6 @@ def login():
     user = User.query.filter_by(email=email).first()
 
     # Si el email o password no coindicen retornamos error de autentificacion
-
     if email != user.email or not current_app.bcrypt.check_password_hash(
         user.password, password
     ):
@@ -152,7 +148,6 @@ def configuracion():
 
             usuario_modificado_srlz = usuario_modificado.serialize()
 
-
             if edit_key in user_keys:
                 usuario_modificado_srlz["user_id"] = usuario_modificado_srlz["id"]
                 usuario_modificado_srlz[edit_key] = body[edit_key]
@@ -161,8 +156,7 @@ def configuracion():
                     usuario_modificado.password = usuario_modificado_srlz["password"]
                 
                 usuario_modificado.nombre = usuario_modificado_srlz["nombre"]
-                usuario_modificado.apellido = usuario_modificado_srlz["apellido"]
-                
+                usuario_modificado.apellido = usuario_modificado_srlz["apellido"]                
                 usuario_modificado.artista = usuario_modificado_srlz["artista"]
                 usuario_modificado.nacimiento = usuario_modificado_srlz["nacimiento"]
                 usuario_modificado.foto_usuario = usuario_modificado_srlz["foto_usuario"]
@@ -178,7 +172,6 @@ def configuracion():
 
                 direcion_modificada_srl["direccion_id"] = direcion_modificada_srl["id"]
                 direcion_modificada_srl[edit_key] = body[edit_key]
-
                 direccion_usuario_modificado.tipo_via = direcion_modificada_srl["tipo_via"]
                 direccion_usuario_modificado.nombre_via = direcion_modificada_srl["nombre_via"]
                 direccion_usuario_modificado.numero = direcion_modificada_srl["numero"]
@@ -187,60 +180,58 @@ def configuracion():
                 
                 db.session.commit()
 
-
-
     response_body = {
         "usuario": usuario_modificado_srlz, 
         "direccion": direcion_modificada_srl
     }
 
-    print(response_body)
-
-
     return response_body, 200
 
 
-# GET Artista (perfil)
-# Nos traemos la información del artista para su pagina de perfil
-
+# perfil usuario - artista
 @api.route("/perfil_artista", methods=["POST", "GET"])
 def handle_perfil_artista():
-    user_id = request.args.get('user_id')
-    # GET con user_id /api/perfil_artista?user_id=
-    user_id, response_body = check_user_id(user_id)
+
+# Recogemos argumento id de la URL. Si no existe, el GET es global
+    id = request.args.get('id')
+    id, response_body = check_user_id(id)
+
     if len(response_body) != 0:
         return response_body, 400
-    artista = User.query.filter_by(id=user_id).first()
+
+    artista = User.query.filter_by(id=id).first()
+
     return json.dumps(artista.serialize()), 200
 
-# GET Producto (perfil)
-# Se hace este nuevo GET porque se modificó el GET /producto para que tuviera body (JSON)
 
+# perfil usuario - producto
 @api.route("/perfil_galeria", methods=["POST", "GET"])
 def handle_producto_galeria():
-    # Recogemos argumento user_id de la URL. Si no existe, el GET es global
-    user_id = request.args.get('user_id')
-    # GET con user_id /api/producto?user_id=
-    if user_id:
-        user_id, response_body = check_user_id(user_id)
+    # Recogemos argumento id de la URL
+    id = request.args.get('id')
+   
+    if id:
+        id, response_body = check_user_id(id)
         if len(response_body) != 0:
             return response_body, 400
-        # Este JSON es igual al que debería de retornar el endpoint con las fotos del usuario
-        # Usamos data_gallery.py con datos dummy
-        from api.data_gallery import data
-        return json.dumps([x for x in data if x['user_id'] == user_id]), 200
         
-        ##### NO BORRAR ####
-        #response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
-        #response_body = [producto.serialize() for producto in response_body]
-        #return json.dumps(response_body), 200
-        ##### NO BORRAR ####
+    # Para revisar si el usuario tiene galeria
+    # Si no tiene, uso data_galery
+    response_body = Producto.query.filter_by(vendedor_user_id=id).all()
+    response_body = [producto.serialize() for producto in response_body]
     
-    # GET sin user_id /api/producto_galeria
-    else:
-        response_body = Producto.query.filter_by(vendido=False).all()
-        response_body = [producto.serialize() for producto in response_body]
+    if len(response_body) > 0:
         return json.dumps(response_body), 200
+
+    # Este JSON es igual al que debería de retornar el endpoint con las fotos del usuario
+    # Usamos data_gallery.py con datos dummy
+    from api.data_gallery import data
+    response_body = [x for x in data if x['user_id'] == id]
+    if len(response_body) > 0:
+        return json.dumps(response_body), 200
+    else:
+        response_body = {"message": f"Usuario {id} no tiene galeria"}
+        return response_body, 200
 
 
 @api.route("/productosInicio", methods=["GET"])
@@ -253,6 +244,7 @@ def handle_productosInicio():
         artista["vendedor_nombre"] = user.nombre
         artista["vendedor_foto"] = user.foto_usuario
     return json.dumps(response_body), 200
+
 
 # Producto
 @api.route("/producto", methods=["POST", "PUT"])
@@ -280,15 +272,16 @@ def handle_producto():
             ]
         }
 
-
         # Creamos nuevo producto
         nuevo_producto = Producto(**body)
         nuevo_producto_fotoUser = User.query.filter_by(id=body["vendedor_user_id"]).first()
         nuevo_producto_srl = nuevo_producto.serialize()
         nuevo_producto_srl["user_foto"] = nuevo_producto_fotoUser.foto_usuario
+        
         # Guardamos producto
         db.session.add(nuevo_producto)
         db.session.commit()
+        
         # response_body = {"result": nuevo_producto.serialize()}
         response_body = {"result": nuevo_producto_srl}
         return json.dumps(response_body), 200
@@ -298,14 +291,19 @@ def handle_producto():
         # RECIBIMOS el id de producto MÁS LA KEY "BORRAR" = true para borrar el producto
         # * if borrar = true => Se borra el producto, else => Se edita
         body = json.loads(request.data)
+        
         # Busco por producto ID
         producto_edit = Producto.query.filter_by(id=body["id"]).first()
+        
         # Obtenemos las keys de la tabla producto para saber qué propiedad se ha cambiado
         keys = Producto.__table__.columns.keys()
+        
         # Hacemos un bucle para saber los valores de las claves que han cambiado
         for edit_key in body:
+            
             # Si el valor de la clave ha cambiado (es distinto a none) y las las claves del body coinciden con la del objeto Producto (borrar no entra) asignamos el nuevo valor
             if body[edit_key] != None and edit_key in keys and edit_key != "id":
+                
                 # print(edit_key,"editkey")
                 # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                 producto = producto_edit.serialize()
@@ -320,16 +318,20 @@ def handle_producto():
                 producto_edit.foto_producto = producto["foto_producto"]
                 producto_edit.dimensiones = producto["dimensiones"]
                 producto_edit.descripcion = producto["descripcion"]
+               
                 # Guardamos el producto modificado
                 db.session.commit()
+                
                 # Devolvemos el producto modificado
                 response_body = {"result": producto}
+        
         # BORRAR PRODUCTO
         if body["borrar"] == True:
             db.session.delete(producto_edit)
             db.session.commit()
             response_body = {"msg": "Producto borrado"}
     return response_body, 200
+
 
 # Direccion
 @api.route("/direccion", methods=["POST", "PUT","GET"])
@@ -338,7 +340,6 @@ def handle_direccion():
     # Publicamos direccion
     if request.method == "POST":
         body = json.loads(request.data)
-
 
         nueva_direccion = Direccion(
             tipo_via=body["tipo_via"],
@@ -354,7 +355,6 @@ def handle_direccion():
 
         print("nueva_direccion", nueva_direccion.id)
         response_body = {"message": "Formulario de Registro OK"}
-
 
     elif request.method == "GET":
 
@@ -380,9 +380,7 @@ def handle_direccion():
                 direccion_modificada_srlz[edit_key] = body[edit_key]
 
                 direccion_modificada.tipo_via = direccion_modificada_srlz["tipo_via"]
-                direccion_modificada.nombre_via = direccion_modificada_srlz[
-                    "nombre_via"
-                ]
+                direccion_modificada.nombre_via = direccion_modificada_srlz["nombre_via"]
                 direccion_modificada.numero = direccion_modificada_srlz["numero"]
                 direccion_modificada.piso = direccion_modificada_srlz["piso"]
                 direccion_modificada.puerta = direccion_modificada_srlz["puerta"]
@@ -393,6 +391,7 @@ def handle_direccion():
             response_body = {"result": direccion_modificada_srlz}
 
     return response_body, 200
+
 ##### NO BORRAR #####
 """ prueba GET cesta """
 # Cesta
@@ -447,6 +446,7 @@ def handle_direccion():
        
 ###### NO BORRAR #####    
 
+
 # Cesta
 @api.route("/cesta", methods=["GET", "POST", "PUT"])
 def handle_cesta():
@@ -473,9 +473,7 @@ def handle_cesta():
             db.session.commit()
             response_body = {"result": nueva_cesta.serialize()}
 
-
     # Obtener cesta
-
     elif request.method == "GET":
         # Recibimos id_user
         # id_user = request.json.get("user_id", None)
@@ -505,12 +503,12 @@ def handle_cesta():
         ).first()
 
         db.session.delete(cesta_user)
-
         db.session.commit()
 
         response_body = {"resul": "Producto borrado de cesta"}
 
     return response_body, 200
+
 
 # Pedido
 @api.route("/pedido", methods=["GET", "POST"])
@@ -524,8 +522,7 @@ def handle_pedido():
 
         # Añadimos nuevo pedido
         nuevo_pedido = Pedido(
-            historico=False, id_comprador=body["id_comprador"]
-        )
+            historico=False, id_comprador=body["id_comprador"])
         db.session.add(nuevo_pedido)
         db.session.commit()
         # Buscamos en la cesta del pedido el id del producto comprado para alterar su valor de la colunna pedido
@@ -546,14 +543,12 @@ def handle_pedido():
                 print("cesta borrada")
     
             # Guardamos en la tabla de producto el id del pedido y lo marcamos como vendido
-
             product_pedido.pedido_id = nuevo_pedido.id
             product_pedido.vendido = True
 
             db.session.commit()
         
         response_body = {"message": "Formulario de Registro OK"}
-
 
     if request.method== "GET":
 

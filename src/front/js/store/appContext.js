@@ -31,8 +31,20 @@ const injectContext = (PassedComponent) => {
        * store, instead use actions, like this:
        **/
       // state.actions.getMessage(); // <---- calling this function from the flux.js actions
-      state.actions.reloadWindow();
-      state.actions.obtenerCesta();
+      //
+      //
+      //
+      // IMPORTANTE
+      // Las acciones que nos traemos desde el useEffect global, se ejecutan una sola vez al acceder a la página.
+      // Por esa razón, los useEffect a lo largo de nuestra aplicación permanecen en los componentes que lo requieran
+      // para funcionar.
+      // También puede generar conflictos con algunas de las funcionalidades de la app
+      // Sólo en ciertos casos (que no aplican al estado actual de nuestra aplicación) se usa el useEffect global
+      //
+      //
+      //
+      //state.actions.reloadWindow();
+      // state.actions.obtenerCesta();
       // state.actions.obtenerCesta();
     }, []);
 

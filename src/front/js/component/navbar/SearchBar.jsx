@@ -1,18 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
+import React, { useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import "../../../styles/searchBar.css";
+import { Link } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
-
-import Autocomplete, {
-  createFilterOptions,
-} from "@material-ui/lab/Autocomplete";
-
-const filter = createFilterOptions();
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 export function SearchBar() {
-  const [value, setValue] = useState(null);
-
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
@@ -24,14 +17,28 @@ export function SearchBar() {
   return (
     <Autocomplete
       id="autocomplete"
-      freeSolo
+      blurOnSelect
       disableClearable
-      options={artistas.map((option) => `${option.nombre} ${option.apellido}`)}
+      options={artistas}
+      getOptionLabel={(option) => {
+        return option.nombre && option.apellido
+          ? option.nombre + " " + option.apellido
+          : "";
+      }}
+      renderOption={(option) => (
+        <Link
+          className="text-black text-decoration-none"
+          to={`/perfil/${option.id}`}
+        >
+          {option.nombre} {option.apellido}
+        </Link>
+      )}
+      noOptionsText={"No existe un artista con ese nombre"}
       renderInput={(params) => (
         <TextField
           {...params}
           size="small"
-          placeholder="Search for your artist"
+          placeholder="Busca a tu artista"
           margin="normal"
           variant="outlined"
           InputProps={{ ...params.InputProps, type: "search" }}
