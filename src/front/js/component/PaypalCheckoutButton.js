@@ -62,7 +62,6 @@ export const PaypalCheckoutButton = ({ product }) => {
     // }, 5000);
   }
 
-
   if (error) {
     // Mostramos mensaje de error
     notifyError("Error al realizar el pago!!!");
@@ -83,15 +82,13 @@ export const PaypalCheckoutButton = ({ product }) => {
         }}
         // Creamos la orden
         createOrder={(data, actions) => {
-
           return actions.order.create({
             purchase_units: [
               {
-
                 // description: product.description,
                 amount: {
                   currency_code: "EUR",
-                  value: store.precioCesta
+                  value: store.precioCesta,
                   // breakdown: {
                   //   item_total: {
                   //     currency_code: "EUR",
@@ -120,7 +117,6 @@ export const PaypalCheckoutButton = ({ product }) => {
 
                 // },
               },
-
             ],
           });
         }}
@@ -140,8 +136,6 @@ export const PaypalCheckoutButton = ({ product }) => {
         // Aprobacion
         onApprove={async (data, actions) => {
           const order = await actions.order.capture();
-          console.log("order", order);
-
           handleAprove(data.orderID);
         }}
         onCancel={() => {

@@ -56,6 +56,7 @@ export const Login = () => {
               <input
                 type="password"
                 className="input-registro"
+                autoComplete="on"
                 id="password"
                 placeholder="Introduce un password"
                 onChange={(e) =>

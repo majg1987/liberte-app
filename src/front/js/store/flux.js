@@ -18,7 +18,11 @@ const getState = ({ getStore, getActions, setStore }) => {
       mailError: false,
       auth: false,
       errorAuth: false,
+      errorNoLogin: false,
       artistas: [],
+      artista: {},
+      artistaGaleria: [],
+      artistaGaleriaFiltered: [],
       productos: [],
       productoSelect: {},
       userInfo: {},
@@ -66,6 +70,20 @@ const getState = ({ getStore, getActions, setStore }) => {
           progress: undefined,
           transition: Zoom,
         }),
+
+      // Reinicio valor errorNoLogin a false
+      errorNoLogin: (reset = false) => {
+        if (reset) {
+          // Reinicio valor errorNoLogin a false
+          setStore({
+            errorNoLogin: false,
+          });
+        } else {
+          setStore({
+            errorNoLogin: true,
+          });
+        }
+      },
 
       // Reinicio valor emailOk a false
       emailOkReset: () => {
@@ -213,7 +231,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             process.env.BACKEND_URL + "/api/producto",
             options
           );
-          console.log(response);
           if (response.status === 200) {
             setStore({
               registroProducto: true,
@@ -267,13 +284,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           if (resp.status === 200) {
-            console.log(resp.status);
             setStore({
               auth: true,
             });
           }
           const data = await resp.json();
-          console.log(data);
           sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
 
           setStore({
@@ -313,21 +328,48 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error loading message from /api/artistas", error);
         }
       },
-      //perfilArtista -- galeria
-      producto_galeria: async (user_id) => {
+      perfil_artista: async (id) => {
         try {
           const response = await fetch(
-            process.env.BACKEND_URL + `/api/producto?user_id=${user_id}`
+            process.env.BACKEND_URL + `/api/perfil_artista?id=${id}`
           );
           const data = await response.json();
           setStore({
-            artistaGaleria: data,
+            artista: data,
           });
         } catch (error) {
-          console.log(
-            "Error loading message from /api/productosGaleria",
-            error
+          console.log("Error loading message from /api/perfil_artista", error);
+        }
+      },
+      perfil_galeria: async (id, filters) => {
+        try {
+          const response = await fetch(
+            process.env.BACKEND_URL + `/api/perfil_galeria?id=${id}`
           );
+
+          const data = await response.json();
+          const data_filtered = data.filter((obra) => {
+            if (
+              (filters.precio_min !== ""
+                ? obra.precio >= filters.precio_min
+                : true) &&
+              (filters.precio_max !== ""
+                ? obra.precio <= filters.precio_max
+                : true) &&
+              (filters.categoria !== ""
+                ? obra.categoria === filters.categoria
+                : true) &&
+              obra.vendido === filters.vendido
+            ) {
+              return obra;
+            }
+          });
+          setStore({
+            artistaGaleria: data,
+            artistaGaleriaFiltered: data_filtered,
+          });
+        } catch (error) {
+          console.log("Error loading message from /api/perfil_galeria", error);
         }
       },
       // Productos Inicio
@@ -396,12 +438,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           errorAñadirProducto: false,
         });
       },
+
       // Reinicio valor okAñadirProducto a false
       okAñadirProductoReset: () => {
         setStore({
           okAñadirProducto: false,
         });
       },
+
       // Reinicio valor yaAñadidoProducto a false
       yaAñadidoProductoReset: () => {
         setStore({
@@ -410,7 +454,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       añadirACesta: async () => {
-        console.log(getStore().userInfo.id);
         const options = {
           method: "POST",
           headers: {
@@ -421,7 +464,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             user_id: getStore().userInfo.id,
             producto_id: getStore().productoSelect.id,
             /* id: getStore().userInfo.id,
-                                                                                                                        producto_id: getStore().productoSelect.id, */
+            producto_id: getStore().productoSelect.id, */
           }),
         };
         try {
@@ -435,7 +478,34 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({ yaAñadidoProducto: true });
           }
           const data = await resp.json();
-          console.log(data);
+        } catch (error) {
+          setStore({ errorAñadirProducto: true });
+          console.log(error);
+        }
+      },
+
+      añadirACestaPerfil: async (producto_id) => {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: getStore().userInfo.id,
+            producto_id: producto_id,
+          }),
+        };
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/cesta",
+            options
+          );
+          if (resp.status === 200) {
+            setStore({ okAñadirProducto: true });
+          } else if (resp.status == 208) {
+            setStore({ yaAñadidoProducto: true });
+          }
+          const data = await resp.json();
         } catch (error) {
           setStore({ errorAñadirProducto: true });
           console.log(error);
@@ -464,7 +534,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           for (let precios in data.result) {
             suma += data.result[precios].precio;
           }
-          console.log("iji", data.result.length);
           setStore({
             productosCesta: data.result,
             precioCesta: suma,
@@ -530,15 +599,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
         };
         try {
-          console.log("direccionflucx", getStore().userInfo.id);
-
           const resp = await fetch(
             process.env.BACKEND_URL +
               `/api/direccion?user_id=${getStore().userInfo.id}`,
             options
           );
           const data = await resp.json();
-          console.log("result", data.result);
           setStore({
             direccion: data.result,
             configuracion: data.result.user_id,
@@ -683,7 +749,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       hacerPedido: async () => {
-        console.log("store", getStore().userInfo.id);
         const options = {
           method: "POST",
           headers: {
@@ -699,13 +764,11 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           const data = await resp.json();
-          console.log("datita", data);
         } catch (error) {
           console.log(error);
         }
       },
       getCart: async (id) => {
-        console.log(id);
         const options = {
           method: "GET",
           headers: {
@@ -745,7 +808,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           if (resp.status === 200) {
-            // console.log("producto-añadido");
             getActions().getCart(user_id);
           }
           const data = await resp.json();
@@ -753,8 +815,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
           /* const data = await resp.json(); */
           /* seteamos store con productosCesta */
-
-          console.log(data);
         } catch (error) {
           console.log(error);
         }

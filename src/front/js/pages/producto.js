@@ -7,7 +7,6 @@ import Alert from "../component/Alert";
 
 export const Producto = (props) => {
   const { store, actions } = useContext(Context);
-  console.log("productoSelect", store.productoSelect);
   let navigate = useNavigate();
 
   const [scroll, setScroll] = useState(null);
@@ -20,10 +19,14 @@ export const Producto = (props) => {
   }, []);
 
   const añadirCesta = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("cesta");
-    actions.añadirACesta();
-    // alert("producto añadido a cesta");
+    if (typeof store.userInfo.id !== "undefined") {
+      e.preventDefault();
+      localStorage.removeItem("cesta");
+      actions.añadirACesta();
+      // alert("producto añadido a cesta");
+    } else {
+      actions.errorNoLogin();
+    }
   };
 
   const siguiente = (direccion) => {
@@ -78,6 +81,13 @@ export const Producto = (props) => {
       actions.yaAñadidoProductoReset();
     }
   }, [store.yaAñadidoProducto]);
+
+  useEffect(() => {
+    if (store.errorNoLogin) {
+      actions.notifyError("Inicia sesión para agregar productos al carrito");
+      actions.errorNoLogin(true);
+    }
+  }, [store.errorNoLogin]);
 
   return (
     <>

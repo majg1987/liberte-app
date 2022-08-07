@@ -25,10 +25,6 @@ const ItemDetails = ({
   /* pasamos datos a través del árbol de componentes sin tener que pasar props manualmente en cada nivel */
   const { store, actions } = useContext(Context);
 
-  console.log(nombre);
-  /* console.log( nombreArtista);
-  console.log({ precio }); */
-
   return (
     <>
       <div

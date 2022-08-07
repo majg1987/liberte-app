@@ -19,7 +19,6 @@ export const Inicio = () => {
   };
 
   const prd = store.productos;
-  console.log("prd", prd);
 
   useEffect(() => {
     localStorage.getItem("productSelect") &&
@@ -27,9 +26,7 @@ export const Inicio = () => {
   }, []);
 
   return (
-
     <div className="container-fluid container-inicio">
-
       {/* Seccion portada */}
 
       <div className="container-portada  d-flex justify-content-center align-items-center">
@@ -59,7 +56,6 @@ export const Inicio = () => {
           >
             {prd ? (
               prd.map((ele, i) => {
-                console.log("ele", ele);
                 let productCard = (
                   <ProductCard
                     key={ele.id}

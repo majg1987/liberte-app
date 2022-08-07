@@ -44,7 +44,7 @@ const Layout = () => {
                 path="/recuperacionPassword"
               />
               <Route element={<Registro />} path="/registro" />
-              <Route element={<Perfil />} path="/perfil/:user_id" />
+              <Route element={<Perfil />} path="/perfil/:id" />
               <Route element={<Producto />} path="/producto/:theid" />
               <Route element={<SubirProducto />} path="/subirProducto" />
               <Route element={<Cesta />} path="/cesta/:user_id" />

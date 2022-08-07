@@ -41,7 +41,6 @@ export const Cesta = () => {
       actions.getCart(id);
     }
   }, [store.userInfo]);
-  console.log(store.userInfo);
 
   function calculateTotalPrice() {
     if (store.productosCesta.length > 0) {
@@ -53,7 +52,6 @@ export const Cesta = () => {
       return 0;
     }
   }
-  console.log(store.productosCesta);
   return (
     <>
       <h1 className="cesta-header text-center">Cesta de la Compra</h1>
