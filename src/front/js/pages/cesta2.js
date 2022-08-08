@@ -92,9 +92,6 @@ export const Cesta2 = () => {
                     Gratis
                   </span>
                 </div>
-                <div className="card-text row">
-                  <p className="card-item3">Introduce tu código de descuento</p>
-                </div>
               </div>
             </div>
             {/* RESUMEN PEDIDO -CARD2 */}
