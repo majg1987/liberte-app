@@ -46,3 +46,13 @@
     top: 50%;
     right: 1%;
 }
+
+@media (max-width: 768px) {
+    .nombre-artista {
+        margin-left: 30px;
+    }
+
+    .col-boton-cesta {
+        /* margin-left: -20px; */
+    }
+}
