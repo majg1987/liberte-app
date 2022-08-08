@@ -76,7 +76,7 @@ export const Navbar = () => {
                 )}
                 {typeof store.userInfo.id !== "undefined" ? (
                   <li className="nav-item active me-4">
-                    <Link to={`/cesta2/${store.userInfo.id}`}>
+                    <Link to={`/cesta/${store.userInfo.id}`}>
                       <button
                         type="button"
                         className="btn btn-sm me-2 border-0 "

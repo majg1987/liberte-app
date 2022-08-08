@@ -46,18 +46,15 @@ export const PaypalCheckoutButton = ({ product }) => {
 
     // Si response es correcto
     setPaidFor(true);
-    // Actualizamos la cuenta del usuario
 
+    // Actualizamos la cuenta del usuario
     setPaidFor(false);
   };
 
   if (paidFor) {
     // Mostramos mensaje indicando al usuario que el pago se ha completado con exito
-    notifyOk("Su pago ha sido realizado correctamente");
-    actions.borrarCesta();
     actions.hacerPedido();
-    localStorage.removeItem("cesta");
-    actions.obtenerCesta();
+    notifyOk("Su pago ha sido realizado correctamente");
   }
 
   if (error) {
@@ -83,37 +80,10 @@ export const PaypalCheckoutButton = ({ product }) => {
           return actions.order.create({
             purchase_units: [
               {
-                // description: product.description,
                 amount: {
                   currency_code: "EUR",
                   value: store.precioCesta,
-                  // breakdown: {
-                  //   item_total: {
-                  //     currency_code: "EUR",
-                  //     value: numero
-                  //   }
                 },
-                // items: [
-                //   {
-                //     name: "MY PRODUCT NAME",
-                //     unit_amount: {
-                //       currency_code: "EUR",
-                //       value: product.price
-                //     },
-                //     quantity: 1
-                //   }
-                // ]
-
-                // amount: {
-                //   currency_code: "EUR",
-                //   // value: product.price,
-                //   value: "30.00",
-                //   breakdown: {
-                //     item_total: { currency_code: "EUR", value: "100.00" },
-                //     tax_total: { currency_code: "EUR", value: "10.00" }
-                //   }
-
-                // },
               },
             ],
           });
@@ -163,76 +133,4 @@ export const PaypalCheckoutButton = ({ product }) => {
       </div>
     </>
   );
-  //   // Configuracion
-  //   const paypalConf = {
-  //     currency: "EUR",
-  //     env: "sandbox",
-  //     client: {
-  //       sandbox:
-  //         "AQu5Lp_0-hUc8mFQkjOpqGk8bDYyfuxGfqnhgz_PpsDKqWRQlRjedgcZ3LAon7aybiVDsL7tSjtQ2sGb",
-  //       production: "-- id--",
-  //     },
-  //     style: {
-  //       label: "pay",
-  //       size: "small",
-  //       shape: "rect",
-  //       color: "gold",
-  //     },
-  //   };
-  //   const PaypalButton = paypal.Button.driver("react", { React, ReactDOM });
-  //   // Establece un pago
-  //   const payment = (data, actions) => {
-  //     const payment = {
-  //       transactions: [
-  //         {
-  //           amount: {
-  //             total: order.total,
-  //             currency: paypalConf.currency,
-  //           },
-  //           descripcion: "Compra en Liberte app",
-  //           custom: order.customer || "",
-  //           item_list: {
-  //             items: order.items,
-  //           },
-  //         },
-  //       ],
-  //       note_to_payer: "Contactenos para cualquier aclaración",
-  //     };
-  //     return actions.payment.create({ payment });
-  //   };
-  //   // Autorización de pago
-  //   const onAuthorize = (data, actions) => {
-  //     return actions.payment
-  //       .execute()
-  //       .then((response) => {
-  //         console.log(response);
-  //         alert(`El pago fue procesado correctamente, ID: ${response.id}`);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         alert("Ocurrio un error al procesar el pago con paypal");
-  //       });
-  //   };
-  //   // Error
-  //   const onError = (error) => {
-  //     console.log(error);
-  //     alert("El pago no fue realizado, vuelva a intentarlo");
-  //   };
-  //   // Cancelacion
-  //   const onCancel = (data, actions) => {
-  //     alert("Pago no realizado, el usuario cancelo el proceso");
-  //   };
-  //   return (
-  //     <PaypalButton
-  //       env={paypalConf.env}
-  //       client={paypalConf.client}
-  //       payment={(data, actions) => payment(data, actions)}
-  //       onAuthorize={(data, actions) => onAuthorize(data, actions)}
-  //       onCancel={(data, actions) => onCancel(data, actions)}
-  //       onError={(error) => onError(error)}
-  //       style={paypalConf.style}
-  //       commit
-  //       locale="es-ES"
-  //     />
-  //   );
 };

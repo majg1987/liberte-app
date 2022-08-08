@@ -20,6 +20,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       errorAuth: false,
       errorNoLogin: false,
       cambioCesta: false,
+      precioCesta: true,
       artistas: [],
       artista: {},
       artistaGaleria: [],
@@ -29,7 +30,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       userInfo: {},
       productosCesta: [],
       pedido: [],
-      precioCesta: true,
       direccion: {},
       configuracion: {},
       numeroProductosCesta: [],
@@ -76,13 +76,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       errorNoLogin: (reset = false) => {
         if (reset) {
           // Reinicio valor errorNoLogin a false
-          setStore({
-            errorNoLogin: false,
-          });
+          setStore({ errorNoLogin: false });
         } else {
-          setStore({
-            errorNoLogin: true,
-          });
+          setStore({ errorNoLogin: true });
         }
       },
 
@@ -517,7 +513,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(error);
         }
       },
-      borrarCesta: async (user_id, producto_id) => {
+
+      borrarProductoCesta: async (user_id, producto_id) => {
         const options = {
           method: "PUT",
           headers: {
@@ -621,7 +618,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
         try {
           const resp = await fetch(
-            // process.env.BACKEND_URL + "/api/configuracion",
             process.env.BACKEND_URL +
               `/api/configuracion?user_id=${getStore().userInfo.id}`,
             options
@@ -645,57 +641,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ configuracionError: true });
         }
       },
-      // Pedido
-      pedido: async () => {
-        const options = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL +
-              `/api/pedido?user_id=${getStore().userInfo.id}`,
-            options
-          );
-          const data = await resp.json();
-
-          setStore({
-            pedido: data.result,
-          });
-          const pedidoStrfy = JSON.stringify(getStore().pedido);
-          localStorage.setItem("pedido", pedidoStrfy);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      // Pedido
-      pedido: async () => {
-        const options = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL +
-              `/api/pedido?user_id=${getStore().userInfo.id}`,
-            options
-          );
-          const data = await resp.json();
-
-          setStore({
-            pedido: data.result,
-          });
-          const pedidoStrfy = JSON.stringify(getStore().pedido);
-          localStorage.setItem("pedido", pedidoStrfy);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      hacerPedido: async () => {
+      hacerPedido: async (user_id) => {
         const options = {
           method: "POST",
           headers: {
@@ -711,57 +657,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           const data = await resp.json();
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      getCart: async (id) => {
-        const options = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            /* Authorization: "Bearer " + sessionStorage.getItem("token"), */
-          },
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/cesta?user_id=" + id,
-            options
-          );
-          const data = await resp.json();
-          setStore({
-            productosCesta: data,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      deleteProducto: async (user_id, producto_id) => {
-        const options = {
-          method: "DELETE",
-          body: JSON.stringify({
-            producto_id: producto_id,
-          }),
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-          },
-        };
-        /* handling error try-catch */
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/cesta?user_id=" + user_id,
-            options
+          getActions().obtenerCesta(getStore().userInfo.id);
+
+          console.log(
+            "acabo de ejecutar getActions().obtenerCesta en hacerPedido"
           );
-          if (resp.status === 200) {
-            getActions().getCart(user_id);
-          }
-          const data = await resp.json();
-          /* respuesta HTTP */
-          /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
-          /* const data = await resp.json(); */
-          /* seteamos store con productosCesta */
         } catch (error) {
           console.log(error);
         }

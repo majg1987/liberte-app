@@ -6,12 +6,6 @@ import Alert from "../Alert";
 export const Galeria = (props) => {
   const { store, actions } = useContext(Context);
 
-  /*   useEffect(() => {
-    localStorage.getItem("productSelect") &&
-      localStorage.removeItem("productSelect");
-  }, []);
- */
-
   useEffect(() => {
     if (store.errorNoLogin) {
       actions.notifyError("Inicia sesión para agregar productos al carrito");
