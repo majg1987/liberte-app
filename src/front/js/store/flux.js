@@ -348,7 +348,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           const data = await response.json();
 
-          if (data.length > 1) {
+          if (data.length > 0) {
             const data_filtered = data.filter((obra) => {
               if (
                 (filters.precio_min !== ""
