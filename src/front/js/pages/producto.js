@@ -21,8 +21,8 @@ export const Producto = (props) => {
   const añadirCesta = (e) => {
     if (typeof store.userInfo.id !== "undefined") {
       e.preventDefault();
-      localStorage.removeItem("cesta");
-      actions.añadirACesta();
+      //localStorage.removeItem("cesta");
+      actions.añadirACesta(store.userInfo.id, store.productoSelect.id);
       // alert("producto añadido a cesta");
     } else {
       actions.errorNoLogin();

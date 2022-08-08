@@ -57,9 +57,7 @@ export const PaypalCheckoutButton = ({ product }) => {
     actions.borrarCesta();
     actions.hacerPedido();
     localStorage.removeItem("cesta");
-    // setTimeout(() => {
-    //   location.reload();
-    // }, 5000);
+    actions.obtenerCesta();
   }
 
   if (error) {

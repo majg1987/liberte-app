@@ -7,7 +7,11 @@ export const Footer = () => (
     <div className="">
       <ul className="wrapper">
         <li className="icon facebook ">
-          <a href="https://www.facebook.com/" className="link-dark">
+          <a
+            href="https://www.facebook.com/"
+            className="link-dark"
+            target="blank"
+          >
             <i className="fab fa-facebook-f " />
           </a>
         </li>

@@ -17,14 +17,10 @@ export const Cesta2 = () => {
   const [producto, setProducto] = useState(null);
 
   useEffect(() => {
-    const fetc = async () => {
-      actions.obtenerCesta();
-
-      localStorage.getItem("productSelect") &&
-        localStorage.removeItem("productSelect");
-    };
-    fetc();
-  }, []);
+    if (typeof store.userInfo.id !== "undefined") {
+      actions.obtenerCesta(store.userInfo.id);
+    }
+  }, [store.userInfo.id, store.cambioCesta]);
 
   const product = {
     price: precios,

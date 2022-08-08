@@ -58,7 +58,7 @@ export const Login = () => {
                 className="input-registro"
                 autoComplete="on"
                 id="password"
-                placeholder="Introduce un password"
+                placeholder="Introduce tu password"
                 onChange={(e) =>
                   setPassword(e.target.value)
                 } /** Asigno el valor con onChange a la variable password */
@@ -70,7 +70,7 @@ export const Login = () => {
                   to={"/recuperacionPassword"}
                   className="text-center buttons-login"
                 >
-                  ¿Has olvidado tu contraseña? Recuperala
+                  ¿Has olvidado tu contraseña? Recupérala
                 </Link>
                 <Link to={"/registro"} className="text-center buttons-login">
                   Registrarse

@@ -19,6 +19,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       auth: false,
       errorAuth: false,
       errorNoLogin: false,
+      cambioCesta: false,
       artistas: [],
       artista: {},
       artistaGaleria: [],
@@ -313,6 +314,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
         sessionStorage.removeItem("token");
         localStorage.removeItem("userInfo");
+        localStorage.removeItem("cesta");
+        setStore({ productosCesta: [] });
       },
       //searchBar
       search: async () => {
@@ -348,26 +351,29 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           const data = await response.json();
-          const data_filtered = data.filter((obra) => {
-            if (
-              (filters.precio_min !== ""
-                ? obra.precio >= filters.precio_min
-                : true) &&
-              (filters.precio_max !== ""
-                ? obra.precio <= filters.precio_max
-                : true) &&
-              (filters.categoria !== ""
-                ? obra.categoria === filters.categoria
-                : true) &&
-              obra.vendido === filters.vendido
-            ) {
-              return obra;
-            }
-          });
-          setStore({
-            artistaGaleria: data,
-            artistaGaleriaFiltered: data_filtered,
-          });
+
+          if (data.length > 1) {
+            const data_filtered = data.filter((obra) => {
+              if (
+                (filters.precio_min !== ""
+                  ? obra.precio >= filters.precio_min
+                  : true) &&
+                (filters.precio_max !== ""
+                  ? obra.precio <= filters.precio_max
+                  : true) &&
+                (filters.categoria !== ""
+                  ? obra.categoria === filters.categoria
+                  : true) &&
+                obra.vendido === filters.vendido
+              ) {
+                return obra;
+              }
+            });
+            setStore({
+              artistaGaleria: data,
+              artistaGaleriaFiltered: data_filtered,
+            });
+          }
         } catch (error) {
           console.log("Error loading message from /api/perfil_galeria", error);
         }
@@ -453,45 +459,14 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
 
-      añadirACesta: async () => {
+      añadirACesta: async (user_id, producto_id) => {
         const options = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            /* cambio */
-            user_id: getStore().userInfo.id,
-            producto_id: getStore().productoSelect.id,
-            /* id: getStore().userInfo.id,
-            producto_id: getStore().productoSelect.id, */
-          }),
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/cesta",
-            options
-          );
-          if (resp.status === 200) {
-            setStore({ okAñadirProducto: true });
-          } else if (resp.status == 208) {
-            setStore({ yaAñadidoProducto: true });
-          }
-          const data = await resp.json();
-        } catch (error) {
-          setStore({ errorAñadirProducto: true });
-          console.log(error);
-        }
-      },
-
-      añadirACestaPerfil: async (producto_id) => {
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: getStore().userInfo.id,
+            user_id: user_id,
             producto_id: producto_id,
           }),
         };
@@ -501,7 +476,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           if (resp.status === 200) {
-            setStore({ okAñadirProducto: true });
+            setStore({
+              okAñadirProducto: true,
+              cambioCesta: true,
+            });
           } else if (resp.status == 208) {
             setStore({ yaAñadidoProducto: true });
           }
@@ -512,7 +490,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      obtenerCesta: async () => {
+      obtenerCesta: async (user_id) => {
         const options = {
           method: "GET",
           headers: {
@@ -521,15 +499,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL +
-              `/api/cesta?user_id=${getStore().userInfo.id}`
+            process.env.BACKEND_URL + `/api/cesta?user_id=${user_id}`
           );
           const data = await resp.json();
 
-          // if (
-          //     !localStorage.getItem("cesta") ||
-          //     localStorage.getItem("cesta").length === 0
-          // ) {
           let suma = 0;
           for (let precios in data.result) {
             suma += data.result[precios].precio;
@@ -538,30 +511,21 @@ const getState = ({ getStore, getActions, setStore }) => {
             productosCesta: data.result,
             precioCesta: suma,
             numeroProductosCesta: data.result.length,
+            cambioCesta: false,
           });
-
-          // }
-          // else {
-          //     setStore({
-          //         productosCesta: JSON.parse(localStorage.getItem("cesta")),
-          //     });
-          // }
-
-          const cestaStrfy = JSON.stringify(getStore().productosCesta);
-          localStorage.setItem("cesta", cestaStrfy);
         } catch (error) {
           console.log(error);
         }
       },
-      borrarCesta: async (idProducto) => {
+      borrarCesta: async (user_id, producto_id) => {
         const options = {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            user_id: getStore().userInfo.id,
-            producto_id: idProducto,
+            user_id: user_id,
+            producto_id: producto_id,
           }),
         };
         try {
@@ -569,24 +533,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             process.env.BACKEND_URL + "/api/cesta",
             options
           );
-          // if (resp.status === 200) {
-          //     console.log("producto-añadido");
-          // }
-          const data = await resp.json();
-
-          const nuevaCesta = getStore().productosCesta.filter((ele) => {
-            return ele.id != idProducto;
-          });
-
-          let suma = 0;
-          for (let precios in nuevaCesta) {
-            suma += nuevaCesta[precios].precio;
-          }
-
-          setStore({
-            productosCesta: nuevaCesta,
-            precioCesta: suma,
-          });
+          getActions().obtenerCesta(user_id);
         } catch (error) {
           console.log(error);
         }

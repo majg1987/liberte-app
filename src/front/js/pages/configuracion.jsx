@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/configuracion-usuario.css";
 import Alert from "../component/Alert";
+import { Link } from "react-router-dom";
 
 export const ConfiguracionUsuario = () => {
   const { store, actions } = useContext(Context);
@@ -47,7 +48,9 @@ export const ConfiguracionUsuario = () => {
   };
 
   useEffect(() => {
-    actions.obtenerDireccion();
+    if (typeof store.userInfo.id !== "undefined") {
+      actions.obtenerDireccion();
+    }
   }, []);
 
   const enviarCambiosUsuario = (e) => {
@@ -91,7 +94,7 @@ export const ConfiguracionUsuario = () => {
   }, [store.configuracionError]);
 
   return (
-    <div className="contenedor-principal-configuracion pt-5 d-flex justify-content-center">
+    <div className="contenedor-principal-configuracion my-3 d-flex justify-content-center">
       <div className="contenedor-configuracion d-flex justify-content-center align-items-center">
         <form className="formulario-registro">
           <h2 className="titulo-registro text-center"> Configuración </h2>
@@ -240,7 +243,7 @@ export const ConfiguracionUsuario = () => {
 
           <div className="row row-tipo_via">
             <div className="col-3 col-titulo-tipo_via">
-              <p className="tipo_via">tipo de vía</p>
+              <p className="tipo_via">Tipo de vía</p>
             </div>
             <div className="col-9 col-input-tipo_via">
               <input
@@ -254,7 +257,7 @@ export const ConfiguracionUsuario = () => {
 
           <div className="row row-nombre_via">
             <div className="col-3 col-titulo-nombre_via">
-              <p className="nombre_via">nombre de vía</p>
+              <p className="nombre_via">Nombre de vía</p>
             </div>
             <div className="col-9 col-input-tipo_via">
               <input
@@ -310,7 +313,7 @@ export const ConfiguracionUsuario = () => {
 
           <div className="row row-descripcion">
             <div className="col-3 col-titulo-descripcion">
-              <p className="descripcion">Descripcion</p>
+              <p className="descripcion">Descripción</p>
             </div>
             <div className="col-9 col-input-descripcion ">
               <textarea
@@ -361,13 +364,16 @@ export const ConfiguracionUsuario = () => {
             <div className="col-3 col-titulo-boton"></div>
             <div className="col-9 col-input-foto ">
               <div className="row row-input-foto">
-                <div className="col-12 pl-2 d-flex justify-content-end">
+                <div className="col-12 pl-2 d-flex justify-content-end my-2">
+                  <Link to={`/perfil/${store.userInfo.id}`}>
+                    <button className="boton-registro me-2">Cancelar</button>
+                  </Link>
+
                   <button
                     className="boton-registro mb-2"
                     onClick={(e) => enviarCambiosUsuario(e)}
                   >
-                    {" "}
-                    Guardar{" "}
+                    Guardar
                   </button>
                 </div>
               </div>

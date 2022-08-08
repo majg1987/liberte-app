@@ -219,20 +219,16 @@ def handle_producto_galeria():
     # Si no tiene, uso data_galery
     response_body = Producto.query.filter_by(vendedor_user_id=id).all()
     response_body = [producto.serialize() for producto in response_body]
-    
-    if len(response_body) > 0:
-        return json.dumps(response_body), 200
+
+    return json.dumps(response_body), 200
 
     # Este JSON es igual al que debería de retornar el endpoint con las fotos del usuario
     # Usamos data_gallery.py con datos dummy
+    """ 
     from api.data_gallery import data
     response_body = [x for x in data if x['user_id'] == id]
-    if len(response_body) > 0:
-        return json.dumps(response_body), 200
-    else:
-        response_body = {"message": f"Usuario {id} no tiene galeria"}
-        return response_body, 200
-
+    return json.dumps(response_body), 200
+    """
 
 @api.route("/productosInicio", methods=["GET"])
 def handle_productosInicio():
@@ -505,7 +501,7 @@ def handle_cesta():
         db.session.delete(cesta_user)
         db.session.commit()
 
-        response_body = {"resul": "Producto borrado de cesta"}
+        response_body = {"result": "Producto borrado de cesta"}
 
     return response_body, 200
 

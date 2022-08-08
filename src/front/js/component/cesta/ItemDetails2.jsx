@@ -19,13 +19,10 @@ const ItemDetails2 = ({
   nombreArtista,
   fotoArtista,
 }) => {
-
   const { store, actions } = useContext(Context);
 
   return (
-
-    <div className="container-intem-detail" >
-
+    <div className="container-intem-detail">
       <div className="col-6 col-foto-info-producto-cesta">
         <div className="container-foto-info-producto-cesta">
           <img src={img} />
@@ -55,8 +52,11 @@ const ItemDetails2 = ({
           </Link>
           <h6>{nombreArtista}</h6>
           <div className="d-flex align-self-end h-50 p">
-
-            <p className="align-self-end eliminar-compra" href="#" onClick={() => actions.borrarCesta(id)}>
+            <p
+              className="align-self-end eliminar-compra"
+              href="#"
+              onClick={() => actions.borrarCesta(store.userInfo.id, id)}
+            >
               Eliminar
             </p>
           </div>

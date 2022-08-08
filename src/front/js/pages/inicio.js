@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { ProductCard } from "../component/ProductCard";
 import "../../styles/inicio.css";
 import Masonry from "react-masonry-css";
+import black from "../../img/black.png";
 
 export const Inicio = () => {
   const { store, actions } = useContext(Context);
@@ -33,9 +34,10 @@ export const Inicio = () => {
         <div className="row row-logo">
           <img
             className="img-logo"
-            src={
+            /* src={
               "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
-            }
+            } */
+            src={black}
             alt="logo-liberte"
           />
         </div>

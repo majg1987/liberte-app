@@ -36,11 +36,10 @@ export const Cesta = () => {
   };
 
   useEffect(() => {
-    if (store.userInfo.id != undefined) {
-      /*  let { id } = store.userInfo; */
-      actions.getCart(id);
+    if (typeof store.userInfo.id !== "undefined") {
+      actions.obtenerCesta(store.userInfo.id);
     }
-  }, [store.userInfo]);
+  }, [store.userInfo.id, store.cambioCesta]);
 
   function calculateTotalPrice() {
     if (store.productosCesta.length > 0) {

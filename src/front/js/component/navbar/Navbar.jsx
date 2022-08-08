@@ -10,14 +10,12 @@ import yellow from "../../../img/yellow.png";
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
-  const [lengthCesta, setLengthCesta] = useState(0);
 
   useEffect(() => {
     if (typeof store.userInfo.id !== "undefined") {
-      actions.obtenerCesta();
-      setLengthCesta(store.numeroProductosCesta);
+      actions.obtenerCesta(store.userInfo.id);
     }
-  }, [localStorage.getItem("cesta")]);
+  }, [store.userInfo.id, store.cambioCesta]);
 
   return (
     <>
@@ -76,21 +74,26 @@ export const Navbar = () => {
                     </Link>
                   </li>
                 )}
-                <li className="nav-item active">
-                  <Link to={`/cesta2/${store.userInfo.id}`}>
-                    <button type="button" className="btn btn-sm me-2 border-0">
-                      <GiShoppingBag
-                        size={28}
-                        style={{ color: "#e28f2c" }}
-                        title="Cesta"
-                      />
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {store.productosCesta.length}
-                        <span className="visually-hidden"></span>
-                      </span>
-                    </button>
-                  </Link>
-                </li>
+                {typeof store.userInfo.id !== "undefined" ? (
+                  <li className="nav-item active me-4">
+                    <Link to={`/cesta2/${store.userInfo.id}`}>
+                      <button
+                        type="button"
+                        className="btn btn-sm me-2 border-0 "
+                      >
+                        <GiShoppingBag
+                          size={28}
+                          style={{ color: "#e28f2c" }}
+                          title="Cesta"
+                        />
+                        <span className=" badge rounded-pill bg-danger ">
+                          {store.numeroProductosCesta}
+                          <span className="visually-hidden"></span>
+                        </span>
+                      </button>
+                    </Link>
+                  </li>
+                ) : null}
               </div>
             </ul>
           </div>
