@@ -41,7 +41,7 @@ export const Cesta = () => {
             {store.productosCesta.map((ele) => {
               let productoCesta = (
                 <div
-                  className="col-6 d-flex justify-content-center"
+                  className="col-12 col-lg-6 d-flex justify-content-center"
                   key={ele.id}
                 >
                   <ItemDetails
@@ -109,7 +109,7 @@ export const Cesta = () => {
               <div className="paypal-button-container">
                 <PaypalCheckoutButton product={product} />
               </div>
-              <Link to="/producto">
+              <Link to="/producto" className="link-seguir-comprando">
                 <button className="btn-continuar-comprando">
                   CONTINUAR COMPRANDO
                 </button>
