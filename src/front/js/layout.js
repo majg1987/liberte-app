@@ -12,7 +12,6 @@ import { Producto } from "./pages/producto";
 import { SubirProducto } from "./pages/subirProducto";
 import { ConfiguracionUsuario } from "./pages/configuracion.jsx";
 import { Cesta } from "./pages/cesta";
-import { Cesta2 } from "./pages/cesta2";
 
 import injectContext from "./store/appContext";
 
@@ -48,7 +47,6 @@ const Layout = () => {
               <Route element={<Producto />} path="/producto/:theid" />
               <Route element={<SubirProducto />} path="/subirProducto" />
               <Route element={<Cesta />} path="/cesta/:user_id" />
-              <Route element={<Cesta2 />} path="/cesta2/:user_id" />
               <Route
                 element={<ConfiguracionUsuario />}
                 path="/configuracion/:theid"

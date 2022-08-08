@@ -7,11 +7,6 @@ export const Galeria = (props) => {
   const { store, actions } = useContext(Context);
 
   useEffect(() => {
-    localStorage.getItem("productSelect") &&
-      localStorage.removeItem("productSelect");
-  }, []);
-
-  useEffect(() => {
     if (store.errorNoLogin) {
       actions.notifyError("Inicia sesión para agregar productos al carrito");
       actions.errorNoLogin(true);
@@ -44,7 +39,7 @@ export const Galeria = (props) => {
       <div className="container">
         <div className="gallery me-4">
           <ul>
-            {store.artistaGaleria.map((obra) => (
+            {store.artistaGaleriaFiltered.map((obra) => (
               <div key={obra.id}>
                 <Obra
                   obra_id={obra.id}

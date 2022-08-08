@@ -7,11 +7,9 @@ import { Link } from "react-router-dom";
 /* importamos los estilos */
 import "../../../styles/itemDetails.css";
 
-/* creamos el componente*/
+/* almacenamos las propiedades del objeto en una constante */
 const ItemDetails = ({
-  /* propiedades del componente */
-  user_id,
-  productId,
+  id,
   nombre,
   img,
   precio,
@@ -21,45 +19,54 @@ const ItemDetails = ({
   nombreArtista,
   fotoArtista,
 }) => {
-  /* destructuring de useContext con store y actions de flux */
-  /* pasamos datos a través del árbol de componentes sin tener que pasar props manualmente en cada nivel */
   const { store, actions } = useContext(Context);
 
   return (
-    <>
-      <div
-        className="card mb-3"
-        style={{ maxWidth: "540px", height: 5 + "rem" }}
-      >
-        <div className="row g-0">
-          <div className="col-md-4">
-            <img
-              src={img}
-              className="img-fluid rounded-start"
-              alt="item image"
-              style={{ width: 10 + "rem", height: 5 + "rem" }}
-            />
-          </div>
-          <div className="col-md-8">
-            <div className="card-body">
-              <h5 className="card-title">{nombre}</h5>
-              <p className="card-text">{precio}</p>
-              <div className="divButton">
-                <button
-                  onClick={() => actions.deleteProducto(user_id, productId)}
-                  className="deleteItemButton"
-                >
-                  Eliminar
-                </button>
-              </div>
-              <p className="card-text">
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </p>
-            </div>
-          </div>
+    <div className="container-intem-detail">
+      <div className="col-6 col-foto-info-producto-cesta">
+        <div className="container-foto-info-producto-cesta">
+          <img src={img} />
         </div>
       </div>
-    </>
+
+      <div className="col-6 col-info-producto-cesta d-flex">
+        <div className="artista">
+          {/* elemento HIJO.  */}
+          <Link
+            to={`/producto/${id}`}
+            onClick={() =>
+              actions.productoSelect(
+                id,
+                nombre,
+                img,
+                precio,
+                descripcion,
+                dimensiones,
+                categoria,
+                nombreArtista,
+                fotoArtista
+              )
+            }
+          >
+            <p className="titulo-obra">{nombre}</p>
+          </Link>
+          <h6>{nombreArtista}</h6>
+          <div className="d-flex align-self-end h-50 p">
+            <p
+              className="align-self-end eliminar-compra"
+              href="#"
+              onClick={() => actions.borrarProductoCesta(store.userInfo.id, id)}
+            >
+              Eliminar
+            </p>
+          </div>
+        </div>
+        <div className="item-precio position-absolute top-0 start-100">
+          <div>{precio}</div>
+        </div>
+      </div>
+      {/* fin del elemento padre*/}
+    </div>
   );
 };
 

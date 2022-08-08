@@ -19,6 +19,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       auth: false,
       errorAuth: false,
       errorNoLogin: false,
+      cambioCesta: false,
+      precioCesta: true,
       artistas: [],
       artista: {},
       artistaGaleria: [],
@@ -28,7 +30,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       userInfo: {},
       productosCesta: [],
       pedido: [],
-      precioCesta: true,
       direccion: {},
       configuracion: {},
       numeroProductosCesta: [],
@@ -75,13 +76,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       errorNoLogin: (reset = false) => {
         if (reset) {
           // Reinicio valor errorNoLogin a false
-          setStore({
-            errorNoLogin: false,
-          });
+          setStore({ errorNoLogin: false });
         } else {
-          setStore({
-            errorNoLogin: true,
-          });
+          setStore({ errorNoLogin: true });
         }
       },
 
@@ -313,6 +310,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
         sessionStorage.removeItem("token");
         localStorage.removeItem("userInfo");
+        localStorage.removeItem("cesta");
+        setStore({ productosCesta: [] });
       },
       //searchBar
       search: async () => {
@@ -348,26 +347,29 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
 
           const data = await response.json();
-          const data_filtered = data.filter((obra) => {
-            if (
-              (filters.precio_min !== ""
-                ? obra.precio >= filters.precio_min
-                : true) &&
-              (filters.precio_max !== ""
-                ? obra.precio <= filters.precio_max
-                : true) &&
-              (filters.categoria !== ""
-                ? obra.categoria === filters.categoria
-                : true) &&
-              obra.vendido === filters.vendido
-            ) {
-              return obra;
-            }
-          });
-          setStore({
-            artistaGaleria: data,
-            artistaGaleriaFiltered: data_filtered,
-          });
+
+          if (data.length > 0) {
+            const data_filtered = data.filter((obra) => {
+              if (
+                (filters.precio_min !== ""
+                  ? obra.precio >= filters.precio_min
+                  : true) &&
+                (filters.precio_max !== ""
+                  ? obra.precio <= filters.precio_max
+                  : true) &&
+                (filters.categoria !== ""
+                  ? obra.categoria === filters.categoria
+                  : true) &&
+                obra.vendido === filters.vendido
+              ) {
+                return obra;
+              }
+            });
+            setStore({
+              artistaGaleria: data,
+              artistaGaleriaFiltered: data_filtered,
+            });
+          }
         } catch (error) {
           console.log("Error loading message from /api/perfil_galeria", error);
         }
@@ -453,45 +455,14 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
 
-      añadirACesta: async () => {
+      añadirACesta: async (user_id, producto_id) => {
         const options = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            /* cambio */
-            user_id: getStore().userInfo.id,
-            producto_id: getStore().productoSelect.id,
-            /* id: getStore().userInfo.id,
-            producto_id: getStore().productoSelect.id, */
-          }),
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/cesta",
-            options
-          );
-          if (resp.status === 200) {
-            setStore({ okAñadirProducto: true });
-          } else if (resp.status == 208) {
-            setStore({ yaAñadidoProducto: true });
-          }
-          const data = await resp.json();
-        } catch (error) {
-          setStore({ errorAñadirProducto: true });
-          console.log(error);
-        }
-      },
-
-      añadirACestaPerfil: async (producto_id) => {
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user_id: getStore().userInfo.id,
+            user_id: user_id,
             producto_id: producto_id,
           }),
         };
@@ -501,7 +472,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           if (resp.status === 200) {
-            setStore({ okAñadirProducto: true });
+            setStore({
+              okAñadirProducto: true,
+              cambioCesta: true,
+            });
           } else if (resp.status == 208) {
             setStore({ yaAñadidoProducto: true });
           }
@@ -512,7 +486,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      obtenerCesta: async () => {
+      obtenerCesta: async (user_id) => {
         const options = {
           method: "GET",
           headers: {
@@ -521,15 +495,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL +
-              `/api/cesta?user_id=${getStore().userInfo.id}`
+            process.env.BACKEND_URL + `/api/cesta?user_id=${user_id}`
           );
           const data = await resp.json();
 
-          // if (
-          //     !localStorage.getItem("cesta") ||
-          //     localStorage.getItem("cesta").length === 0
-          // ) {
           let suma = 0;
           for (let precios in data.result) {
             suma += data.result[precios].precio;
@@ -538,30 +507,22 @@ const getState = ({ getStore, getActions, setStore }) => {
             productosCesta: data.result,
             precioCesta: suma,
             numeroProductosCesta: data.result.length,
+            cambioCesta: false,
           });
-
-          // }
-          // else {
-          //     setStore({
-          //         productosCesta: JSON.parse(localStorage.getItem("cesta")),
-          //     });
-          // }
-
-          const cestaStrfy = JSON.stringify(getStore().productosCesta);
-          localStorage.setItem("cesta", cestaStrfy);
         } catch (error) {
           console.log(error);
         }
       },
-      borrarCesta: async (idProducto) => {
+
+      borrarProductoCesta: async (user_id, producto_id) => {
         const options = {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            user_id: getStore().userInfo.id,
-            producto_id: idProducto,
+            user_id: user_id,
+            producto_id: producto_id,
           }),
         };
         try {
@@ -569,24 +530,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             process.env.BACKEND_URL + "/api/cesta",
             options
           );
-          // if (resp.status === 200) {
-          //     console.log("producto-añadido");
-          // }
-          const data = await resp.json();
-
-          const nuevaCesta = getStore().productosCesta.filter((ele) => {
-            return ele.id != idProducto;
-          });
-
-          let suma = 0;
-          for (let precios in nuevaCesta) {
-            suma += nuevaCesta[precios].precio;
-          }
-
-          setStore({
-            productosCesta: nuevaCesta,
-            precioCesta: suma,
-          });
+          getActions().obtenerCesta(user_id);
         } catch (error) {
           console.log(error);
         }
@@ -674,7 +618,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
         try {
           const resp = await fetch(
-            // process.env.BACKEND_URL + "/api/configuracion",
             process.env.BACKEND_URL +
               `/api/configuracion?user_id=${getStore().userInfo.id}`,
             options
@@ -698,57 +641,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ configuracionError: true });
         }
       },
-      // Pedido
-      pedido: async () => {
-        const options = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL +
-              `/api/pedido?user_id=${getStore().userInfo.id}`,
-            options
-          );
-          const data = await resp.json();
-
-          setStore({
-            pedido: data.result,
-          });
-          const pedidoStrfy = JSON.stringify(getStore().pedido);
-          localStorage.setItem("pedido", pedidoStrfy);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      // Pedido
-      pedido: async () => {
-        const options = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL +
-              `/api/pedido?user_id=${getStore().userInfo.id}`,
-            options
-          );
-          const data = await resp.json();
-
-          setStore({
-            pedido: data.result,
-          });
-          const pedidoStrfy = JSON.stringify(getStore().pedido);
-          localStorage.setItem("pedido", pedidoStrfy);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      hacerPedido: async () => {
+      hacerPedido: async (user_id) => {
         const options = {
           method: "POST",
           headers: {
@@ -764,57 +657,12 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           const data = await resp.json();
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      getCart: async (id) => {
-        const options = {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            /* Authorization: "Bearer " + sessionStorage.getItem("token"), */
-          },
-        };
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/cesta?user_id=" + id,
-            options
-          );
-          const data = await resp.json();
-          setStore({
-            productosCesta: data,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      },
-      deleteProducto: async (user_id, producto_id) => {
-        const options = {
-          method: "DELETE",
-          body: JSON.stringify({
-            producto_id: producto_id,
-          }),
 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-          },
-        };
-        /* handling error try-catch */
-        try {
-          const resp = await fetch(
-            process.env.BACKEND_URL + "/api/cesta?user_id=" + user_id,
-            options
+          getActions().obtenerCesta(getStore().userInfo.id);
+
+          console.log(
+            "acabo de ejecutar getActions().obtenerCesta en hacerPedido"
           );
-          if (resp.status === 200) {
-            getActions().getCart(user_id);
-          }
-          const data = await resp.json();
-          /* respuesta HTTP */
-          /* extraemos y almacenamos (data) el contenido de la respuesta en el cuerpo del JSON (json()) */
-          /* const data = await resp.json(); */
-          /* seteamos store con productosCesta */
         } catch (error) {
           console.log(error);
         }

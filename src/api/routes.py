@@ -76,7 +76,6 @@ def registration():
     db.session.add(user)
     usuario = User.query.filter_by(email=body["email"]).first()
 
-    print("id",usuario.id)
     direccion = Direccion(tipo_via="Avenida", nombre_via= "Andalucia", numero=2, piso=1, puerta="2A", user_id=usuario.id)
     db.session.add(direccion)
     db.session.commit()
@@ -167,7 +166,6 @@ def configuracion():
             # Cambiamos también su direccion
             if direccion_usuario_modificado != None and edit_key in user_direccion_keys:
 
-                print(edit_key,":", body[edit_key])
                 direcion_modificada_srl= direccion_usuario_modificado.serialize()
 
                 direcion_modificada_srl["direccion_id"] = direcion_modificada_srl["id"]
@@ -215,23 +213,10 @@ def handle_producto_galeria():
         if len(response_body) != 0:
             return response_body, 400
         
-    # Para revisar si el usuario tiene galeria
-    # Si no tiene, uso data_galery
     response_body = Producto.query.filter_by(vendedor_user_id=id).all()
     response_body = [producto.serialize() for producto in response_body]
-    
-    if len(response_body) > 0:
-        return json.dumps(response_body), 200
 
-    # Este JSON es igual al que debería de retornar el endpoint con las fotos del usuario
-    # Usamos data_gallery.py con datos dummy
-    from api.data_gallery import data
-    response_body = [x for x in data if x['user_id'] == id]
-    if len(response_body) > 0:
-        return json.dumps(response_body), 200
-    else:
-        response_body = {"message": f"Usuario {id} no tiene galeria"}
-        return response_body, 200
+    return json.dumps(response_body), 200
 
 
 @api.route("/productosInicio", methods=["GET"])
@@ -304,7 +289,6 @@ def handle_producto():
             # Si el valor de la clave ha cambiado (es distinto a none) y las las claves del body coinciden con la del objeto Producto (borrar no entra) asignamos el nuevo valor
             if body[edit_key] != None and edit_key in keys and edit_key != "id":
                 
-                # print(edit_key,"editkey")
                 # Serializamos producto_edit para alterar sus valores (alteramos los valores que han cambiado, los que no se quedan igual)
                 producto = producto_edit.serialize()
                 producto[edit_key] = body[edit_key]
@@ -353,7 +337,6 @@ def handle_direccion():
         db.session.add(nueva_direccion)
         db.session.commit()
 
-        print("nueva_direccion", nueva_direccion.id)
         response_body = {"message": "Formulario de Registro OK"}
 
     elif request.method == "GET":
@@ -391,61 +374,6 @@ def handle_direccion():
             response_body = {"result": direccion_modificada_srlz}
 
     return response_body, 200
-
-##### NO BORRAR #####
-""" prueba GET cesta """
-# Cesta
-# @api.route("/cesta", methods=["GET", "PUT"])
-
-# def cesta():
-# # @jwt_required()
-#     if request.method=="PUT": 
-#         user_id = request.args.get('user_id')
-#         Cesta.query.filter_by(user_id=user_id).delete()
-        
-#         db.session.commit()
-#         response_body = {"message": "Cesta borrada OK"}
-#         return jsonify(response_body), 200
-       
-#     elif request.method=="GET":
-#         user_id = request.args.get('user_id')
-#         cesta=Cesta.query.filter_by(user_id=user_id).all()
-#         return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
-
-        
-# ruta protegida
-
-# definimos la funcion
-# def cesta():  
-    # almacenamos la identidad de JWT de la ruta protegida
-    # version user_id: user_id=get_jwt_identity()
-    # imprimimos user_id en la terminal
-    # print(user_id)
-
-    # version email: almacenamos la identidad de JWT de la ruta protegida
-    # email = get_jwt_identity()
-    
-    # version user_id: obtenemos y almacenamos la consulta sobre user_id de la tabla User
-    # por clave principal (get)
-    # user=User.query.get(user_id)
-    # print(user)
-    
-    # version email: obtenemos y almacenamos la consulta sobre email de la tabla User
-    # user = User.query.filter_by(email=email).first()
-    # print(user)
-
-    # version user_id: obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por la id de user en la tabla Cesta
-    # cesta=Cesta.query.filter_by(user_id=user_id)
-    
-    # version email: obtenemos y almacenamos la consulta sobre la tabla Cesta filtrado por la id de user en la tabla Cesta
-    # cesta=Cesta.query.filter_by(user_id=user.id)
-    
-    # ambas versiones: serializamos cada uno de los items de cesta (lambda) iterando (map) en cesta (range)
-    # convertimos una salida JSON en un objeto de response con el tipo mime de aplicación/json (jsonify)
-        # return jsonify(list(map(lambda cesta:cesta.serialize(), cesta)))
-       
-###### NO BORRAR #####    
-
 
 # Cesta
 @api.route("/cesta", methods=["GET", "POST", "PUT"])
@@ -505,10 +433,9 @@ def handle_cesta():
         db.session.delete(cesta_user)
         db.session.commit()
 
-        response_body = {"resul": "Producto borrado de cesta"}
+        response_body = {"result": "Producto borrado de cesta"}
 
     return response_body, 200
-
 
 # Pedido
 @api.route("/pedido", methods=["GET", "POST"])
@@ -525,27 +452,25 @@ def handle_pedido():
             historico=False, id_comprador=body["id_comprador"])
         db.session.add(nuevo_pedido)
         db.session.commit()
-        # Buscamos en la cesta del pedido el id del producto comprado para alterar su valor de la colunna pedido
+        
+		# Nos traemos la cesta del usuario comprador
         cesta_usuario = Cesta.query.filter_by(user_id=body["id_comprador"]).all()
-        product_cesta = [producto.serialize() for producto in cesta_usuario]
 
-        for product_id in product_cesta:
+        for producto_cesta in cesta_usuario:
 
-            product_pedido = Producto.query.filter_by(
-                id=product_id["producto_id"]
+			# Buscamos en la cesta del pedido el id del producto comprado para alterar su valor de la colunna pedido
+            producto = Producto.query.filter_by(
+                id=producto_cesta.producto_id
             ).first()
-            cestas_con_producto = Cesta.query.filter_by(
-                producto_id=product_id["producto_id"]
-            ).all()
 
-            for cesta in cestas_con_producto:
-                db.session.delete(cesta)
-                print("cesta borrada")
+
+			# Borramos el producto de la cesta
+            db.session.delete(producto_cesta)
     
             # Guardamos en la tabla de producto el id del pedido y lo marcamos como vendido
-            product_pedido.pedido_id = nuevo_pedido.id
-            product_pedido.vendido = True
-
+            producto.pedido_id = nuevo_pedido.id
+            producto.vendido = True
+			
             db.session.commit()
         
         response_body = {"message": "Formulario de Registro OK"}

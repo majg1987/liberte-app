@@ -1,6 +1,6 @@
 /*NO*/
 .row-container-cesta {
-    /* min-height: 94vh; */
+    justify-content: space-around;
 }
 
 /*NO*/
@@ -16,8 +16,9 @@
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: 2rem;
+    padding-left: 3rem;
 }
 
 /* RESUMEN PEDIDO */
@@ -25,6 +26,7 @@
 .container-resumenes {
     position: sticky;
     top: 80px;
+    width: 100%;
 }
 
 .col-resumen-compra {
@@ -39,14 +41,10 @@
 }
 
 .item-counter {
+    width: 100%;
     padding-left: 3rem;
-}
-
-.item-counter-line {
-    padding-left: 1rem;
-    border-bottom: 1px solid;
-    padding-top: 0.2rem;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid black;
 }
 
 .card-resumen-pedido,
@@ -98,32 +96,22 @@
     margin: 1rem;
 }
 
-/* .btn-continuar-comprando {
+.btn-continuar-comprando {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
     margin-left: 1rem;
     border: none;
     background: #f2cb05;
     border-radius: 3px;
-    padding: 0.5rem;
-    width: 85%;
+    padding: .8rem;
+    width: 94%;
     font-size: 0.75rem;
     font-weight: bold;
-} */
+}
 
-/* .btn-continuar-comprando:hover {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
-    border: none;
-    background: #f2cb05;
+.btn-continuar-comprando:hover {
     opacity: 85%;
-    border-radius: 3px;
-    padding: 0.5rem;
-    width: 85%;
-    font-size: 0.75rem;
-    font-weight: bold;
-} */
+}
 
 .nav-margin-bottom {
     margin-bottom: 2rem;
