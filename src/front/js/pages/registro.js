@@ -61,7 +61,7 @@ export const Registro = () => {
               onSubmit={handleSubmit}
               className="formulario-registro col-9 my-auto"
             >
-              <h2 className="titulo-registro"> Registro </h2>
+              <h2 className="titulo-registro text-center"> Registro </h2>
               <input
                 type="text"
                 className="input-registro"
@@ -122,7 +122,12 @@ export const Registro = () => {
                   ¿Quieres tener perfil de artista ?
                 </label>
               </div>
-              <button className="boton-registro"> Crear Cuenta </button>
+              <div className="col-12 pl-2 d-flex justify-content-end my-2">
+                <Link to="/login">
+                  <button className="boton-registro me-2">Volver</button>
+                </Link>
+                <button className="boton-registro"> Crear Cuenta </button>
+              </div>
             </form>
           </div>
           <div>

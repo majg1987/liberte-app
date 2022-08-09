@@ -193,7 +193,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       // Registro de producto
       registroProducto: async (
         nombre,
-        fechaAlta,
         categoria,
         precio,
         imagenSelect,
@@ -201,8 +200,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         descripcion
       ) => {
         let bearer = `Bearer ${sessionStorage.getItem("token")}`;
-        const store = getStore();
-        const user_info = store.userInfo;
         const options = {
           method: "POST",
           headers: {
@@ -211,15 +208,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
           body: JSON.stringify({
             nombre: nombre,
-            fecha_alta: fechaAlta,
             categoria: categoria,
             precio: precio,
             foto_producto: imagenSelect,
-            vendido: false,
             dimensiones: dimensiones,
             descripcion: descripcion,
-            vendedor_user_id: user_info.id,
-            pedido_id: null,
+            vendedor_user_id: getStore().userInfo.id,
           }),
         };
         try {
@@ -284,19 +278,22 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({
               auth: true,
             });
+            const data = await resp.json();
+            sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+
+            setStore({
+              userInfo: data.user_info,
+            });
+
+            const userInfoStrfy = JSON.stringify(getStore().userInfo);
+            localStorage.setItem("userInfo", userInfoStrfy);
+            // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
+          } else if (resp.status === 401) {
+            setStore({
+              errorAuth: true,
+            });
           }
-          const data = await resp.json();
-          sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
-
-          setStore({
-            userInfo: data.user_info,
-          });
-
-          const userInfoStrfy = JSON.stringify(getStore().userInfo);
-          localStorage.setItem("userInfo", userInfoStrfy);
-          // return true; // Devuelve true para que se ejecute la acción que llamamos en Login
         } catch (error) {
-          console.log(error);
           setStore({
             errorAuth: true,
           });

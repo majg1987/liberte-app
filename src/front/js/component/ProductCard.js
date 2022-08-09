@@ -44,7 +44,7 @@ export const ProductCard = ({
             </div>
           </div>
 
-          <img src={img} alt="" className="img-producto"></img>
+          <img src={img} alt="imagen-usuario" className="img-producto"></img>
         </div>
       </Link>
     </div>
