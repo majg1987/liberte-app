@@ -98,7 +98,7 @@ export const Cesta = () => {
                     <p>Total Pedido</p>
                   </div>
                   <div className="total-pedido-precio col d-flex justify-content-end">
-                    {/* <p>{calculateTotalPrice()}€</p> */}
+                    {store.precioCesta}
                   </div>
                   <div>
                     <p className="total-pedido-iva text-muted">(Iva Incl.)</p>
