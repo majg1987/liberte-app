@@ -367,7 +367,7 @@ export const ConfiguracionUsuario = () => {
               <div className="row row-input-foto">
                 <div className="col-12 pl-2 d-flex justify-content-end my-2">
                   <Link to={`/perfil/${store.userInfo.id}`}>
-                    <button className="boton-registro me-2">Cancelar</button>
+                    <button className="boton-registro me-2">Volver</button>
                   </Link>
 
                   <button
