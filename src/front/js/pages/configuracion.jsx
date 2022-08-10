@@ -94,16 +94,17 @@ export const ConfiguracionUsuario = () => {
   }, [store.configuracionError]);
 
   return (
+    // Vista configuracion usuario
     <div className="contenedor-principal-configuracion my-3 d-flex justify-content-center">
       <div className="contenedor-configuracion d-flex justify-content-center align-items-center">
         <form className="formulario-registro">
           <h2 className="titulo-registro text-center"> Configuración </h2>
 
           <div className="row row-nombre">
-            <div className="col-4 col-titulo-nombre">
+            <div className="col-12 col-md-3 col-titulo-nombre">
               <p className="nombre">Nombre</p>
             </div>
-            <div className="col-8 col-input-nombre">
+            <div className="col-12 col-md-9 col-input-nombre">
               <input
                 type="text"
                 className="input-registro input-nombre"
@@ -114,10 +115,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-apellido">
-            <div className="col-4 col-titulo-apellido">
+            <div className="col-12 col-md-3 col-titulo-apellido">
               <p className="apellido">Apellido</p>
             </div>
-            <div className="col-8 col-input-apellido">
+            <div className="col-12 col-md-9 col-input-apellido">
               <input
                 type="text"
                 className="input-registro input-nombre"
@@ -128,10 +129,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-contraseña">
-            <div className="col-4 col-titulo-password">
+            <div className="col-12 col-md-3 col-titulo-password">
               <p className="password">Nueva contraseña</p>
             </div>
-            <div className="col-8 col-input-password">
+            <div className="col-12 col-md-9 col-input-password">
               <input
                 type="password"
                 className="input-registro input-nombre"
@@ -141,10 +142,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-contraseña">
-            <div className="col-4 col-titulo-password">
+            <div className="col-12 col-md-3 col-titulo-password">
               <p className="password">Repita su nueva contraseña</p>
             </div>
-            <div className="col-8 col-input-password">
+            <div className="col-12 col-md-9 col-input-password">
               <input
                 type="password"
                 className="input-registro input-nombre"
@@ -154,8 +155,8 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-artista">
-            <div className="col-4 col-titulo-artista">
-              <p className="password">¿Quieres cuenta de artista?</p>
+            <div className="col-12 col-md-3 col-titulo-artista">
+              <p className="password">Quieres cuenta de artista?</p>
             </div>
 
             {
@@ -228,10 +229,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-nacimiento">
-            <div className="col-4 col-titulo-nacimiento">
+            <div className="col-12 col-md-3 col-titulo-nacimiento">
               <p className="nacimiento">Nacimiento</p>
             </div>
-            <div className="col-8 col-input-nacimiento">
+            <div className="col-12 col-md-9 col-input-nacimiento">
               <input
                 type="date"
                 className="input-registro input-nacimiento"
@@ -242,10 +243,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-tipo_via">
-            <div className="col-4 col-titulo-tipo_via">
+            <div className="col-12 col-md-3 col-titulo-tipo_via">
               <p className="tipo_via">Tipo de vía</p>
             </div>
-            <div className="col-8 col-input-tipo_via">
+            <div className="col-12 col-md-9 col-input-tipo_via">
               <input
                 type="text"
                 className="input-registro input-tipo_via"
@@ -256,10 +257,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-nombre_via">
-            <div className="col-4 col-titulo-nombre_via">
+            <div className="col-12 col-md-3 col-titulo-nombre_via">
               <p className="nombre_via">Nombre de vía</p>
             </div>
-            <div className="col-8 col-input-tipo_via">
+            <div className="col-12 col-md-9 col-input-tipo_via">
               <input
                 type="text"
                 className="input-registro input-nombre_via"
@@ -270,10 +271,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-numero">
-            <div className="col-4 col-titulo-numero">
+            <div className="col-12 col-md-3 col-titulo-numero">
               <p className="numero">Número</p>
             </div>
-            <div className="col-8 col-input-tipo_via">
+            <div className="col-12 col-md-9 col-input-tipo_via">
               <input
                 type="number"
                 className="input-registro input-numero"
@@ -284,10 +285,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-piso">
-            <div className="col-4 col-titulo-piso">
+            <div className="col-12 col-md-3 col-titulo-piso">
               <p className="piso">Piso</p>
             </div>
-            <div className="col-8 col-input-piso">
+            <div className="col-12 col-md-9 col-input-piso">
               <input
                 type="number"
                 className="input-registro input-piso"
@@ -298,10 +299,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-puerta">
-            <div className="col-4 col-titulo-puerta">
+            <div className="col-12 col-md-3 col-titulo-puerta">
               <p className="puerta">Puerta</p>
             </div>
-            <div className="col-8 col-input-puerta">
+            <div className="col-12 col-md-9 col-input-puerta">
               <input
                 type="text"
                 className="input-registro input-puerta"
@@ -312,10 +313,10 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-descripcion">
-            <div className="col-4 col-titulo-descripcion">
+            <div className="col-12 col-md-3 col-titulo-descripcion">
               <p className="descripcion">Descripción</p>
             </div>
-            <div className="col-8 col-input-descripcion ">
+            <div className="col-12 col-md-9 col-input-descripcion ">
               <textarea
                 className="input-descripcion"
                 onChange={(e) => setDescripcion(e.target.value)}
@@ -324,8 +325,8 @@ export const ConfiguracionUsuario = () => {
             </div>
           </div>
 
-          <div className="row row-foto mt-4">
-            <div className="col-4 col-titulo-foto">
+          <div className="row row-foto">
+            <div className="col-12 col-md-3 col-titulo-foto">
               <label
                 className="label-boton-subir-foto"
                 htmlFor="boton-subir-foto"
@@ -342,9 +343,9 @@ export const ConfiguracionUsuario = () => {
                 }}
               ></input>
             </div>
-            <div className="col-8 col-input-foto ">
+            <div className="col-12 col-md-9 col-input-foto ">
               <div className="row row-input-foto">
-                <div className="col-4 pl-2">
+                <div className="col-12 col-md-3 pl-2">
                   <div className="contenedor-img-user">
                     {imagenSelect == "" ? (
                       <img
@@ -352,11 +353,7 @@ export const ConfiguracionUsuario = () => {
                         src={store.userInfo.foto_usuario}
                       />
                     ) : (
-                      <img
-                        src={imagenSelect}
-                        alt="imagen-usuario"
-                        className="img-usuario"
-                      />
+                      <img src={imagenSelect} alt="" className="img-usuario" />
                     )}
                   </div>
                 </div>
@@ -365,13 +362,14 @@ export const ConfiguracionUsuario = () => {
           </div>
 
           <div className="row row-boton">
-            <div className="col-4 col-titulo-boton"></div>
-            <div className="col-8 col-input-foto ">
+            <div className="col-12 col-md-3 col-titulo-boton"></div>
+            <div className="col-12 col-md-9 col-input-foto ">
               <div className="row row-input-foto">
                 <div className="col-12 pl-2 d-flex justify-content-end my-2">
                   <Link to={`/perfil/${store.userInfo.id}`}>
-                    <button className="boton-registro me-2">Volver</button>
+                    <button className="boton-registro me-2">Cancelar</button>
                   </Link>
+
                   <button
                     className="boton-registro mb-2"
                     onClick={(e) => enviarCambiosUsuario(e)}
