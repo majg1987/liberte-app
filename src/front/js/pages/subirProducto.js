@@ -104,7 +104,7 @@ export const SubirProducto = () => {
   return (
     <>
       <div className="contenedor-principal">
-        <div className="contenedor-formulario-producto d-flex justify-content-center align-items-center col-10 mb-4">
+        <div className="contenedor-formulario-producto d-flex justify-content-center align-items-center col-10 my-4">
           <form onSubmit={handleSubmit} className="formulario-producto col-9">
             <h2 className="titulo-registro text-center"> Subir Producto </h2>
             <div className="row"></div>
@@ -121,7 +121,7 @@ export const SubirProducto = () => {
               type="text"
               className="input-registro"
               id="dimensiones"
-              placeholder="Dimensiones: 120x120cm (AltoxAnchocm)"
+              placeholder="Dimensiones: 120x120 (AltoxAncho)"
               onChange={(e) => setDimensiones(e.target.value)}
               /** Asigno el valor con onChange a la variable dimensiones */
               value={dimensiones}
