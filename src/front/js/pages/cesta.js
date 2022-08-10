@@ -20,7 +20,7 @@ export const Cesta = () => {
     if (typeof store.userInfo.id !== "undefined") {
       actions.obtenerCesta(store.userInfo.id);
     }
-  }, [store.userInfo.id, store.cambioCesta]);
+  }, [store.cambioCesta]);
 
   const product = {
     price: precios,

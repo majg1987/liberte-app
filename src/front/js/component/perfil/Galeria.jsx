@@ -51,6 +51,7 @@ export const Galeria = (props) => {
                   nombreArtista={props.nombreArtista}
                   descripcion={obra.descripcion}
                   fotoArtista={props.fotoArtista}
+                  vendido={obra.vendido}
                 />
               </div>
             ))}

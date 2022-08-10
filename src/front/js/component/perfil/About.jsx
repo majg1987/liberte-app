@@ -82,7 +82,7 @@ export const About = () => {
             </div>
           </div>
 
-          <div className="">
+          <>
             <div className="about row row-cols-1 row-cols-md-2 justify-content-center fw-light">
               <div className="col text-secondary text-start fst-italic my-4 position-relative">
                 <p className="lh-sm w-100 ms-3">
@@ -108,7 +108,7 @@ export const About = () => {
                 />
               </div>
             </div>
-          </div>
+          </>
         </div>
       </div>
     </>

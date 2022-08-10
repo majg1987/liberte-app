@@ -34,7 +34,7 @@ export const Filtro = (props) => {
   return (
     <>
       {store.artistaGaleria.length > 0 ? (
-        <div className="">
+        <div>
           <nav className="container rounded navbar bg-light shadow-sm m-auto mb-5">
             <div className="container-fluid">
               <h2 className="navbar-brand m-2">Galeria de obras</h2>
@@ -129,6 +129,7 @@ export const Filtro = (props) => {
           </nav>
           {store.artistaGaleriaFiltered.length > 0 ? (
             <Galeria
+              key={props.nombreArtista}
               nombreArtista={props.nombreArtista}
               fotoArtista={props.fotoArtista}
             />

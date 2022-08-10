@@ -51,7 +51,7 @@ class Producto (db.Model):
 
     # Recibimos FK
     vendedor_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'))
+    pedido_id = db.Column(db.Integer, db.ForeignKey('pedido.id'), default=None)
 
     # Enviamos FK
     cesta_producto = db.relationship('Cesta', backref='producto', lazy=True)
