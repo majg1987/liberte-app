@@ -94,6 +94,7 @@ export const ConfiguracionUsuario = () => {
   }, [store.configuracionError]);
 
   return (
+    // Vista configuracion usuario
     <div className="contenedor-principal-configuracion my-3 d-flex justify-content-center">
       <div className="contenedor-configuracion d-flex justify-content-center align-items-center">
         <form className="formulario-registro">
