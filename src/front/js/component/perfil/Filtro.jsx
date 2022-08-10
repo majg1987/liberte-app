@@ -28,12 +28,14 @@ export const Filtro = (props) => {
   };
 
   useEffect(() => {
-    actions.perfil_galeria(props.id, Filtros);
-  }, [props.id, Filtros]);
+    if (typeof store.artista.id !== "undefined") {
+      actions.perfil_galeria(store.artista.id, Filtros);
+    }
+  }, [store.artista, Filtros]);
 
   return (
     <>
-      {store.artistaGaleria.length > 0 ? (
+      {store.artistaGaleria.length > 0 && store.artista.artista ? (
         <div>
           <nav className="container rounded navbar bg-light shadow-sm m-auto mb-5">
             <div className="container-fluid">
@@ -129,7 +131,6 @@ export const Filtro = (props) => {
           </nav>
           {store.artistaGaleriaFiltered.length > 0 ? (
             <Galeria
-              key={props.nombreArtista}
               nombreArtista={props.nombreArtista}
               fotoArtista={props.fotoArtista}
             />

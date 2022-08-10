@@ -10,7 +10,7 @@ export function SearchBar() {
 
   useEffect(() => {
     actions.search();
-  }, []);
+  }, [store.registro]);
 
   const artistas = store.artistas.slice();
 

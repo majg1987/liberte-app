@@ -366,6 +366,11 @@ const getState = ({ getStore, getActions, setStore }) => {
               artistaGaleria: data,
               artistaGaleriaFiltered: data_filtered,
             });
+          } else {
+            setStore({
+              artistaGaleria: data,
+              artistaGaleriaFiltered: data,
+            });
           }
         } catch (error) {
           console.log("Error loading message from /api/perfil_galeria", error);

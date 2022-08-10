@@ -33,21 +33,23 @@ export const About = () => {
                       </span>
                     </Link>
                   </li>
-                  <li className="m-0">
-                    <Link to="/subirProducto">
-                      <span
-                        type="button"
-                        className="btn btn-sm border-0"
-                        data-bs-title="Subir producto"
-                      >
-                        <BiPlusCircle
-                          size={28}
-                          style={{ color: "#e28f2c" }}
-                          title="Añadir obra"
-                        />
-                      </span>
-                    </Link>
-                  </li>
+                  {store.artista.artista ? (
+                    <li className="m-0">
+                      <Link to="/subirProducto">
+                        <span
+                          type="button"
+                          className="btn btn-sm border-0"
+                          data-bs-title="Subir producto"
+                        >
+                          <BiPlusCircle
+                            size={28}
+                            style={{ color: "#e28f2c" }}
+                            title="Añadir obra"
+                          />
+                        </span>
+                      </Link>
+                    </li>
+                  ) : null}
                 </ul>
               ) : null}
             </div>
