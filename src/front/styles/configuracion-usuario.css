@@ -56,3 +56,9 @@ div[class*="col-titulo"] p {
     border-radius: 0.5rem;
     padding: 0.5rem;
 }
+
+@media (max-width: 768px) {
+    .contenedor-configuracion {
+        width: 90%;
+    }
+}
