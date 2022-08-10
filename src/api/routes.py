@@ -94,6 +94,9 @@ def login():
     # almacenamos la primera coincidencia de email en User
     user = User.query.filter_by(email=email).first()
 
+    if user is None:
+        return jsonify({"msg": "User does not exist"}), 404
+        
     # Si el email o password no coindicen retornamos error de autentificacion
     if email != user.email or not current_app.bcrypt.check_password_hash(
         user.password, password
