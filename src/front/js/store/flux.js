@@ -76,9 +76,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       errorNoLogin: (reset = false) => {
         if (reset) {
           // Reinicio valor errorNoLogin a false
-          setStore({ errorNoLogin: false });
+          setStore({
+            errorNoLogin: false,
+          });
         } else {
-          setStore({ errorNoLogin: true });
+          setStore({
+            errorNoLogin: true,
+          });
         }
       },
 
@@ -292,6 +296,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             setStore({
               errorAuth: true,
             });
+          } else if (resp.status === 404) {
+            setStore({
+              errorAuth: true,
+            });
           }
         } catch (error) {
           setStore({
@@ -308,7 +316,9 @@ const getState = ({ getStore, getActions, setStore }) => {
         sessionStorage.removeItem("token");
         localStorage.removeItem("userInfo");
         localStorage.removeItem("cesta");
-        setStore({ productosCesta: [] });
+        setStore({
+          productosCesta: [],
+        });
       },
       //searchBar
       search: async () => {
@@ -479,11 +489,15 @@ const getState = ({ getStore, getActions, setStore }) => {
               cambioCesta: true,
             });
           } else if (resp.status == 208) {
-            setStore({ yaAñadidoProducto: true });
+            setStore({
+              yaAñadidoProducto: true,
+            });
           }
           const data = await resp.json();
         } catch (error) {
-          setStore({ errorAñadirProducto: true });
+          setStore({
+            errorAñadirProducto: true,
+          });
           console.log(error);
         }
       },
@@ -625,7 +639,9 @@ const getState = ({ getStore, getActions, setStore }) => {
             options
           );
           if (resp.status === 200) {
-            setStore({ configuracionOk: true });
+            setStore({
+              configuracionOk: true,
+            });
           }
           const data = await resp.json();
           localStorage.removeItem("userInfo");
@@ -640,7 +656,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           localStorage.setItem("direccion", direccionInfoStrfy);
         } catch (error) {
           console.log(error);
-          setStore({ configuracionError: true });
+          setStore({
+            configuracionError: true,
+          });
         }
       },
       hacerPedido: async (user_id) => {
