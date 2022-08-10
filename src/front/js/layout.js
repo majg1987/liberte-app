@@ -31,7 +31,7 @@ const Layout = () => {
         currency: "EUR",
       }}
     >
-      <div>
+      <>
         <BrowserRouter basename={basename}>
           <ScrollToTop>
             <Navbar />
@@ -56,7 +56,7 @@ const Layout = () => {
             <Footer />
           </ScrollToTop>
         </BrowserRouter>
-      </div>
+      </>
     </PayPalScriptProvider>
   );
 };

@@ -5,7 +5,7 @@ import "../../styles/producto.css";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import Alert from "../component/Alert";
 
-export const Producto = (props) => {
+export const Producto = () => {
   const { store, actions } = useContext(Context);
   let navigate = useNavigate();
 
@@ -115,7 +115,7 @@ export const Producto = (props) => {
                   <img
                     className="foto-producto"
                     src={store.productoSelect.img}
-                    alt="Producto"
+                    alt="foto-producto"
                   />
                 </div>
               </div>
@@ -130,14 +130,14 @@ export const Producto = (props) => {
                           ? store.productoSelect.fotoArtista
                           : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
                       }
-                      alt="imagen-usuario"
+                      alt="foto-artista"
                     />
                   </div>
 
                   <div className="col-5 col-nombre-artista d-flex align-items-center">
-                    <p className="nombre-artista">
+                    <h4 className="nombre-artista mt-3">
                       {store.productoSelect.nombreArtista}
-                    </p>
+                    </h4>
                   </div>
 
                   <div className="col-6 col-boton-cesta d-flex justify-content-end">
@@ -178,15 +178,15 @@ export const Producto = (props) => {
                   </div>
 
                   <div className="col-12 col-precio-obra">
-                    <p className="precioObra">
+                    <p className="dimensiones-obra">
                       {store.productoSelect.dimensiones + "cm"}
                     </p>
                   </div>
                 </div>
 
                 <div className="row row-descripcion">
-                  <div className="col-12 col-titulo-descrpcion pt-1">
-                    <p className="descrpcion">Descripción:</p>
+                  <div className="col-12 col-titulo-descripcion pt-1">
+                    <p className="descripcion">Descripción:</p>
                   </div>
 
                   <div className="col-12 col-descripcion">
