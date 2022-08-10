@@ -36,7 +36,6 @@ export const RecuperacionPassword = () => {
 
   return (
     <>
-      (
       <div className="container-principal-recuperacionPassword d-flex align-items-center">
         <div className="contenedor-formulario contenedor-recuperacionPassword d-flex justify-content-center align-items-center col-10">
           <form onSubmit={handleSubmit} className="formulario-registro">
@@ -64,7 +63,6 @@ export const RecuperacionPassword = () => {
           <Alert />
         </div>
       </div>
-      )
     </>
   );
 };
