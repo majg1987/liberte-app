@@ -42,7 +42,7 @@ export const Login = () => {
         <div className=" container-principal-login">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
             <form onSubmit={handleSubmit} className="formulario-registro">
-              <h2 className="titulo-registro"> Login </h2>
+              <h2 className="titulo-registro text-center"> Login </h2>
               <input
                 type="email"
                 className="input-registro"

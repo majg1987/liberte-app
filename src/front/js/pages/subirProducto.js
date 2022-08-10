@@ -5,6 +5,7 @@ import "../../styles/subir-producto.css";
 import { Context } from "../store/appContext";
 // Importo componente del Alert
 import Alert from "../component/Alert";
+import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 /** Importo las librerias para crear alert de registro de producto*/
 // import { ToastContainer, toast, Zoom } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
@@ -15,20 +16,12 @@ export const SubirProducto = () => {
   /* Utilizo useState donde asigno valores de los input*/
   const [nombre, setNombre] = useState("");
   const [dimensiones, setDimensiones] = useState("");
-  const fecha = new Date();
   const [categoria, setCategoria] = useState("");
   const [precio, setPrecio] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagenSelect, setImagenSelect] = useState("");
   const [loading, setLoading] = useState(false);
-  /* Recupero fecha actual */
-  const fecha_alta =
-    "Fecha de Alta: " +
-    fecha.getDate() +
-    "/" +
-    (fecha.getMonth() + 1) +
-    "/" +
-    fecha.getFullYear();
+  const [msg, setMsg] = useState("");
 
   // Guardamos la imagen utilizando cloudinary
   const subirImagen = async (foto) => {
@@ -55,34 +48,43 @@ export const SubirProducto = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Validacion de formulario para subir producto, y llamo a método de flux para mandar info a la ruta de backend
-    if (
-      nombre !== "" &&
-      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
-      dimensiones !== "" &&
-      dimensiones.length < 10 &&
-      categoria !== "" &&
-      precio > 0 &&
-      imagenSelect !== "" &&
-      descripcion !== ""
-    ) {
-      actions.registroProducto(
-        nombre,
-        fecha_alta,
-        categoria,
-        precio,
-        imagenSelect,
-        dimensiones,
-        descripcion
-      );
-      setNombre("");
-      setDimensiones("");
-      setPrecio("");
-      setDescripcion("");
-    } else {
-      actions.notify(
-        "Verifica que  todos los campos se han completado de forma correcta"
-      );
+
+    for (const e of [nombre, categoria, precio, imagenSelect, descripcion]) {
+      if (e.length == 0) {
+        actions.notify(
+          "Verifica que todos los campos se han completado de forma correcta"
+        );
+        return;
+      }
     }
+
+    if (!/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre)) {
+      actions.notify(
+        "El nombre de tu obra solo puede incluir letras y espacios"
+      );
+      return;
+    } else if (!/^[0-9]+x[0-9]+$/i.test(dimensiones)) {
+      actions.notify(
+        "Las dimensiones de tu obra, en centímetros, deben ser del tipo ANCHOxALTO (e.g. 120x120)"
+      );
+      return;
+    } else if (precio <= 0) {
+      actions.notify("El precio de tu obra no puede ser igual o menor a cero");
+      return;
+    }
+
+    actions.registroProducto(
+      nombre,
+      categoria,
+      precio,
+      imagenSelect,
+      dimensiones,
+      descripcion
+    );
+    setNombre("");
+    setDimensiones("");
+    setPrecio("");
+    setDescripcion("");
   };
 
   useEffect(() => {
@@ -101,10 +103,10 @@ export const SubirProducto = () => {
 
   return (
     <>
-      <div className=" contenedor-principal">
-        <div className="contenedor-formulario-producto d-flex justify-content-center align-items-center col-10 my-3">
+      <div className="contenedor-principal">
+        <div className="contenedor-formulario-producto d-flex justify-content-center align-items-center col-10 mb-4">
           <form onSubmit={handleSubmit} className="formulario-producto col-9">
-            <h2 className="titulo-registro"> Subir Producto </h2>
+            <h2 className="titulo-registro text-center"> Subir Producto </h2>
             <div className="row"></div>
             <input
               type="text"
@@ -125,17 +127,10 @@ export const SubirProducto = () => {
               value={dimensiones}
             />
             <input
-              type="text"
-              className="input-registro"
-              id="fecha"
-              value={fecha_alta}
-              disabled
-            />
-            <input
               type="number"
               className="input-registro mb-5"
               id="precio"
-              placeholder="Precio"
+              placeholder="Precio €"
               onChange={(e) =>
                 setPrecio(parseFloat(e.target.value))
               } /** Asigno el valor con onChange a la variable nombre */
@@ -167,7 +162,11 @@ export const SubirProducto = () => {
                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                   />
                 ) : (
-                  <img src={imagenSelect} alt="" className="img-usuario" />
+                  <img
+                    src={imagenSelect}
+                    alt="img-usuario"
+                    className="img-usuario"
+                  />
                 )}
               </div>
               <div className="d-flex align-items-center ms-5">
@@ -191,13 +190,15 @@ export const SubirProducto = () => {
               className="mt-5 col-12"
               name="descripcion"
               id="descripcion-objeto"
-              placeholder="Descripcion del Producto"
+              placeholder="Descripción del Producto"
               onChange={(e) => setDescripcion(e.target.value)}
               value={descripcion}
             ></textarea>
-
-            <div className="mt-4">
-              <button className="boton-registro"> Publicar Producto </button>
+            <div className="col-12 pl-2 d-flex justify-content-end my-2">
+              <Link to={`/perfil/${store.userInfo.id}`}>
+                <button className="boton-registro me-2">Volver</button>
+              </Link>
+              <button className="boton-registro">Publicar Producto</button>
             </div>
           </form>
         </div>

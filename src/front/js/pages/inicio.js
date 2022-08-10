@@ -30,7 +30,7 @@ export const Inicio = () => {
     <div className="container-fluid container-inicio">
       {/* Seccion portada */}
 
-      <div className="container-portada  d-flex justify-content-center align-items-center">
+      <div className="container-portada d-flex justify-content-center align-items-center">
         <div className="row row-logo">
           <img
             className="img-logo"
@@ -46,7 +46,9 @@ export const Inicio = () => {
       {/* Seccion productos */}
 
       <div className="container container-titulo-productos">
-        <p className="titulo-seccion-producto">Productos</p>
+        <p className="titulo-seccion-producto fst-italic fw-light mt-3 mb-4">
+          Productos
+        </p>
       </div>
 
       <div className="container container-lista-productos">

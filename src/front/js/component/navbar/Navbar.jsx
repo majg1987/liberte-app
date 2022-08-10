@@ -6,8 +6,6 @@ import { GiShoppingBag } from "react-icons/gi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FiLogOut } from "react-icons/fi";
 import { Context } from "../../store/appContext";
-import "./../../../styles/navbar.css";
-
 import yellow from "../../../img/yellow.png";
 
 export const Navbar = () => {
@@ -21,23 +19,22 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm sticky-top navbar-expand-sm bg-light navbar-light">
-        <div className="container d-flex justify-content-around mx-3">
-          <div className="navbar-brand m-0">
-            <Link to="/">
-              <img
-                src={yellow}
-                style={{ width: "80%", height: "70%" }}
-                alt="Liberte"
-              />
-            </Link>
-          </div>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container-fluid">
+          <Link to="/">
+            <img
+              src={yellow}
+              style={{ width: "80%", height: "70%" }}
+              alt="Liberte"
+              className="ms-2"
+            />
+          </Link>
           <button
-            className="navbar-toggler btn btn-sm"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
+            data-bs-target="#navbarText"
+            aria-controls="navbarText"
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
@@ -45,24 +42,17 @@ export const Navbar = () => {
               className="navbar-toggler-icon mt-1 border-0"
               size={15}
               style={{ color: "#e28f2c" }}
-              title="Filtros galeria"
+              title="Perfil y barra buscadora"
             />
           </button>
-          <div
-            className="collapse navbar-collapse m-2"
-            id="navbarSupportedContent"
-          >
-            <ul className="navbar-nav mx-auto ">
-              <li className="nav-item active">
-                <SearchBar />
-              </li>
-
-              <div
-                className="d-flex d-inline position-absolute top-50 start-100 translate-middle me-5 pe-5"
-                id="profile-icons-right"
-              >
-                {store.auth ? (
-                  <li className="nav-item dropdown ">
+          <div className="collapse navbar-collapse" id="navbarText">
+            <div className="nav-item mx-auto my-0">
+              <SearchBar />
+            </div>
+            <span className="navbar-text list-unstyled ms-5">
+              {store.auth ? (
+                <>
+                  <li className="nav-item dropdown d-flex">
                     <Link to="/">
                       <button
                         onClick={actions.logout}
@@ -72,10 +62,6 @@ export const Navbar = () => {
                         <FiLogOut size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
-                  </li>
-                ) : null}
-                {store.auth ? (
-                  <li className="nav-item dropdown">
                     <Link to={`/perfil/${store.userInfo.id}`}>
                       <button
                         type="button"
@@ -84,21 +70,6 @@ export const Navbar = () => {
                         <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
                       </button>
                     </Link>
-                  </li>
-                ) : (
-                  <li className="nav-item dropdown">
-                    <Link to="/login">
-                      <button
-                        type="button"
-                        className="btn btn-sm mx-2 border-0"
-                      >
-                        <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
-                      </button>
-                    </Link>
-                  </li>
-                )}
-                {typeof store.userInfo.id !== "undefined" ? (
-                  <li className="nav-item active me-5 pe-5">
                     <Link to={`/cesta/${store.userInfo.id}`}>
                       <button
                         type="button"
@@ -116,9 +87,17 @@ export const Navbar = () => {
                       </button>
                     </Link>
                   </li>
-                ) : null}
-              </div>
-            </ul>
+                </>
+              ) : (
+                <li className="nav-item dropdown">
+                  <Link to="/login">
+                    <button type="button" className="btn btn-sm mx-2 border-0">
+                      <AiOutlineUser size={28} style={{ color: "#e28f2c" }} />
+                    </button>
+                  </Link>
+                </li>
+              )}
+            </span>
           </div>
         </div>
       </nav>

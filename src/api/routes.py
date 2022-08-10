@@ -79,7 +79,7 @@ def registration():
     direccion = Direccion(tipo_via="Avenida", nombre_via= "Andalucia", numero=2, piso=1, puerta="2A", user_id=usuario.id)
     db.session.add(direccion)
     db.session.commit()
-
+    
     response_body = {"message": "Formulario de Registro OK"}
     return jsonify(response_body), 200
 
@@ -253,7 +253,6 @@ def handle_producto():
                 "dimensiones",
                 "descripcion",
                 "vendedor_user_id",
-                "pedido_id",
             ]
         }
 
@@ -267,7 +266,6 @@ def handle_producto():
         db.session.add(nuevo_producto)
         db.session.commit()
         
-        # response_body = {"result": nuevo_producto.serialize()}
         response_body = {"result": nuevo_producto_srl}
         return json.dumps(response_body), 200
 

@@ -58,15 +58,17 @@ export const Obra = (props) => {
           <div className="card-text text-secondary position-absolute bottom-0 start-0 m-2">
             {props.categoria} <BsDot /> {props.precio + "€"}
           </div>
-          <a
-            href="#"
-            className="btn btn-outline-warning btn-sm position-absolute bottom-0 end-0 m-2"
-          >
-            <GiShoppingBag
-              size={15}
-              style={{ color: "#e28f2c" }}
-              onClick={(e) => añadirCesta(e)}
-            />
+
+          <a className="btn btn-outline-warning btn-sm position-absolute bottom-0 end-0 m-2">
+            {props.vendido ? (
+              "SOLD"
+            ) : (
+              <GiShoppingBag
+                size={15}
+                style={{ color: "#e28f2c" }}
+                onClick={(e) => añadirCesta(e)}
+              />
+            )}
           </a>
         </div>
       </div>
