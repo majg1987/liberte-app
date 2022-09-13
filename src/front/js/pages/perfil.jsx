@@ -13,6 +13,12 @@ export const Perfil = () => {
     actions.perfil_artista(id);
   }, [id]);
 
+  useEffect(() => {
+    localStorage.getItem("productSelect") &&
+      localStorage.removeItem("productSelect");
+  }, []);
+
+
   return (
     <>
       <div className="pt-4 mb-0">

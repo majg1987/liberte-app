@@ -21,6 +21,7 @@ const ItemDetails = ({
 }) => {
   const { store, actions } = useContext(Context);
 
+
   return (
     <div className="container-intem-detail">
       <div className="col-6 col-foto-info-producto-cesta">

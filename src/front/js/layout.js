@@ -11,8 +11,9 @@ import { Perfil } from "./pages/perfil.jsx";
 import { Producto } from "./pages/producto";
 import { SubirProducto } from "./pages/subirProducto";
 import { ConfiguracionUsuario } from "./pages/configuracion.jsx";
-import { Cesta } from "./pages/cesta";
 
+import { Cesta } from "./pages/cesta";
+import { Pedidos } from "./pages/pedidos.jsx";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar/Navbar.jsx";
@@ -47,6 +48,7 @@ const Layout = () => {
               <Route element={<Producto />} path="/producto/:theid" />
               <Route element={<SubirProducto />} path="/subirProducto" />
               <Route element={<Cesta />} path="/cesta/:user_id" />
+              <Route element={<Pedidos />} path="/pedidos/:user_id" />
               <Route
                 element={<ConfiguracionUsuario />}
                 path="/configuracion/:theid"

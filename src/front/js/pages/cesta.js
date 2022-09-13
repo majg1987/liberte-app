@@ -22,6 +22,12 @@ export const Cesta = () => {
     }
   }, [store.cambioCesta]);
 
+  useEffect(() => {
+    localStorage.getItem("productSelect") &&
+      localStorage.removeItem("productSelect");
+  }, []);
+
+
   const product = {
     price: precios,
     description: "Realice su compra",
