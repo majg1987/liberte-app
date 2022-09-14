@@ -1,5 +1,6 @@
 /* importamos la libreria React y el useContext hook */
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+
 /* destructuring de Context */
 import { Context } from "../store/appContext";
 /* destructuring de Link */
@@ -22,6 +23,11 @@ const DetallesPedido = ({
 }) => {
     const { store, actions } = useContext(Context);
 
+    useEffect(() => {
+        store.listaCesta = false;
+        store.listaPerfil = false;
+    }, [])
+
 
     return (
         <div className="container-pedido">
@@ -35,7 +41,7 @@ const DetallesPedido = ({
                 <div className="artista">
                     <Link
                         to={`/producto/${id}`}
-                        onClick={() =>
+                        onClick={() => {
                             actions.productoSelect(
                                 id,
                                 nombre,
@@ -47,6 +53,9 @@ const DetallesPedido = ({
                                 nombreArtista,
                                 fotoArtista,
                             )
+                            store.listaPedidos = true;
+                            console.log(store.listaPedidos)
+                        }
                         }
                     >
                         <div className="d-flex flex-row">

@@ -22,9 +22,15 @@ export const Cesta = () => {
     }
   }, [store.cambioCesta]);
 
+
+
+
   useEffect(() => {
     localStorage.getItem("productSelect") &&
       localStorage.removeItem("productSelect");
+    // ListaPerfil false para quedarnos en cesta cuando damos a siguiente img
+    store.listaPerfil = false
+    store.listaPedidos = false;
   }, []);
 
 

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "../../../styles/perfil/obra.css";
 import { BiExpandAlt } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -10,6 +10,12 @@ import { BsDot } from "react-icons/bs";
 
 export const Obra = (props) => {
   const { store, actions } = useContext(Context);
+
+  // Pasamos listaCesta a false para que cuando le demos a siguiente imagen se quede en perfil
+  useEffect(() => {
+    store.listaCesta = false;
+    store.listaPedidos = false;
+  }, [])
 
   const añadirCesta = (e) => {
     if (typeof store.userInfo.id !== "undefined") {
@@ -26,7 +32,7 @@ export const Obra = (props) => {
         <Link to={`/producto/${props.obra_id}`}>
           <div
             className="img-size d-block position-relative border-0"
-            onClick={() =>
+            onClick={() => {
               actions.productoSelect(
                 props.obra_id,
                 props.nombre,
@@ -37,7 +43,9 @@ export const Obra = (props) => {
                 props.categoria,
                 props.nombreArtista,
                 props.fotoArtista
-              )
+              );
+              store.listaPerfil = true;
+            }
             }
           >
             <BiExpandAlt className="position-absolute expand-icon" />

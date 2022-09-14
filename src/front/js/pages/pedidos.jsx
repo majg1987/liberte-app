@@ -10,6 +10,7 @@ export const Pedidos = () => {
 
     useEffect(() => {
         actions.verPedidos()
+
     }, []);
 
 

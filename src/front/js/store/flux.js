@@ -41,6 +41,9 @@ const getState = ({
             direccion: {},
             configuracion: {},
             numeroProductosCesta: [],
+            listaCesta: false,
+            listaPerfil: false,
+            listaPedidos: false,
         },
         actions: {
             // Alerts

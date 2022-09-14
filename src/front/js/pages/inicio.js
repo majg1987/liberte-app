@@ -11,6 +11,9 @@ export const Inicio = () => {
 
   useEffect(() => {
     actions.productosInicio();
+    store.listaCesta = false;
+    store.listaPerfil = false
+    store.listaPedidos = false;
   }, []);
 
   const breakpoints = {

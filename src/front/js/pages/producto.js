@@ -29,21 +29,57 @@ export const Producto = () => {
 
   const siguiente = (direccion) => {
     let indexProducto;
+    let arraySeleccionado;
+    let storeSeleccionado;
 
-    for (let i = 0; i < store.productos.length; i++) {
-      if (store.productos[i].id === store.productoSelect.id) {
+    if (store.listaCesta) {
+      storeSeleccionado = store.productosCesta;
+    } else if (store.listaCesta === false && store.listaPerfil === false && store.listaPedidos === false) {
+      storeSeleccionado = store.productos;
+    }
+    else if (store.listaPerfil) {
+      storeSeleccionado = store.artistaGaleria;
+    }
+    else if (store.listaPedidos) {
+      storeSeleccionado = store.pedido;
+      console.log("ijijI", storeSeleccionado)
+    };
+
+
+
+    for (let i = 0; i < storeSeleccionado.length; i++) {
+
+      let comprobacionId;
+      console.log("eueue", store.listaPedidos)
+      store.listaPedidos ?
+        comprobacionId = storeSeleccionado[i].productos_info.id
+        :
+        comprobacionId = storeSeleccionado[i].id;
+
+      if (comprobacionId === store.productoSelect.id) {
         indexProducto = i;
+        console.log(indexProducto)
+        arraySeleccionado = storeSeleccionado;
+        console.log(arraySeleccionado[2])
         break;
       }
+
     }
+
     let productoTarget;
     direccion === "right"
-      ? (productoTarget = store.productos[indexProducto + 1])
-      : (productoTarget = store.productos[indexProducto - 1]);
+      ? (productoTarget = arraySeleccionado[indexProducto + 1])
+      : (productoTarget = arraySeleccionado[indexProducto - 1]);
 
     localStorage.removeItem("productSelect");
 
-    productoTarget !== undefined &&
+    if (productoTarget !== undefined) {
+
+      if (store.listaPedidos) {
+        productoTarget = productoTarget.productos_info;
+        console.log("holaola")
+      }
+
       actions.productoSelect(
         productoTarget.id,
         productoTarget.nombre,
@@ -55,16 +91,20 @@ export const Producto = () => {
         productoTarget.vendedor_nombre,
         productoTarget.vendedor_foto
       );
+    }
 
     navigate(`../producto/${productoTarget.id}`);
   };
 
   useEffect(() => {
     if (store.okAñadirProducto) {
+
       actions.notifyOk("Producto añadido a cesta correctamente");
       actions.okAñadirProductoReset();
     }
   }, [store.okAñadirProducto]);
+
+
 
   useEffect(() => {
     if (store.errorAñadirProducto) {

@@ -35,7 +35,7 @@ const ItemDetails = ({
           {/* elemento HIJO.  */}
           <Link
             to={`/producto/${id}`}
-            onClick={() =>
+            onClick={() => {
               actions.productoSelect(
                 id,
                 nombre,
@@ -46,7 +46,9 @@ const ItemDetails = ({
                 categoria,
                 nombreArtista,
                 fotoArtista
-              )
+              );
+              store.listaCesta = true;
+            }
             }
           >
             <p className="titulo-obra">{nombre}</p>
