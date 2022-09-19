@@ -40,9 +40,11 @@ export const Pedidos = () => {
                                         descripcion={ele.productos_info.descripcion}
                                         dimensiones={ele.productos_info.dimensiones}
                                         categoria={ele.productos_info.categoria}
-                                        nombreArtista={ele.productos_info.nombre_artista}
+                                        nombreArtista={ele.productos_info.vendedor_nombre}
                                         fotoArtista={ele.productos_info.vendedor_foto}
                                         fechaPedidoProp={fechaPedido}
+                                        idUser={ele.productos_info.vendedor_user_id}
+
                                     />
                                 </div>
                             );

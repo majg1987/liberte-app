@@ -131,6 +131,7 @@ export const Filtro = (props) => {
           </nav>
           {store.artistaGaleriaFiltered.length > 0 ? (
             <Galeria
+              id={props.id}
               nombreArtista={props.nombreArtista}
               fotoArtista={props.fotoArtista}
             />

@@ -327,6 +327,8 @@ const getState = ({
                 sessionStorage.removeItem("token");
                 localStorage.removeItem("userInfo");
                 localStorage.removeItem("cesta");
+                localStorage.removeItem("pedido");
+
                 setStore({
                     productosCesta: [],
                 });
@@ -428,7 +430,8 @@ const getState = ({
                 dimensiones,
                 categoria,
                 nombreArtista,
-                fotoArtista
+                fotoArtista,
+                id_user
             ) => {
                 if (
                     !localStorage.getItem("productSelect") ||
@@ -445,6 +448,7 @@ const getState = ({
                             categoria: categoria,
                             nombreArtista: nombreArtista,
                             fotoArtista: fotoArtista,
+                            idUser: id_user,
                         },
                     });
 
@@ -632,7 +636,8 @@ const getState = ({
                         nombre: nombre,
                         apellido: apellido,
                         password: password,
-                        artista: artista === "true" ? true : false,
+                        // artista: artista === "true" ? true : false,
+                        artista: artista,
                         nacimiento: nacimiento,
                         descripcion: descripcion,
                         foto_usuario: foto,

@@ -42,7 +42,8 @@ export const Obra = (props) => {
                 props.dimensiones,
                 props.categoria,
                 props.nombreArtista,
-                props.fotoArtista
+                props.fotoArtista,
+                props.id
               );
               store.listaPerfil = true;
             }

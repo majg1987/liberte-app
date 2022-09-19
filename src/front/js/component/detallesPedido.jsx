@@ -19,7 +19,8 @@ const DetallesPedido = ({
     categoria,
     nombreArtista,
     fotoArtista,
-    fechaPedidoProp
+    fechaPedidoProp,
+    idUser
 }) => {
     const { store, actions } = useContext(Context);
 
@@ -52,9 +53,10 @@ const DetallesPedido = ({
                                 categoria,
                                 nombreArtista,
                                 fotoArtista,
+                                idUser
                             )
                             store.listaPedidos = true;
-                            console.log(store.listaPedidos)
+
                         }
                         }
                     >

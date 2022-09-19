@@ -34,36 +34,30 @@ export const Producto = () => {
 
     if (store.listaCesta) {
       storeSeleccionado = store.productosCesta;
-    } else if (store.listaCesta === false && store.listaPerfil === false && store.listaPedidos === false) {
+    } else if (
+      store.listaCesta === false &&
+      store.listaPerfil === false &&
+      store.listaPedidos === false
+    ) {
       storeSeleccionado = store.productos;
-    }
-    else if (store.listaPerfil) {
+    } else if (store.listaPerfil) {
       storeSeleccionado = store.artistaGaleria;
-    }
-    else if (store.listaPedidos) {
+    } else if (store.listaPedidos) {
       storeSeleccionado = store.pedido;
-      console.log("ijijI", storeSeleccionado)
-    };
-
-
+      console.log("ijijI", storeSeleccionado);
+    }
 
     for (let i = 0; i < storeSeleccionado.length; i++) {
-
       let comprobacionId;
-      console.log("eueue", store.listaPedidos)
-      store.listaPedidos ?
-        comprobacionId = storeSeleccionado[i].productos_info.id
-        :
-        comprobacionId = storeSeleccionado[i].id;
+      store.listaPedidos
+        ? (comprobacionId = storeSeleccionado[i].productos_info.id)
+        : (comprobacionId = storeSeleccionado[i].id);
 
       if (comprobacionId === store.productoSelect.id) {
         indexProducto = i;
-        console.log(indexProducto)
         arraySeleccionado = storeSeleccionado;
-        console.log(arraySeleccionado[2])
         break;
       }
-
     }
 
     let productoTarget;
@@ -74,11 +68,11 @@ export const Producto = () => {
     localStorage.removeItem("productSelect");
 
     if (productoTarget !== undefined) {
-
       if (store.listaPedidos) {
         productoTarget = productoTarget.productos_info;
-        console.log("holaola")
+
       }
+      console.log("uugu", productoTarget)
 
       actions.productoSelect(
         productoTarget.id,
@@ -88,8 +82,8 @@ export const Producto = () => {
         productoTarget.descripcion,
         productoTarget.dimensiones,
         productoTarget.categoria,
-        productoTarget.vendedor_nombre,
-        productoTarget.vendedor_foto
+        store.userInfo.nombre,
+        store.userInfo.foto_usuario,
       );
     }
 
@@ -98,13 +92,10 @@ export const Producto = () => {
 
   useEffect(() => {
     if (store.okAñadirProducto) {
-
       actions.notifyOk("Producto añadido a cesta correctamente");
       actions.okAñadirProductoReset();
     }
   }, [store.okAñadirProducto]);
-
-
 
   useEffect(() => {
     if (store.errorAñadirProducto) {
@@ -176,7 +167,12 @@ export const Producto = () => {
 
                   <div className="col-5 col-nombre-artista d-flex align-items-center">
                     <h4 className="nombre-artista mt-3">
-                      {store.productoSelect.nombreArtista}
+                      <Link
+                        className="text-black text-decoration-none"
+                        to={`/perfil/${store.productoSelect.idUser}`}
+                      >
+                        {store.productoSelect.nombreArtista}
+                      </Link>
                     </h4>
                   </div>
 

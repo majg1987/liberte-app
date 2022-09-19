@@ -229,8 +229,10 @@ def handle_productosInicio():
     response_body = [producto.serialize() for producto in response_body]
     for artista in response_body:
         user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
+        # artista["vendedor_id"] = user.id
         artista["vendedor_nombre"] = user.nombre
         artista["vendedor_foto"] = user.foto_usuario
+    print(response_body)
     return json.dumps(response_body), 200
 
 
@@ -498,7 +500,7 @@ def handle_pedido():
                 # Buscamos el nombre y la foto de usuario para devolverlas en el valor productos_info
                 userName = User.query.filter_by(id = producto_srl["vendedor_user_id"]).first()
                 userName_srl = userName.serialize()
-                producto_srl["nombre_artista"] = userName_srl["nombre"]
+                producto_srl["vendedor_nombre"] = userName_srl["nombre"]
                 producto_srl["vendedor_foto"] = userName_srl["foto_usuario"]
                 pedido_srl["productos_info"] = producto_srl
         

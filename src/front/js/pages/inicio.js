@@ -75,6 +75,7 @@ export const Inicio = () => {
                     categoria={ele.categoria}
                     nombreArtista={ele.vendedor_nombre}
                     fotoArtista={ele.vendedor_foto}
+                    idUser={ele.vendedor_user_id}
                   />
                 );
                 return productCard;

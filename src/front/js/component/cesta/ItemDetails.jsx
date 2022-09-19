@@ -18,6 +18,7 @@ const ItemDetails = ({
   categoria,
   nombreArtista,
   fotoArtista,
+  idUser
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -45,7 +46,8 @@ const ItemDetails = ({
                 dimensiones,
                 categoria,
                 nombreArtista,
-                fotoArtista
+                fotoArtista,
+                idUser
               );
               store.listaCesta = true;
             }

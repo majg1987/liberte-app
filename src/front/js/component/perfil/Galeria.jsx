@@ -38,10 +38,13 @@ export const Galeria = (props) => {
     <>
       <div className="container">
         <div className="gallery me-4">
+          {/* {console.log("tete", store.artistaGaleriaFiltered)} */}
           <ul>
             {store.artistaGaleriaFiltered.map((obra) => (
+
               <div key={obra.id}>
                 <Obra
+                  id={props.id}
                   obra_id={obra.id}
                   foto_producto={obra.foto_producto}
                   nombre={obra.nombre}
@@ -53,6 +56,7 @@ export const Galeria = (props) => {
                   fotoArtista={props.fotoArtista}
                   vendido={obra.vendido}
                 />
+
               </div>
             ))}
           </ul>
