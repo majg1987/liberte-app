@@ -20,6 +20,10 @@
     padding-top: 0;
 }
 
+.titulo-caracteristica-producto {
+    font-weight: 500;
+}
+
 .foto-artista {
     height: 50px;
     width: 50px;
@@ -45,6 +49,10 @@
     position: absolute;
     top: 50%;
     right: 1%;
+}
+
+.container-flecha:hover {
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {

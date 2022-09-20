@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 import DetallesPedido from "../component/detallesPedido.jsx";
+import Masonry from "react-masonry-css";
 
 
 
@@ -15,13 +16,14 @@ export const Pedidos = () => {
 
 
     return (
-        <div className="container-fluid container-inicio">
+        <div className="container-fluid min-vh-100 container-inicio">
             <h1 className="cesta-header text-center">Mis pedidos</h1>
             {
                 <div className="col-sm-12 col-lg-12 col-lista-productos">
                     <div className="item-counter text-muted">
                         {`Has pedido ${store.pedido.length} productos`}
                     </div>
+
                     <div className="row w-100">
                         {console.log(store.pedido)}
                         {store.pedido.map((ele) => {
@@ -54,6 +56,7 @@ export const Pedidos = () => {
                             return productosPedido;
                         })}
                     </div>
+
                 </div>
             }
         </div >

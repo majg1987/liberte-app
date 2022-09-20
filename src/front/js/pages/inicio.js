@@ -12,7 +12,7 @@ export const Inicio = () => {
   useEffect(() => {
     actions.productosInicio();
     store.listaCesta = false;
-    store.listaPerfil = false
+    store.listaPerfil = false;
     store.listaPedidos = false;
   }, []);
 
@@ -34,15 +34,18 @@ export const Inicio = () => {
       {/* Seccion portada */}
 
       <div className="container-portada d-flex justify-content-center align-items-center">
-        <div className="row row-logo">
-          <img
-            className="img-logo"
-            /* src={
-              "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
-            } */
-            src={black}
-            alt="logo-liberte"
-          />
+        <div className="row row-logo d-flex align-items-center">
+          <div className="contenedor-logo">
+            <img
+              className="img-logo"
+              // src={
+              //   "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
+              // }
+              src={black}
+              alt="logo-liberte"
+            />
+
+          </div>
         </div>
       </div>
 

@@ -55,7 +55,7 @@ export const Registro = () => {
       {store.registro ? (
         <Navigate to={"/login"} />
       ) : (
-        <div className=" contenedor">
+        <div className="min-vh-100 contenedor">
           <div className="contenedor-formulario d-flex justify-content-center align-items-center col-10 ">
             <form
               onSubmit={handleSubmit}

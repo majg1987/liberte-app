@@ -122,17 +122,23 @@ export const Producto = () => {
     <>
       {scroll ? (
         <div className="container-producto-vista-producto">
-          <AiOutlineArrowRight
-            className="icono-right icono-direccion"
-            size={28}
-            onClick={() => siguiente("right")}
-          />
+          <div className="container-flecha">
+            <AiOutlineArrowRight
+              className="icono-right icono-direccion"
+              size={28}
+              onClick={() => siguiente("right")}
+            />
 
-          <AiOutlineArrowLeft
-            className="icono-left icono-direccion"
-            size={28}
-            onClick={() => siguiente("left")}
-          />
+          </div>
+          <div className="container-flecha">
+            <AiOutlineArrowLeft
+              className="icono-left icono-direccion"
+              size={28}
+              onClick={() => siguiente("left")}
+            />
+
+          </div>
+
           <div className="container">
             <div className="row row-producto">
               <div className="row row-titulo-obra">
@@ -188,21 +194,21 @@ export const Producto = () => {
 
                 <div className="row row-precio">
                   <div className="col-12 col-titulo-precio pt-4">
-                    <p className="precio">Precio:</p>
+                    <p className="precio titulo-caracteristica-producto">Precio:</p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
-                    <p className="precioObra">{`${store.productoSelect.precio}€`}</p>
+                    <p className="precio-obra">{`${store.productoSelect.precio}€`}</p>
                   </div>
                 </div>
 
                 <div className="row row-categoria">
                   <div className="col-12 col-titulo-precio pt-1">
-                    <p className="precio">Categoría:</p>
+                    <p className="categoria titulo-caracteristica-producto">Categoría:</p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
-                    <p className="precioObra">
+                    <p className="categoria-obra">
                       {store.productoSelect.categoria}
                     </p>
                   </div>
@@ -210,7 +216,7 @@ export const Producto = () => {
 
                 <div className="row row-dimensiones">
                   <div className="col-12 col-titulo-precio pt-1">
-                    <p className="precio">Dimensiones:</p>
+                    <p className="dimensiones titulo-caracteristica-producto">Dimensiones:</p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
@@ -222,7 +228,7 @@ export const Producto = () => {
 
                 <div className="row row-descripcion">
                   <div className="col-12 col-titulo-descripcion pt-1">
-                    <p className="descripcion">Descripción:</p>
+                    <p className="descripcion titulo-caracteristica-producto">Descripción:</p>
                   </div>
 
                   <div className="col-12 col-descripcion">
