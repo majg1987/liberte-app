@@ -328,6 +328,7 @@ const getState = ({
                 localStorage.removeItem("userInfo");
                 localStorage.removeItem("cesta");
                 localStorage.removeItem("pedido");
+                localStorage.removeItem("direccion");
 
                 setStore({
                     productosCesta: [],
@@ -677,7 +678,7 @@ const getState = ({
                     });
                 }
             },
-            hacerPedido: async (user_id) => {
+            hacerPedido: async () => {
                 const options = {
                     method: "POST",
                     headers: {

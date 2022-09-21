@@ -36,14 +36,15 @@ export const Inicio = () => {
       <div className="container-portada d-flex justify-content-center align-items-center">
         <div className="row row-logo d-flex align-items-center">
           <div className="contenedor-logo">
-            <img
+            <p className="logo-portada">Libertè!</p>
+            {/* <img
               className="img-logo"
               // src={
               //   "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
               // }
               src={black}
               alt="logo-liberte"
-            />
+            /> */}
 
           </div>
         </div>

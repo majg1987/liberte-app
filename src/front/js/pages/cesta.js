@@ -122,7 +122,7 @@ export const Cesta = () => {
               <div className="paypal-button-container">
                 <PaypalCheckoutButton product={product} />
               </div>
-              <Link to="/producto" className="link-seguir-comprando">
+              <Link to="/" className="link-seguir-comprando">
                 <button className="btn-continuar-comprando">
                   CONTINUAR COMPRANDO
                 </button>

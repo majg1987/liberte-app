@@ -5,10 +5,16 @@
 .contenedor-logo {
     height: 20vh;
     width: 30h;
+    padding: 100px;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.logo-portada {
+    font-family: "Lobster", cursive;
+    font-size: 100px;
 }
 
 .container-titulos {

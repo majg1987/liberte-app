@@ -43,15 +43,11 @@ export const Producto = () => {
     } else if (store.listaPerfil) {
       storeSeleccionado = store.artistaGaleria;
     } else if (store.listaPedidos) {
-      storeSeleccionado = store.pedido;
-      console.log("ijijI", storeSeleccionado);
+      storeSeleccionado = store.pedido.productos_info;
     }
 
     for (let i = 0; i < storeSeleccionado.length; i++) {
-      let comprobacionId;
-      store.listaPedidos
-        ? (comprobacionId = storeSeleccionado[i].productos_info.id)
-        : (comprobacionId = storeSeleccionado[i].id);
+      let comprobacionId = comprobacionId = storeSeleccionado[i].id
 
       if (comprobacionId === store.productoSelect.id) {
         indexProducto = i;
@@ -68,11 +64,6 @@ export const Producto = () => {
     localStorage.removeItem("productSelect");
 
     if (productoTarget !== undefined) {
-      if (store.listaPedidos) {
-        productoTarget = productoTarget.productos_info;
-
-      }
-      console.log("uugu", productoTarget)
 
       actions.productoSelect(
         productoTarget.id,
@@ -83,7 +74,7 @@ export const Producto = () => {
         productoTarget.dimensiones,
         productoTarget.categoria,
         store.userInfo.nombre,
-        store.userInfo.foto_usuario,
+        store.userInfo.foto_usuario
       );
     }
 
@@ -128,7 +119,6 @@ export const Producto = () => {
               size={28}
               onClick={() => siguiente("right")}
             />
-
           </div>
           <div className="container-flecha">
             <AiOutlineArrowLeft
@@ -136,7 +126,6 @@ export const Producto = () => {
               size={28}
               onClick={() => siguiente("left")}
             />
-
           </div>
 
           <div className="container">
@@ -194,7 +183,9 @@ export const Producto = () => {
 
                 <div className="row row-precio">
                   <div className="col-12 col-titulo-precio pt-4">
-                    <p className="precio titulo-caracteristica-producto">Precio:</p>
+                    <p className="precio titulo-caracteristica-producto">
+                      Precio:
+                    </p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
@@ -204,7 +195,9 @@ export const Producto = () => {
 
                 <div className="row row-categoria">
                   <div className="col-12 col-titulo-precio pt-1">
-                    <p className="categoria titulo-caracteristica-producto">Categoría:</p>
+                    <p className="categoria titulo-caracteristica-producto">
+                      Categoría:
+                    </p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
@@ -216,7 +209,9 @@ export const Producto = () => {
 
                 <div className="row row-dimensiones">
                   <div className="col-12 col-titulo-precio pt-1">
-                    <p className="dimensiones titulo-caracteristica-producto">Dimensiones:</p>
+                    <p className="dimensiones titulo-caracteristica-producto">
+                      Dimensiones:
+                    </p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
@@ -228,7 +223,9 @@ export const Producto = () => {
 
                 <div className="row row-descripcion">
                   <div className="col-12 col-titulo-descripcion pt-1">
-                    <p className="descripcion titulo-caracteristica-producto">Descripción:</p>
+                    <p className="descripcion titulo-caracteristica-producto">
+                      Descripción:
+                    </p>
                   </div>
 
                   <div className="col-12 col-descripcion">
