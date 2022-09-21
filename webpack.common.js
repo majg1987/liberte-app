@@ -46,8 +46,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            favicon: "4geeks.ico",
-            // favicon: "src/front/img/black.png",
+            favicon: "logoBuscador.png",
             template: "template.html",
         }),
         new Dotenv({
