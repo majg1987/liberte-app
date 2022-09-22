@@ -42,6 +42,7 @@ export const Producto = () => {
       storeSeleccionado = store.productos;
     } else if (store.listaPerfil) {
       storeSeleccionado = store.artistaGaleria;
+      console.log("storegaleria", store.artistaGaleria);
     } else if (store.listaPedidos) {
       storeSeleccionado = store.pedido.productos_info;
     }
@@ -61,6 +62,7 @@ export const Producto = () => {
       ? (productoTarget = arraySeleccionado[indexProducto + 1])
       : (productoTarget = arraySeleccionado[indexProducto - 1]);
 
+    console.log("target", productoTarget)
     localStorage.removeItem("productSelect");
 
     if (productoTarget !== undefined) {
@@ -73,8 +75,9 @@ export const Producto = () => {
         productoTarget.descripcion,
         productoTarget.dimensiones,
         productoTarget.categoria,
-        store.userInfo.nombre,
-        store.userInfo.foto_usuario
+        productoTarget.vendedor_nombre,
+        productoTarget.vendedor_foto,
+        productoTarget.vendedor_user_id,
       );
     }
 
@@ -162,12 +165,16 @@ export const Producto = () => {
 
                   <div className="col-5 col-nombre-artista d-flex align-items-center">
                     <h4 className="nombre-artista mt-3">
-                      <Link
-                        className="text-black text-decoration-none"
-                        to={`/perfil/${store.productoSelect.idUser}`}
-                      >
-                        {store.productoSelect.nombreArtista}
-                      </Link>
+                      {
+                        store.productoSelect.idUser !== undefined &&
+
+                        <Link
+                          className="text-black text-decoration-none"
+                          to={`/perfil/${store.productoSelect.idUser}`}
+                        >
+                          {store.productoSelect.nombreArtista}
+                        </Link>
+                      }
                     </h4>
                   </div>
 

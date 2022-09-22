@@ -209,17 +209,29 @@ def handle_perfil_artista():
 @api.route("/perfil_galeria", methods=["POST", "GET"])
 def handle_producto_galeria():
     # Recogemos argumento id de la URL
-    id = request.args.get('id')
+    user_id = request.args.get('id')
    
-    if id:
-        id, response_body = check_user_id(id)
+    if user_id:
+        user_id, response_body = check_user_id(user_id)
         if len(response_body) != 0:
             return response_body, 400
         
-    response_body = Producto.query.filter_by(vendedor_user_id=id).all()
-    response_body = [producto.serialize() for producto in response_body]
+    response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
 
-    return json.dumps(response_body), 200
+    datos_user = User.query.filter_by(id=user_id).first()
+
+    datos_user_srl = datos_user.serialize()
+    lista_productos = []
+    for producto in response_body:
+        producto_srl = producto.serialize()
+        producto_srl["vendedor_user_id"] = datos_user_srl["id"]
+        producto_srl["vendedor_nombre"] = datos_user_srl["nombre"]
+        producto_srl["vendedor_foto"] = datos_user_srl["foto_usuario"]
+        lista_productos.append(producto_srl)
+
+
+    return json.dumps(lista_productos), 200
+
 
 
 @api.route("/productosInicio", methods=["GET"])

@@ -67,7 +67,7 @@ export const About = () => {
               ) : null}
             </div>
             <div className="position-absolute top-0 start-0 m-3 d-flex">
-              <h3 className="me-3">About me</h3>
+              <h3 className="me-3">Sobre mí</h3>
               <div className="social-container d-none">
                 <a
                   className="social-icons link-dark tooltips"

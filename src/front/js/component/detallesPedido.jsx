@@ -43,6 +43,10 @@ const DetallesPedido = ({
                     <Link
                         to={`/producto/${id}`}
                         onClick={() => {
+
+                            localStorage.getItem("productSelect") &&
+                                localStorage.removeItem("productSelect");
+
                             actions.productoSelect(
                                 id,
                                 nombre,

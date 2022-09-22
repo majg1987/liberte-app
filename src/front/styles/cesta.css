@@ -42,9 +42,13 @@
 
 .item-counter {
     width: 100%;
-    padding-left: 3rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid black;
+}
+
+.parrafo-no-products {
+    padding-top: 3rem;
+    font-size: 1.9rem;
 }
 
 .card-resumen-pedido,

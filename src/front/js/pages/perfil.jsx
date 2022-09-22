@@ -15,17 +15,14 @@ export const Perfil = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setScroll(true);
-    actions.productoSelect();
+    // actions.productoSelect();
   }, []);
 
   useEffect(() => {
     actions.perfil_artista(id);
   }, [id]);
 
-  useEffect(() => {
-    localStorage.getItem("productSelect") &&
-      localStorage.removeItem("productSelect");
-  }, []);
+
 
 
   return (
@@ -47,7 +44,7 @@ export const Perfil = () => {
             </div>
             <Filtro
               id={id}
-              nombreArtista={`${store.artista.nombre} ${store.artista.apellido}`}
+              nombreArtista={`${store.artista.nombre}`}
               fotoArtista={store.artista.foto_usuario}
             />
           </div>

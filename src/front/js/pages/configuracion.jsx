@@ -93,6 +93,8 @@ export const ConfiguracionUsuario = () => {
     }
   }, [store.configuracionError]);
 
+  store.direccion.tipo_via && console.log("TIPOVIA", store.direccion.tipo_via)
+
   return (
     // Vista configuracion usuario
     <div className="contenedor-principal-configuracion my-3 d-flex justify-content-center">
@@ -255,6 +257,8 @@ export const ConfiguracionUsuario = () => {
                 type="text"
                 className="input-registro input-tipo_via"
                 onChange={(e) => setTipo_via(e.target.value)}
+
+                // defaultValue={localStorage.getItem()}
                 defaultValue={store.direccion.tipo_via}
               />
             </div>

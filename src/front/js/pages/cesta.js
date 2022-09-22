@@ -50,29 +50,63 @@ export const Cesta = () => {
             {`Tienes ${store.productosCesta.length} producto(s) en tu cesta`}
           </div>
           <div className="row w-100">
-            {store.productosCesta.map((ele) => {
-              let productoCesta = (
-                <div
-                  className="col-12 col-lg-6 d-flex justify-content-center"
-                  key={ele.id}
-                >
-                  <ItemDetails
-                    id={ele.id}
-                    nombre={ele.nombre}
-                    img={ele.foto_producto}
-                    precio={ele.precio}
-                    descripcion={ele.descripcion}
-                    dimensiones={ele.dimensiones}
-                    categoria={ele.categoria}
-                    nombreArtista={ele.vendedor_nombre}
-                    fotoArtista={ele.vendedor_foto}
-                    idUser={ele.vendedor_user_id}
-                  />
-                </div>
-              );
-              /* retornamos la variable productoCesta */
-              return productoCesta;
-            })}
+
+            {
+              store.productosCesta.length === 0 ?
+                <p className="parrafo-no-products">
+                  Aquí podrás ver los productos añadidos a tu cesta
+                </p>
+                :
+                store.productosCesta.map((ele) => {
+                  let productoCesta = (
+                    <div
+                      className="col-12 col-lg-6 d-flex justify-content-center"
+                      key={ele.id}
+                    >
+                      <ItemDetails
+                        id={ele.id}
+                        nombre={ele.nombre}
+                        img={ele.foto_producto}
+                        precio={ele.precio}
+                        descripcion={ele.descripcion}
+                        dimensiones={ele.dimensiones}
+                        categoria={ele.categoria}
+                        nombreArtista={ele.vendedor_nombre}
+                        fotoArtista={ele.vendedor_foto}
+                        idUser={ele.vendedor_user_id}
+                      />
+                    </div>
+                  );
+                  /* retornamos la variable productoCesta */
+                  return productoCesta;
+                })
+            }
+
+            {
+              // store.productosCesta.map((ele) => {
+              //   let productoCesta = (
+              //     <div
+              //       className="col-12 col-lg-6 d-flex justify-content-center"
+              //       key={ele.id}
+              //     >
+              //       <ItemDetails
+              //         id={ele.id}
+              //         nombre={ele.nombre}
+              //         img={ele.foto_producto}
+              //         precio={ele.precio}
+              //         descripcion={ele.descripcion}
+              //         dimensiones={ele.dimensiones}
+              //         categoria={ele.categoria}
+              //         nombreArtista={ele.vendedor_nombre}
+              //         fotoArtista={ele.vendedor_foto}
+              //         idUser={ele.vendedor_user_id}
+              //       />
+              //     </div>
+              //   );
+              //   /* retornamos la variable productoCesta */
+              //   return productoCesta;
+              // })
+            }
           </div>
         </div>
 
