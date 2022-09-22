@@ -1,4 +1,11 @@
-/*NO*/
+.container-cesta {
+    overflow-x: hidden;
+}
+
+.cesta-header {
+    margin-left: 3rem;
+}
+
 .row-container-cesta {
     justify-content: space-around;
 }

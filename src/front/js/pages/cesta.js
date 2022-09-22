@@ -23,8 +23,6 @@ export const Cesta = () => {
   }, [store.cambioCesta]);
 
 
-
-
   useEffect(() => {
     localStorage.getItem("productSelect") &&
       localStorage.removeItem("productSelect");
@@ -41,8 +39,8 @@ export const Cesta = () => {
 
   return (
     <>
-      <h1 className="cesta-header text-center">Cesta de la Compra</h1>
 
+      <h1 className="cesta-header text-center">Cesta de la Compra</h1>
       {/* LISTA PRODUCTOS*/}
       <div className="row row-container-cesta">
         <div className="col-sm-12 col-lg-6 col-lista-productos">

@@ -36,7 +36,7 @@ export const Perfil = () => {
                 {typeof store.artista.nombre !== "undefined"
                   ? typeof store.userInfo.id !== "undefined" &&
                     store.userInfo.id == id
-                    ? `Hi, ${store.artista.nombre} ${store.artista.apellido}!`
+                    ? `Hola, ${store.artista.nombre} ${store.artista.apellido}!`
                     : `${store.artista.nombre} ${store.artista.apellido}`
                   : `${store.artista.nombre} ${store.artista.apellido}`}
               </h1>
