@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../store/appContext";
-import { BiCog, BiPlusCircle } from "react-icons/bi";
+import {
+  BiCog, BiPlusCircle, BiListUl
+} from "react-icons/bi";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 import "../../../styles/perfil/about.css";
 
@@ -20,9 +22,19 @@ export const About = () => {
           <div className="d-flex about-header-wrapper p-4 position-relative">
             <div className="about-icons position-absolute top-0 end-0">
               {"id" in store.userInfo &&
-              store.artista.id === store.userInfo.id ? (
+                store.artista.id === store.userInfo.id ? (
                 <ul className="list-unstyled d-flex">
                   <li className="m-0">
+                    <Link to={`/pedidos/${store.userInfo.id}`}>
+                      <span type="button" className="btn btn-sm border-0">
+                        <BiListUl
+
+                          size={28}
+                          style={{ color: "#e28f2c" }}
+                          title="Mis pedidos"
+                        />
+                      </span>
+                    </Link>
                     <Link to={`/configuracion/${store.userInfo.id}`}>
                       <span type="button" className="btn btn-sm border-0">
                         <BiCog
@@ -32,6 +44,7 @@ export const About = () => {
                         />
                       </span>
                     </Link>
+
                   </li>
                   {store.artista.artista ? (
                     <li className="m-0">
@@ -54,7 +67,7 @@ export const About = () => {
               ) : null}
             </div>
             <div className="position-absolute top-0 start-0 m-3 d-flex">
-              <h3 className="me-3">About me</h3>
+              <h3 className="me-3">Sobre mí</h3>
               <div className="social-container d-none">
                 <a
                   className="social-icons link-dark tooltips"
@@ -89,8 +102,8 @@ export const About = () => {
               <div className="col text-secondary text-start fst-italic my-4 position-relative">
                 <p className="lh-sm w-100 ms-3">
                   {typeof store.artista.descripcion !== "undefined" &&
-                  store.artista.descripcion !== null &&
-                  store.artista.descripcion.length > 0
+                    store.artista.descripcion !== null &&
+                    store.artista.descripcion.length > 0
                     ? store.artista.descripcion
                     : descripcion}
                 </p>
@@ -100,7 +113,7 @@ export const About = () => {
                 <img
                   src={
                     typeof store.artista.foto_usuario !== "undefined" &&
-                    store.artista.foto_usuario !== null
+                      store.artista.foto_usuario !== null
                       ? store.artista.foto_usuario
                       : foto_usuario
                   }

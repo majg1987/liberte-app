@@ -39,7 +39,7 @@ export const Login = () => {
       {store.auth ? (
         <Navigate to={"/"} />
       ) : (
-        <div className=" container-principal-login">
+        <div className="min-vh-100 container-principal-login">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
             <form onSubmit={handleSubmit} className="formulario-registro">
               <h2 className="titulo-registro text-center"> Login </h2>

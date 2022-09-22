@@ -1,54 +1,62 @@
 .col-foto-producto,
 .col-info-producto {
-  min-height: 80vh;
-  padding-left: 2rem;
+    min-height: 80vh;
+    padding-left: 2rem;
 }
 
 .row .nombre-obra {
-  padding: 3% 0;
-  font-size: 2rem;
+    padding: 3% 0;
+    font-size: 2rem;
 }
 
 .foto-producto {
-  width: 100%;
-  height: 65vh;
-  object-fit: cover;
+    width: 100%;
+    height: 65vh;
+    object-fit: cover;
 }
 
 .col-info-producto .row {
-  padding: 3% 2%;
-  padding-top: 0;
+    padding: 3% 2%;
+    padding-top: 0;
+}
+
+.titulo-caracteristica-producto {
+    font-weight: 500;
 }
 
 .foto-artista {
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  object-fit: cover;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .nombre-artista {
-  margin-left: 5%;
+    margin-left: 5%;
 }
 
 .icono-direccion {
-  height: 2rem;
+    height: 2rem;
 }
 
 .icono-left {
-  position: absolute;
-  top: 50%;
-  left: 1%;
+    position: absolute;
+    top: 50%;
+    left: 1%;
 }
 
 .icono-right {
-  position: absolute;
-  top: 50%;
-  right: 1%;
+    position: absolute;
+    top: 50%;
+    right: 1%;
+}
+
+.container-flecha:hover {
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
-  .nombre-artista {
-    margin-left: 30px;
-  }
+    .nombre-artista {
+        margin-left: 30px;
+    }
 }

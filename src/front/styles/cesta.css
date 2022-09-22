@@ -1,4 +1,11 @@
-/*NO*/
+.container-cesta {
+    overflow-x: hidden;
+}
+
+.cesta-header {
+    margin-left: 3rem;
+}
+
 .row-container-cesta {
     justify-content: space-around;
 }
@@ -42,9 +49,13 @@
 
 .item-counter {
     width: 100%;
-    padding-left: 3rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid black;
+}
+
+.parrafo-no-products {
+    padding-top: 3rem;
+    font-size: 1.9rem;
 }
 
 .card-resumen-pedido,
@@ -101,7 +112,7 @@
     margin-bottom: 1rem;
     /* margin-left: 1rem; */
     border: none;
-    background: #f2cb05;
+    background: rgb(255, 196, 57);
     border-radius: 3px;
     padding: 0.8rem;
     width: 94%;

@@ -4,6 +4,12 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+.footer {
+    clear: both;
+    position: relative;
+    margin-bottom: 0;
+}
+
 #copyright {
     font-size: 80%;
 }

@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 
 export const Footer = () => (
-  <footer className="footer mt-auto py-3 text-center bg-light">
+  <footer className="py-3 text-center bg-light footer">
+    {/* <footer className="footer mt-auto py-3 text-center bg-light"> */}
     <div>
       <ul className="wrapper">
         <li className="icon facebook ">

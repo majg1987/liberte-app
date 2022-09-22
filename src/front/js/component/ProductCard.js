@@ -13,6 +13,7 @@ export const ProductCard = ({
   categoria,
   nombreArtista,
   fotoArtista,
+  idUser
 }) => {
   const { store, actions } = useContext(Context);
 
@@ -31,7 +32,8 @@ export const ProductCard = ({
               dimensiones,
               categoria,
               nombreArtista,
-              fotoArtista
+              fotoArtista,
+              idUser
             )
           }
         >

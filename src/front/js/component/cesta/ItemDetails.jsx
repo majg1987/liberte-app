@@ -18,8 +18,10 @@ const ItemDetails = ({
   categoria,
   nombreArtista,
   fotoArtista,
+  idUser
 }) => {
   const { store, actions } = useContext(Context);
+
 
   return (
     <div className="container-intem-detail">
@@ -34,7 +36,7 @@ const ItemDetails = ({
           {/* elemento HIJO.  */}
           <Link
             to={`/producto/${id}`}
-            onClick={() =>
+            onClick={() => {
               actions.productoSelect(
                 id,
                 nombre,
@@ -44,8 +46,11 @@ const ItemDetails = ({
                 dimensiones,
                 categoria,
                 nombreArtista,
-                fotoArtista
-              )
+                fotoArtista,
+                idUser
+              );
+              store.listaCesta = true;
+            }
             }
           >
             <p className="titulo-obra">{nombre}</p>

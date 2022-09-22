@@ -64,7 +64,7 @@ export const ConfiguracionUsuario = () => {
         nombre,
         apellido,
         password,
-        artistProvisional,
+        artista,
         nacimiento,
         descripcion,
         img,
@@ -92,6 +92,8 @@ export const ConfiguracionUsuario = () => {
       actions.configuracionErrorReset();
     }
   }, [store.configuracionError]);
+
+  store.direccion.tipo_via && console.log("TIPOVIA", store.direccion.tipo_via)
 
   return (
     // Vista configuracion usuario
@@ -171,10 +173,11 @@ export const ConfiguracionUsuario = () => {
                       name="artista"
                       value={true}
                       className="input-artista-configuracion"
-                      onLoad={(e) => {
-                        setArtista(e.target.value);
-                      }}
+                      // onLoad={(e) => {
+                      //   setArtista(true);
+                      // }}
                       defaultChecked
+                    // checked="checked"
                     />
                   </div>
                   <div className="col-4 col-input-artista">
@@ -185,9 +188,10 @@ export const ConfiguracionUsuario = () => {
                       name="artista"
                       value={false}
                       className="input-artista-configuracion"
-                      onChange={(e) => {
-                        setArtista(e.target.value);
-                        setArtistProvisional(e.target.value);
+                      onClick={(e) => {
+                        setArtista(false);
+                        setArtistProvisional(false);
+                        console.log("tvalue", e.target.value)
                       }}
                     />
                   </div>
@@ -202,9 +206,10 @@ export const ConfiguracionUsuario = () => {
                       name="artista"
                       value={true}
                       className="input-artista-configuracion"
-                      onChange={(e) => {
-                        setArtista(e.target.value);
-                        setArtistProvisional(e.target.value);
+                      onClick={(e) => {
+                        setArtista(true);
+                        setArtistProvisional(true);
+                        console.log("tvalue", e.target.value)
                       }}
                     />
                   </div>
@@ -216,11 +221,12 @@ export const ConfiguracionUsuario = () => {
                       name="artista"
                       value={false}
                       className="input-artista-configuracion"
-                      onLoad={(e) => {
-                        setArtista(e.target.value);
-                        setArtistProvisional(e.target.value);
-                      }}
+                      // onLoad={(e) => {
+                      //   setArtista(false);
+                      //   setArtistProvisional(false);
+                      // }}
                       defaultChecked
+                    // checked="checked"
                     />
                   </div>
                 </>
@@ -251,6 +257,8 @@ export const ConfiguracionUsuario = () => {
                 type="text"
                 className="input-registro input-tipo_via"
                 onChange={(e) => setTipo_via(e.target.value)}
+
+                // defaultValue={localStorage.getItem()}
                 defaultValue={store.direccion.tipo_via}
               />
             </div>
@@ -375,6 +383,7 @@ export const ConfiguracionUsuario = () => {
                     onClick={(e) => enviarCambiosUsuario(e)}
                   >
                     Guardar
+                    {console.log("artista", artista)}
                   </button>
                 </div>
               </div>

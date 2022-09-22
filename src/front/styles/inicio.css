@@ -1,82 +1,97 @@
 .container-inicio {
-  padding: 0;
+    padding: 0;
+}
+
+.contenedor-logo {
+    height: 20vh;
+    width: 30h;
+    padding: 100px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-portada {
+    font-family: "Lobster", cursive;
+    font-size: 100px;
 }
 
 .container-titulos {
-  width: 100%;
-  padding-left: 5%;
+    width: 100%;
+    padding-left: 5%;
 }
 
 h5[class*="titulo"] {
-  font-size: 2.5rem;
+    font-size: 2.5rem;
 }
 
 .titulo-1 {
-  padding-right: 5%;
+    padding-right: 5%;
 }
 
 .container-portada {
-  background: linear-gradient(-45deg, #f2cb05, #f7750f, #7c0ff7, #0e75ed);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-  min-height: 40vh;
+    background: linear-gradient(-45deg, #f2cb05, #f7750f, #7c0ff7, #0e75ed);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    height: 71vh;
 }
 
 @keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
 
-  50% {
-    background-position: 100% 50%;
-  }
+    50% {
+        background-position: 100% 50%;
+    }
 
-  100% {
-    background-position: 0% 50%;
-  }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .row-logo {
-  height: 50vh;
-  width: 45vh;
+    /* height: 50vh;
+    width: 45vh; */
 }
 
 .img-logo {
-  object-fit: contain;
+    object-fit: contain;
 }
 
 .titulo-seccion-producto {
-  padding: 1rem 0;
-  font-size: 2.5rem;
+    padding: 1rem 0;
+    font-size: 2.5rem;
 }
 
 .row-productos {
-  padding-right: 1vw;
-  height: auto;
+    padding-right: 1vw;
+    height: auto;
 }
 
 /* Masonry css */
 
 .my-masonry-grid {
-  display: -webkit-box;
-  /* Not needed if autoprefixing */
-  display: -ms-flexbox;
-  /* Not needed if autoprefixing */
-  display: flex;
-  margin-left: -30px;
-  /* gutter size offset */
-  width: auto;
+    display: -webkit-box;
+    /* Not needed if autoprefixing */
+    display: -ms-flexbox;
+    /* Not needed if autoprefixing */
+    display: flex;
+    margin-left: -30px;
+    /* gutter size offset */
+    width: auto;
 }
 
 .my-masonry-grid_column {
-  padding-left: 30px;
-  /* gutter size */
-  background-clip: padding-box;
+    padding-left: 30px;
+    /* gutter size */
+    background-clip: padding-box;
 }
 
 /* Style your items */
-.my-masonry-grid_column > div {
-  /* change div to reference your elements you put in <Masonry> */
-  background: grey;
-  margin-bottom: 30px;
+.my-masonry-grid_column>div {
+    /* change div to reference your elements you put in <Masonry> */
+    background: grey;
+    margin-bottom: 30px;
 }

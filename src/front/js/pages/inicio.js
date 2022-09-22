@@ -11,6 +11,9 @@ export const Inicio = () => {
 
   useEffect(() => {
     actions.productosInicio();
+    store.listaCesta = false;
+    store.listaPerfil = false;
+    store.listaPedidos = false;
   }, []);
 
   const breakpoints = {
@@ -31,15 +34,19 @@ export const Inicio = () => {
       {/* Seccion portada */}
 
       <div className="container-portada d-flex justify-content-center align-items-center">
-        <div className="row row-logo">
-          <img
-            className="img-logo"
-            /* src={
-              "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
-            } */
-            src={black}
-            alt="logo-liberte"
-          />
+        <div className="row row-logo d-flex align-items-center">
+          <div className="contenedor-logo">
+            <p className="logo-portada">Libertè!</p>
+            {/* <img
+              className="img-logo"
+              // src={
+              //   "https://res.cloudinary.com/yisusrobles/image/upload/v1657809752/image/lymgdwlcjwbseldkzljg.png"
+              // }
+              src={black}
+              alt="logo-liberte"
+            /> */}
+
+          </div>
         </div>
       </div>
 
@@ -72,6 +79,7 @@ export const Inicio = () => {
                     categoria={ele.categoria}
                     nombreArtista={ele.vendedor_nombre}
                     fotoArtista={ele.vendedor_foto}
+                    idUser={ele.vendedor_user_id}
                   />
                 );
                 return productCard;

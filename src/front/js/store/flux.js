@@ -33,6 +33,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       direccion: {},
       configuracion: {},
       numeroProductosCesta: [],
+      listaCesta: false,
+      listaPerfil: false,
+      listaPedidos: false,
     },
     actions: {
       // Alerts
@@ -312,10 +315,14 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({
           auth: false,
           userInfo: {},
+          direccion: {},
         });
         sessionStorage.removeItem("token");
         localStorage.removeItem("userInfo");
         localStorage.removeItem("cesta");
+        localStorage.removeItem("pedido");
+        localStorage.removeItem("direccion");
+
         setStore({
           productosCesta: [],
         });
@@ -417,7 +424,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         dimensiones,
         categoria,
         nombreArtista,
-        fotoArtista
+        fotoArtista,
+        id_user
       ) => {
         if (
           !localStorage.getItem("productSelect") ||
@@ -434,6 +442,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               categoria: categoria,
               nombreArtista: nombreArtista,
               fotoArtista: fotoArtista,
+              idUser: id_user,
             },
           });
 
@@ -511,7 +520,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         };
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL + `/api/cesta?user_id=${user_id}`
+            process.env.BACKEND_URL +
+              `/api/cesta?user_id=${getStore().userInfo.id}`
           );
           const data = await resp.json();
 
@@ -574,9 +584,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           localStorage.setItem("direccion", direccionStrfy);
         } catch (error) {
           console.log(error);
-          setStore({
-            direccion: JSON.parse(localStorage.getItem("direccion")),
-          });
         }
       },
 
@@ -621,7 +628,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             nombre: nombre,
             apellido: apellido,
             password: password,
-            artista: artista === "true" ? true : false,
+            // artista: artista === "true" ? true : false,
+            artista: artista,
             nacimiento: nacimiento,
             descripcion: descripcion,
             foto_usuario: foto,
@@ -661,7 +669,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
         }
       },
-      hacerPedido: async (user_id) => {
+      hacerPedido: async () => {
         const options = {
           method: "POST",
           headers: {
@@ -678,13 +686,40 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
 
+          // Actualizamos cesta
           getActions().obtenerCesta(getStore().userInfo.id);
-
-          console.log(
-            "acabo de ejecutar getActions().obtenerCesta en hacerPedido"
-          );
+          localStorage.getItem("pedido") && localStorage.removeItem("pedido");
         } catch (error) {
           console.log(error);
+        }
+      },
+
+      verPedidos: async () => {
+        const options = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        if (localStorage.getItem("pedido")) {
+          setStore({
+            pedido: JSON.parse(localStorage.getItem("pedido")),
+          });
+        } else {
+          try {
+            const resp = await fetch(
+              process.env.BACKEND_URL +
+                `/api/pedido?user_id=${getStore().userInfo.id}`,
+              options
+            );
+            const data = await resp.json();
+            setStore({
+              pedido: data.result,
+            });
+            localStorage.setItem("pedido", JSON.stringify(data.result));
+          } catch (error) {
+            console.log(error);
+          }
         }
       },
     },

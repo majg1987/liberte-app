@@ -29,21 +29,44 @@ export const Producto = () => {
 
   const siguiente = (direccion) => {
     let indexProducto;
+    let arraySeleccionado;
+    let storeSeleccionado;
 
-    for (let i = 0; i < store.productos.length; i++) {
-      if (store.productos[i].id === store.productoSelect.id) {
+    if (store.listaCesta) {
+      storeSeleccionado = store.productosCesta;
+    } else if (
+      store.listaCesta === false &&
+      store.listaPerfil === false &&
+      store.listaPedidos === false
+    ) {
+      storeSeleccionado = store.productos;
+    } else if (store.listaPerfil) {
+      storeSeleccionado = store.artistaGaleria;
+      console.log("storegaleria", store.artistaGaleria);
+    } else if (store.listaPedidos) {
+      storeSeleccionado = store.pedido.productos_info;
+    }
+
+    for (let i = 0; i < storeSeleccionado.length; i++) {
+      let comprobacionId = comprobacionId = storeSeleccionado[i].id
+
+      if (comprobacionId === store.productoSelect.id) {
         indexProducto = i;
+        arraySeleccionado = storeSeleccionado;
         break;
       }
     }
+
     let productoTarget;
     direccion === "right"
-      ? (productoTarget = store.productos[indexProducto + 1])
-      : (productoTarget = store.productos[indexProducto - 1]);
+      ? (productoTarget = arraySeleccionado[indexProducto + 1])
+      : (productoTarget = arraySeleccionado[indexProducto - 1]);
 
+    console.log("target", productoTarget)
     localStorage.removeItem("productSelect");
 
-    productoTarget !== undefined &&
+    if (productoTarget !== undefined) {
+
       actions.productoSelect(
         productoTarget.id,
         productoTarget.nombre,
@@ -53,8 +76,10 @@ export const Producto = () => {
         productoTarget.dimensiones,
         productoTarget.categoria,
         productoTarget.vendedor_nombre,
-        productoTarget.vendedor_foto
+        productoTarget.vendedor_foto,
+        productoTarget.vendedor_user_id,
       );
+    }
 
     navigate(`../producto/${productoTarget.id}`);
   };
@@ -91,17 +116,21 @@ export const Producto = () => {
     <>
       {scroll ? (
         <div className="container-producto-vista-producto">
-          <AiOutlineArrowRight
-            className="icono-right icono-direccion"
-            size={28}
-            onClick={() => siguiente("right")}
-          />
+          <div className="container-flecha">
+            <AiOutlineArrowRight
+              className="icono-right icono-direccion"
+              size={28}
+              onClick={() => siguiente("right")}
+            />
+          </div>
+          <div className="container-flecha">
+            <AiOutlineArrowLeft
+              className="icono-left icono-direccion"
+              size={28}
+              onClick={() => siguiente("left")}
+            />
+          </div>
 
-          <AiOutlineArrowLeft
-            className="icono-left icono-direccion"
-            size={28}
-            onClick={() => siguiente("left")}
-          />
           <div className="container">
             <div className="row row-producto">
               <div className="row row-titulo-obra">
@@ -136,7 +165,16 @@ export const Producto = () => {
 
                   <div className="col-5 col-nombre-artista d-flex align-items-center">
                     <h4 className="nombre-artista mt-3">
-                      {store.productoSelect.nombreArtista}
+                      {
+                        store.productoSelect.idUser !== undefined &&
+
+                        <Link
+                          className="text-black text-decoration-none"
+                          to={`/perfil/${store.productoSelect.idUser}`}
+                        >
+                          {store.productoSelect.nombreArtista}
+                        </Link>
+                      }
                     </h4>
                   </div>
 
@@ -152,21 +190,25 @@ export const Producto = () => {
 
                 <div className="row row-precio">
                   <div className="col-12 col-titulo-precio pt-4">
-                    <p className="precio">Precio:</p>
+                    <p className="precio titulo-caracteristica-producto">
+                      Precio:
+                    </p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
-                    <p className="precioObra">{`${store.productoSelect.precio}€`}</p>
+                    <p className="precio-obra">{`${store.productoSelect.precio}€`}</p>
                   </div>
                 </div>
 
                 <div className="row row-categoria">
                   <div className="col-12 col-titulo-precio pt-1">
-                    <p className="precio">Categoría:</p>
+                    <p className="categoria titulo-caracteristica-producto">
+                      Categoría:
+                    </p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
-                    <p className="precioObra">
+                    <p className="categoria-obra">
                       {store.productoSelect.categoria}
                     </p>
                   </div>
@@ -174,7 +216,9 @@ export const Producto = () => {
 
                 <div className="row row-dimensiones">
                   <div className="col-12 col-titulo-precio pt-1">
-                    <p className="precio">Dimensiones:</p>
+                    <p className="dimensiones titulo-caracteristica-producto">
+                      Dimensiones:
+                    </p>
                   </div>
 
                   <div className="col-12 col-precio-obra">
@@ -186,7 +230,9 @@ export const Producto = () => {
 
                 <div className="row row-descripcion">
                   <div className="col-12 col-titulo-descripcion pt-1">
-                    <p className="descripcion">Descripción:</p>
+                    <p className="descripcion titulo-caracteristica-producto">
+                      Descripción:
+                    </p>
                   </div>
 
                   <div className="col-12 col-descripcion">

@@ -209,17 +209,29 @@ def handle_perfil_artista():
 @api.route("/perfil_galeria", methods=["POST", "GET"])
 def handle_producto_galeria():
     # Recogemos argumento id de la URL
-    id = request.args.get('id')
+    user_id = request.args.get('id')
    
-    if id:
-        id, response_body = check_user_id(id)
+    if user_id:
+        user_id, response_body = check_user_id(user_id)
         if len(response_body) != 0:
             return response_body, 400
         
-    response_body = Producto.query.filter_by(vendedor_user_id=id).all()
-    response_body = [producto.serialize() for producto in response_body]
+    response_body = Producto.query.filter_by(vendedor_user_id=user_id).all()
 
-    return json.dumps(response_body), 200
+    datos_user = User.query.filter_by(id=user_id).first()
+
+    datos_user_srl = datos_user.serialize()
+    lista_productos = []
+    for producto in response_body:
+        producto_srl = producto.serialize()
+        producto_srl["vendedor_user_id"] = datos_user_srl["id"]
+        producto_srl["vendedor_nombre"] = datos_user_srl["nombre"]
+        producto_srl["vendedor_foto"] = datos_user_srl["foto_usuario"]
+        lista_productos.append(producto_srl)
+
+
+    return json.dumps(lista_productos), 200
+
 
 
 @api.route("/productosInicio", methods=["GET"])
@@ -229,8 +241,10 @@ def handle_productosInicio():
     response_body = [producto.serialize() for producto in response_body]
     for artista in response_body:
         user = User.query.filter_by(id=artista["vendedor_user_id"]).first()
+        # artista["vendedor_id"] = user.id
         artista["vendedor_nombre"] = user.nombre
         artista["vendedor_foto"] = user.foto_usuario
+    print(response_body)
     return json.dumps(response_body), 200
 
 
@@ -481,8 +495,8 @@ def handle_pedido():
         # Recibimos id de cesta pedida
         user_id = request.args.get('user_id')
 
-        # Obtenemos la lista de pedidos del usuario con historico = False
-        pedido_user = Pedido.query.filter_by(id_comprador=user_id, historico=False).all()
+        # Obtenemos la lista de pedidos del usuario
+        pedido_user = Pedido.query.filter_by(id_comprador=user_id).all()
 
         # Creamos el array que devolveremos con cada pedido y los productos adquiridos
         productos_info = []
@@ -493,13 +507,25 @@ def handle_pedido():
             # Buscamos los productos seleccionados en ese pedido
             productos = Producto.query.filter_by(pedido_id=pedido_srl["id"]).all()
 
-            # Incluimos en los pedidos los objetos adquiridos y los devolvemos
-            pedido_srl["productos_info"] = [
-                producto.serialize() for producto in productos
-            ]
-            productos_info.append(pedido_srl)
+            for producto in productos:
+                producto_srl = producto.serialize()
+                print("ID", producto_srl["id"])
+                # Buscamos el nombre y la foto de usuario para devolverlas en el valor productos_info
+                userName = User.query.filter_by(id = producto_srl["vendedor_user_id"]).first()
+                userName_srl = userName.serialize()
+                producto_srl["vendedor_nombre"] = userName_srl["nombre"]
+                producto_srl["vendedor_foto"] = userName_srl["foto_usuario"]
+                productos_info.append(producto_srl)
+            
+            pedido_srl["productos_info"] = productos_info
+        
+            # [productos_info].append(pedido_srl)
+            
+            # print("productInfo",productos_info)
+            
+            print("pedido_srl",pedido_srl)
 
-        response_body = {"result": productos_info}
+        response_body = {"result": pedido_srl}
 
     return response_body, 200
 

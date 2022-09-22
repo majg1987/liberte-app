@@ -22,6 +22,16 @@ export const Cesta = () => {
     }
   }, [store.cambioCesta]);
 
+
+  useEffect(() => {
+    localStorage.getItem("productSelect") &&
+      localStorage.removeItem("productSelect");
+    // ListaPerfil false para quedarnos en cesta cuando damos a siguiente img
+    store.listaPerfil = false
+    store.listaPedidos = false;
+  }, []);
+
+
   const product = {
     price: precios,
     description: "Realice su compra",
@@ -29,8 +39,8 @@ export const Cesta = () => {
 
   return (
     <>
-      <h1 className="cesta-header text-center">Cesta de la Compra</h1>
 
+      <h1 className="cesta-header text-center">Cesta de la Compra</h1>
       {/* LISTA PRODUCTOS*/}
       <div className="row row-container-cesta">
         <div className="col-sm-12 col-lg-6 col-lista-productos">
@@ -38,28 +48,63 @@ export const Cesta = () => {
             {`Tienes ${store.productosCesta.length} producto(s) en tu cesta`}
           </div>
           <div className="row w-100">
-            {store.productosCesta.map((ele) => {
-              let productoCesta = (
-                <div
-                  className="col-12 col-lg-6 d-flex justify-content-center"
-                  key={ele.id}
-                >
-                  <ItemDetails
-                    id={ele.id}
-                    nombre={ele.nombre}
-                    img={ele.foto_producto}
-                    precio={ele.precio}
-                    descripcion={ele.descripcion}
-                    dimensiones={ele.dimensiones}
-                    categoria={ele.categoria}
-                    nombreArtista={ele.vendedor_nombre}
-                    fotoArtista={ele.vendedor_foto}
-                  />
-                </div>
-              );
-              /* retornamos la variable productoCesta */
-              return productoCesta;
-            })}
+
+            {
+              store.productosCesta.length === 0 ?
+                <p className="parrafo-no-products">
+                  Aquí podrás ver los productos añadidos a tu cesta
+                </p>
+                :
+                store.productosCesta.map((ele) => {
+                  let productoCesta = (
+                    <div
+                      className="col-12 col-lg-6 d-flex justify-content-center"
+                      key={ele.id}
+                    >
+                      <ItemDetails
+                        id={ele.id}
+                        nombre={ele.nombre}
+                        img={ele.foto_producto}
+                        precio={ele.precio}
+                        descripcion={ele.descripcion}
+                        dimensiones={ele.dimensiones}
+                        categoria={ele.categoria}
+                        nombreArtista={ele.vendedor_nombre}
+                        fotoArtista={ele.vendedor_foto}
+                        idUser={ele.vendedor_user_id}
+                      />
+                    </div>
+                  );
+                  /* retornamos la variable productoCesta */
+                  return productoCesta;
+                })
+            }
+
+            {
+              // store.productosCesta.map((ele) => {
+              //   let productoCesta = (
+              //     <div
+              //       className="col-12 col-lg-6 d-flex justify-content-center"
+              //       key={ele.id}
+              //     >
+              //       <ItemDetails
+              //         id={ele.id}
+              //         nombre={ele.nombre}
+              //         img={ele.foto_producto}
+              //         precio={ele.precio}
+              //         descripcion={ele.descripcion}
+              //         dimensiones={ele.dimensiones}
+              //         categoria={ele.categoria}
+              //         nombreArtista={ele.vendedor_nombre}
+              //         fotoArtista={ele.vendedor_foto}
+              //         idUser={ele.vendedor_user_id}
+              //       />
+              //     </div>
+              //   );
+              //   /* retornamos la variable productoCesta */
+              //   return productoCesta;
+              // })
+            }
           </div>
         </div>
 
@@ -109,7 +154,7 @@ export const Cesta = () => {
               <div className="paypal-button-container">
                 <PaypalCheckoutButton product={product} />
               </div>
-              <Link to="/producto" className="link-seguir-comprando">
+              <Link to="/" className="link-seguir-comprando">
                 <button className="btn-continuar-comprando">
                   CONTINUAR COMPRANDO
                 </button>
