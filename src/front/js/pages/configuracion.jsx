@@ -13,7 +13,6 @@ export const ConfiguracionUsuario = () => {
   const [imagenSelect, setImagenSelect] = useState("");
   const [loading, setLoading] = useState(false);
   const [nombre, setNombre] = useState(store.userInfo.nombre);
-  const [apellido, setApellido] = useState(store.userInfo.apellido);
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [artista, setArtista] = useState(store.userInfo.artista);
@@ -62,7 +61,6 @@ export const ConfiguracionUsuario = () => {
         imagenSelect === "" ? store.userInfo.foto_usuario : imagenSelect;
       actions.configuracionUsuario(
         nombre,
-        apellido,
         password,
         artista,
         nacimiento,
@@ -93,7 +91,7 @@ export const ConfiguracionUsuario = () => {
     }
   }, [store.configuracionError]);
 
-  store.direccion.tipo_via && console.log("TIPOVIA", store.direccion.tipo_via)
+  store.direccion.tipo_via && console.log("TIPOVIA", store.direccion.tipo_via);
 
   return (
     // Vista configuracion usuario
@@ -112,20 +110,6 @@ export const ConfiguracionUsuario = () => {
                 className="input-registro input-nombre"
                 onChange={(e) => setNombre(e.target.value)}
                 defaultValue={store.userInfo.nombre}
-              />
-            </div>
-          </div>
-
-          <div className="row row-apellido">
-            <div className="col-12 col-md-3 col-titulo-apellido">
-              <p className="apellido">Apellido</p>
-            </div>
-            <div className="col-12 col-md-9 col-input-apellido">
-              <input
-                type="text"
-                className="input-registro input-nombre"
-                onChange={(e) => setApellido(e.target.value)}
-                defaultValue={store.userInfo.apellido}
               />
             </div>
           </div>
@@ -177,7 +161,7 @@ export const ConfiguracionUsuario = () => {
                       //   setArtista(true);
                       // }}
                       defaultChecked
-                    // checked="checked"
+                      // checked="checked"
                     />
                   </div>
                   <div className="col-4 col-input-artista">
@@ -191,7 +175,7 @@ export const ConfiguracionUsuario = () => {
                       onClick={(e) => {
                         setArtista(false);
                         setArtistProvisional(false);
-                        console.log("tvalue", e.target.value)
+                        console.log("tvalue", e.target.value);
                       }}
                     />
                   </div>
@@ -209,7 +193,7 @@ export const ConfiguracionUsuario = () => {
                       onClick={(e) => {
                         setArtista(true);
                         setArtistProvisional(true);
-                        console.log("tvalue", e.target.value)
+                        console.log("tvalue", e.target.value);
                       }}
                     />
                   </div>
@@ -226,7 +210,7 @@ export const ConfiguracionUsuario = () => {
                       //   setArtistProvisional(false);
                       // }}
                       defaultChecked
-                    // checked="checked"
+                      // checked="checked"
                     />
                   </div>
                 </>
@@ -257,7 +241,6 @@ export const ConfiguracionUsuario = () => {
                 type="text"
                 className="input-registro input-tipo_via"
                 onChange={(e) => setTipo_via(e.target.value)}
-
                 // defaultValue={localStorage.getItem()}
                 defaultValue={store.direccion.tipo_via}
               />

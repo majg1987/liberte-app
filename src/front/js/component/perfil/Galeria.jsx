@@ -5,7 +5,7 @@ import Alert from "../Alert";
 
 export const Galeria = (props) => {
   const { store, actions } = useContext(Context);
-  console.log("obra", store.artistaGaleriaFiltered)
+  // console.log("obra", store.artistaGaleriaFiltered)
 
   useEffect(() => {
     if (store.errorNoLogin) {
@@ -69,7 +69,6 @@ export const Galeria = (props) => {
                   fotoArtista={props.fotoArtista}
                   vendido={obra.vendido}
                 /> */}
-
               </div>
             ))}
           </ul>
