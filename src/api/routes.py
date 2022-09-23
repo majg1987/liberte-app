@@ -553,10 +553,16 @@ def handle_pedido():
         # Obtenemos la lista de pedidos del usuario
         pedido_user = Pedido.query.filter_by(id_comprador=user_id).all()
 
+
+        if len(pedido_user) == 0:
+            response_body = {"result":"No hay pedidos"}
+            return response_body, 500
+
         # Creamos el array que devolveremos con cada pedido y los productos adquiridos
         productos_info = []
 
         for pedido in pedido_user:
+            print("pedido", pedido)
             pedido_srl = pedido.serialize()
 
             # Buscamos los productos seleccionados en ese pedido
@@ -564,7 +570,7 @@ def handle_pedido():
 
             for producto in productos:
                 producto_srl = producto.serialize()
-                print("ID", producto_srl["id"])
+
                 # Buscamos el nombre y la foto de usuario para devolverlas en el valor productos_info
                 userName = User.query.filter_by(id = producto_srl["vendedor_user_id"]).first()
                 userName_srl = userName.serialize()
@@ -574,13 +580,10 @@ def handle_pedido():
             
             pedido_srl["productos_info"] = productos_info
         
-            # [productos_info].append(pedido_srl)
             
-            # print("productInfo",productos_info)
-            
-            print("pedido_srl",pedido_srl)
 
         response_body = {"result": pedido_srl}
+
 
     return response_body, 200
 

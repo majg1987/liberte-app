@@ -53,7 +53,8 @@
     border-bottom: 1px solid black;
 }
 
-.parrafo-no-products {
+.parrafo-no-products,
+.no-pedidos {
     padding-top: 3rem;
     font-size: 1.9rem;
 }
