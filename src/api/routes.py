@@ -60,7 +60,6 @@ def registration():
         x: body[x]
         for x in [
             "nombre",
-            "apellido",
             "email",
             "artista",
             "nacimiento",
@@ -108,11 +107,9 @@ def login():
         "user_info": {
             "id": user.id,
             "nombre": user.nombre,
-            "apellido": user.apellido,
             "email": user.email,
             "artista": user.artista,
             "foto_usuario": user.foto_usuario,
-            "apellido": user.apellido,
             "descripcion":user.descripcion
         },
     }
@@ -121,6 +118,65 @@ def login():
     # configuracion mimetype application/json
     return jsonify(access_token)
 
+# Login with Google
+@api.route("/login_with_google", methods=["POST"])
+def login_with_google():
+    # recibimos los datos del front
+    body = json.loads(request.data)
+    
+    # almacenamos la primera coincidencia de email en User
+    user = User.query.filter_by(email=body["email"]).first()
+    print(user)
+
+    # Si el email o password no coindicen retornamos error de autentificacion
+    if user == None:
+        # Hash password
+        hashed_password = current_app.bcrypt.generate_password_hash(
+            body["password"]
+        ).decode("utf-8")
+
+        # Guardar nuevo user con hashed_password
+        body = {
+            x: body[x]
+            for x in [
+                "nombre",
+                "email",
+                "artista",
+                "nacimiento",
+                "foto_usuario",
+                "descripcion",
+            ]
+        }
+
+        body["password"] = hashed_password
+
+        user = User(**body)
+
+        db.session.add(user)
+        usuario = User.query.filter_by(email=body["email"]).first()
+
+        print("id",usuario.id)
+        direccion = Direccion(tipo_via="Avenida", nombre_via= "Andalucia", numero=2, piso=1, puerta="2A", user_id=usuario.id)
+        db.session.add(direccion)
+        db.session.commit()
+
+    registered_user = User.query.filter_by(email=body["email"]).first()
+    print(registered_user.serialize())
+    access_token = {
+        "token": create_access_token(identity=body["email"]),
+        "user_info": {
+            "id": registered_user.id,
+            "nombre": registered_user.nombre,
+            "email": registered_user.email,
+            "artista": registered_user.artista,
+            "foto_usuario": registered_user.foto_usuario,
+            "descripcion":registered_user.descripcion
+        },
+    }
+
+    # retornamos el objeto Response devuelto por jsonify con la
+    # configuracion mimetype application/json
+    return jsonify(access_token), 200
 
 # Configuracion usuario
 @api.route("/configuracion", methods=["PUT"])
@@ -158,7 +214,6 @@ def configuracion():
                     usuario_modificado.password = usuario_modificado_srlz["password"]
                 
                 usuario_modificado.nombre = usuario_modificado_srlz["nombre"]
-                usuario_modificado.apellido = usuario_modificado_srlz["apellido"]                
                 usuario_modificado.artista = usuario_modificado_srlz["artista"]
                 usuario_modificado.nacimiento = usuario_modificado_srlz["nacimiento"]
                 usuario_modificado.foto_usuario = usuario_modificado_srlz["foto_usuario"]

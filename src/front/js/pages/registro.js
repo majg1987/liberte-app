@@ -11,7 +11,6 @@ export const Registro = () => {
 
   /* Utilizo useState donde asigno valores de los input*/
   const [nombre, setNombre] = useState("");
-  const [apellidos, setApellidos] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
@@ -29,16 +28,14 @@ export const Registro = () => {
     if (
       nombre !== "" &&
       /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre) &&
-      apellidos !== "" &&
-      /^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(apellidos) &&
       /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email) &&
       password !== "" &&
       password === passwordRepeat
     ) {
-      actions.registro(nombre, apellidos, email, password, artista);
+      actions.registro(nombre, email, password, artista);
     } else {
       actions.notify(
-        "Completa todos los campos de forma correcta, recuerda que nombre y apellidos solo puede contener letras"
+        "Completa todos los campos de forma correcta, recuerda que nombre solo puede contener letras"
       );
     }
   };
@@ -66,20 +63,10 @@ export const Registro = () => {
                 type="text"
                 className="input-registro"
                 id="nombre"
-                placeholder="Escribe tu nombre"
+                placeholder="Escribe tu nombre completo"
                 onChange={(e) => setNombre(e.target.value)}
                 /** Asigno el valor con onChange a la variable nombre */
                 value={nombre}
-              />
-              <input
-                type="text"
-                className="input-registro"
-                id="apellidos"
-                placeholder="Escribe tus apellidos"
-                onChange={(e) =>
-                  setApellidos(e.target.value)
-                } /** Asigno el valor con onChange a la variable apellidos */
-                value={apellidos}
               />
               <input
                 type="email"
@@ -124,15 +111,14 @@ export const Registro = () => {
               </div>
               <div className="col-12 pl-2 d-flex justify-content-end my-2">
                 <Link to="/login">
-                  <button className="boton-registro me-2">Volver</button>
+                  <button className="boton-registro me-2"> Volver </button>
                 </Link>
                 <button className="boton-registro"> Crear Cuenta </button>
               </div>
             </form>
           </div>
           <div>
-            {/* Componente Alert */}
-            <Alert />
+            {/* Componente Alert */} <Alert />
           </div>
         </div>
       )}

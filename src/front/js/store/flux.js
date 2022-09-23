@@ -144,7 +144,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       // Registro
-      registro: async (nombre, apellidos, email, password, artista) => {
+      registro: async (nombre, email, password, artista) => {
         const options = {
           method: "POST",
           headers: {
@@ -152,7 +152,6 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
           body: JSON.stringify({
             nombre: nombre,
-            apellido: apellidos,
             email: email,
             password: password,
             artista: artista,
@@ -264,6 +263,46 @@ const getState = ({ getStore, getActions, setStore }) => {
         });
       },
 
+      // Login auto con credenciales de Google
+      loginWithGoogle: async (user) => {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nombre: user.displayName,
+            email: user.email,
+            password: "loginWithGoogle",
+            artista: false,
+            nacimiento: null,
+            foto_usuario: user.photoURL,
+            descripcion: null,
+          }),
+        };
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/api/login_with_google",
+            options
+          );
+          if (resp.status === 200) {
+            setStore({
+              auth: true,
+            });
+          }
+          const data = await resp.json();
+          sessionStorage.setItem("token", data.token); // accedemos a la key acces_token de data
+
+          setStore({
+            userInfo: data.user_info,
+          });
+
+          const userInfoStrfy = JSON.stringify(getStore().userInfo);
+          localStorage.setItem("userInfo", userInfoStrfy);
+        } catch (error) {
+          console.log("Error del servidor", error);
+        }
+      },
       // Fecth de Login
       login: async (email, password) => {
         const options = {
@@ -603,7 +642,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       //   Configuracion usuario
       configuracionUsuario: async (
         nombre,
-        apellido,
         password,
         artista,
         nacimiento,
@@ -626,7 +664,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             token: sessionStorage.getItem("token"),
             id: getStore().userInfo.id,
             nombre: nombre,
-            apellido: apellido,
             password: password,
             // artista: artista === "true" ? true : false,
             artista: artista,

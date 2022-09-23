@@ -22,36 +22,31 @@ export const Perfil = () => {
     actions.perfil_artista(id);
   }, [id]);
 
-
-
-
   return (
     <>
-      {
-        scroll ?
-
-          <div className="pt-4 mb-0 min-vh-100">
-            <div className="container">
-              <h1 className="perfil-header fst-italic fw-light mb-4" id="stack-top">
-                {typeof store.artista.nombre !== "undefined"
-                  ? typeof store.userInfo.id !== "undefined" &&
-                    store.userInfo.id == id
-                    ? `Hola, ${store.artista.nombre} ${store.artista.apellido}!`
-                    : `${store.artista.nombre} ${store.artista.apellido}`
-                  : `${store.artista.nombre} ${store.artista.apellido}`}
-              </h1>
-              <About id={id} />
-            </div>
-            <Filtro
-              id={id}
-              nombreArtista={`${store.artista.nombre}`}
-              fotoArtista={store.artista.foto_usuario}
-            />
+      {scroll ? (
+        <div className="pt-4 mb-0 min-vh-100">
+          <div className="container">
+            <h1
+              className="perfil-header fst-italic fw-light mb-4"
+              id="stack-top"
+            >
+              {typeof store.artista.nombre !== "undefined"
+                ? typeof store.userInfo.id !== "undefined" &&
+                  store.userInfo.id == id
+                  ? `Hola, ${store.artista.nombre} !`
+                  : `${store.artista.nombre} `
+                : `${store.artista.nombre}`}
+            </h1>
+            <About id={id} />
           </div>
-
-          :
-          null
-      }
+          <Filtro
+            id={id}
+            nombreArtista={`${store.artista.nombre}`}
+            fotoArtista={store.artista.foto_usuario}
+          />
+        </div>
+      ) : null}
     </>
   );
 };
