@@ -1,11 +1,13 @@
 /* importamos la libreria React y el useContext hook */
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 /* destructuring de Context */
 import { Context } from "../../store/appContext";
 /* destructuring de Link */
 import { Link } from "react-router-dom";
 /* importamos los estilos */
 import "../../../styles/itemDetails.css";
+
+
 
 /* almacenamos las propiedades del objeto en una constante */
 const ItemDetails = ({
@@ -22,7 +24,6 @@ const ItemDetails = ({
 }) => {
   const { store, actions } = useContext(Context);
 
-
   return (
     <div className="container-intem-detail">
       <div className="col-6 col-foto-info-producto-cesta">
@@ -37,6 +38,8 @@ const ItemDetails = ({
           <Link
             to={`/producto/${id}`}
             onClick={() => {
+              localStorage.getItem("productSelect") &&
+                localStorage.removeItem("productSelect");
               actions.productoSelect(
                 id,
                 nombre,

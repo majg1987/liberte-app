@@ -178,14 +178,27 @@ export const Producto = () => {
                     </h4>
                   </div>
 
-                  <div className="col-6 col-boton-cesta d-flex justify-content-end">
+                  {
+                    !store.productoPedido &&
+
+                    <div className="col-6 col-boton-cesta d-flex justify-content-end">
+                      <button
+                        className="boton-registro"
+                        onClick={(e) => añadirCesta(e)}
+                      >
+                        Añadir al carrito
+                      </button>
+                    </div>
+                  }
+                  {/* <div className="col-6 col-boton-cesta d-flex justify-content-end">
                     <button
                       className="boton-registro"
                       onClick={(e) => añadirCesta(e)}
                     >
                       Añadir al carrito
                     </button>
-                  </div>
+                  </div> */}
+
                 </div>
 
                 <div className="row row-precio">
