@@ -129,7 +129,6 @@ export const Filtro = (props) => {
               </div>
             </div>
           </nav>
-          {console.log("galeria", props.id)}
           {store.artistaGaleriaFiltered.length > 0 ? (
             <Galeria
               id={props.id}

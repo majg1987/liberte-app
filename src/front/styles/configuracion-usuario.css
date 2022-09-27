@@ -29,6 +29,10 @@ div[class*="col-titulo"] p {
     margin-left: 3%;
 }
 
+.row-input-foto {
+    margin-bottom: 1.5rem;
+}
+
 .contenedor-img-user {
     height: 100px;
     width: 100px;

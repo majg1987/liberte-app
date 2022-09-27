@@ -5,7 +5,7 @@ import Alert from "../Alert";
 
 export const Galeria = (props) => {
   const { store, actions } = useContext(Context);
-  // console.log("obra", store.artistaGaleriaFiltered)
+
 
   useEffect(() => {
     if (store.errorNoLogin) {
@@ -39,7 +39,6 @@ export const Galeria = (props) => {
     <>
       <div className="container">
         <div className="gallery me-4">
-          {/* {console.log("tete", store.artistaGaleriaFiltered)} */}
           <ul>
             {store.artistaGaleriaFiltered.map((obra) => (
               <div key={obra.id}>
@@ -56,19 +55,7 @@ export const Galeria = (props) => {
                   fotoArtista={props.fotoArtista}
                   vendido={obra.vendido}
                 />
-                {/* <Obra
-                  id={props.id}
-                  obra_id={obra.id}
-                  foto_producto={obra.foto_producto}
-                  nombre={obra.nombre}
-                  precio={obra.precio}
-                  categoria={obra.categoria}
-                  dimensiones={obra.dimensiones}
-                  nombreArtista={props.nombreArtista}
-                  descripcion={obra.descripcion}
-                  fotoArtista={props.fotoArtista}
-                  vendido={obra.vendido}
-                /> */}
+
               </div>
             ))}
           </ul>

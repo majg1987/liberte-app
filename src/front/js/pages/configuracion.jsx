@@ -161,7 +161,7 @@ export const ConfiguracionUsuario = () => {
                       //   setArtista(true);
                       // }}
                       defaultChecked
-                      // checked="checked"
+                    // checked="checked"
                     />
                   </div>
                   <div className="col-4 col-input-artista">
@@ -210,12 +210,62 @@ export const ConfiguracionUsuario = () => {
                       //   setArtistProvisional(false);
                       // }}
                       defaultChecked
-                      // checked="checked"
+                    // checked="checked"
                     />
                   </div>
                 </>
               )
             }
+          </div>
+
+
+          <div className="row row-descripcion">
+            <div className="col-12 col-md-3 col-titulo-descripcion">
+              <p className="descripcion">Descripción</p>
+            </div>
+            <div className="col-12 col-md-9 col-input-descripcion ">
+              <textarea
+                className="input-descripcion"
+                onChange={(e) => setDescripcion(e.target.value)}
+                defaultValue={store.userInfo.descripcion}
+              ></textarea>
+            </div>
+          </div>
+
+          <div className="row row-foto">
+            <div className="col-12 col-md-3 col-titulo-foto">
+              <label
+                className="label-boton-subir-foto"
+                htmlFor="boton-subir-foto"
+              >
+                Subir foto
+              </label>
+
+              <input
+                id="boton-subir-foto"
+                type="file"
+                name="foto"
+                onChange={(e) => {
+                  subirImagen(e.target.files[0]);
+                }}
+              ></input>
+            </div>
+            <div className="col-12 col-md-9 col-input-foto ">
+              <div className="row row-input-foto">
+                <div className="col-12 col-md-3 pl-2">
+                  <div className="contenedor-img-user">
+                    {imagenSelect == "" ? (
+                      <img
+                        className="sin-foto-perfil img-usuario"
+                        src={store.userInfo.foto_usuario}
+                      />
+                    ) : (
+                      <img src={imagenSelect} alt="" className="img-usuario" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="row row-nacimiento">
@@ -300,55 +350,6 @@ export const ConfiguracionUsuario = () => {
                 onChange={(e) => setPuerta(e.target.value)}
                 defaultValue={store.direccion.puerta}
               />
-            </div>
-          </div>
-
-          <div className="row row-descripcion">
-            <div className="col-12 col-md-3 col-titulo-descripcion">
-              <p className="descripcion">Descripción</p>
-            </div>
-            <div className="col-12 col-md-9 col-input-descripcion ">
-              <textarea
-                className="input-descripcion"
-                onChange={(e) => setDescripcion(e.target.value)}
-                defaultValue={store.userInfo.descripcion}
-              ></textarea>
-            </div>
-          </div>
-
-          <div className="row row-foto">
-            <div className="col-12 col-md-3 col-titulo-foto">
-              <label
-                className="label-boton-subir-foto"
-                htmlFor="boton-subir-foto"
-              >
-                Subir foto
-              </label>
-
-              <input
-                id="boton-subir-foto"
-                type="file"
-                name="foto"
-                onChange={(e) => {
-                  subirImagen(e.target.files[0]);
-                }}
-              ></input>
-            </div>
-            <div className="col-12 col-md-9 col-input-foto ">
-              <div className="row row-input-foto">
-                <div className="col-12 col-md-3 pl-2">
-                  <div className="contenedor-img-user">
-                    {imagenSelect == "" ? (
-                      <img
-                        className="sin-foto-perfil img-usuario"
-                        src={store.userInfo.foto_usuario}
-                      />
-                    ) : (
-                      <img src={imagenSelect} alt="" className="img-usuario" />
-                    )}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
