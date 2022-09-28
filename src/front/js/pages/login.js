@@ -66,7 +66,7 @@ export const Login = () => {
         <div className="min-vh-100 container-principal-login">
           <div className="contenedor-formulario contenedor-login d-flex justify-content-center align-items-center col-10">
             <form className="formulario-registro">
-              <h2 className="titulo-registro text-center"> Login </h2>{" "}
+              <h2 className="titulo-registro text-center"> Login </h2>
               <input
                 type="email"
                 className="input-registro"
@@ -76,7 +76,7 @@ export const Login = () => {
                   setEmail(e.target.value)
                 } /** Asigno el valor con onChange a la variable email */
                 value={email}
-              />{" "}
+              />
               <input
                 type="password"
                 className="input-registro"
@@ -87,37 +87,35 @@ export const Login = () => {
                   setPassword(e.target.value)
                 } /** Asigno el valor con onChange a la variable password */
                 value={password}
-              />{" "}
+              />
               <div className="d-flex flex-column">
                 <button onClick={handleSubmit} className="boton-registro mb-2">
-                  Acceder{" "}
-                </button>{" "}
+                  Acceder
+                </button>
                 <button
                   onClick={signInWithPopUp}
                   className="boton-registro mb-2"
                 >
                   <i className="fab fa-google me-2"> </i>
-                  Acceso con Google{" "}
-                </button>{" "}
+                  Acceso con Google
+                </button>
                 <Link
                   to={"/recuperacionPassword"}
                   className="text-center buttons-login"
                 >
-                  {" "}
-                  ¿Has olvidado tu contraseña ? Recupérala{" "}
-                </Link>{" "}
+                  ¿Has olvidado tu contraseña ? Recupérala
+                </Link>
                 <Link to={"/registro"} className="text-center buttons-login">
-                  Registrarse{" "}
-                </Link>{" "}
-              </div>{" "}
-            </form>{" "}
-          </div>{" "}
+                  Registrarse
+                </Link>
+              </div>
+            </form>
+          </div>
           <div>
-            {" "}
             {/* Componente Alert */} <Alert />
-          </div>{" "}
+          </div>
         </div>
-      )}{" "}
+      )}
     </>
   );
 };
