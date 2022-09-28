@@ -23,6 +23,8 @@ export const SubirProducto = () => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
+
+
   // Guardamos la imagen utilizando cloudinary
   const subirImagen = async (foto) => {
     const data = new FormData();
@@ -42,6 +44,7 @@ export const SubirProducto = () => {
     const file = await resp.json();
     setImagenSelect(file.secure_url);
     setLoading(false);
+
   };
 
   /** Mando datos a Flux para realizar fecth hacia la ruta del backEnd*/
@@ -58,12 +61,7 @@ export const SubirProducto = () => {
       }
     }
 
-    // if (!/^[ a-zA-ZñÑáéíóúÁÉÍÓÚ]+$/i.test(nombre)) {
-    //   actions.notify(
-    //     "El nombre de tu obra solo puede incluir letras y espacios"
-    //   );
-    //   return;
-    // } else 
+
     if (!/^[0-9]+x[0-9]+$/i.test(dimensiones)) {
       actions.notify(
         "Las dimensiones de tu obra, en centímetros, deben ser del tipo ANCHOxALTO (e.g. 120x120)"
@@ -86,6 +84,7 @@ export const SubirProducto = () => {
     setDimensiones("");
     setPrecio("");
     setDescripcion("");
+    setImagenSelect("");
   };
 
   useEffect(() => {

@@ -11,11 +11,15 @@ export const Producto = () => {
 
   const [scroll, setScroll] = useState(null);
 
+
+
+
   // Por algun motivo la pagina se renderiza con scroll hacia abajo, asi que ejecutamos esto para que se cargue si scroll (no tarda nada)
   useEffect(() => {
     window.scrollTo(0, 0);
     setScroll(true);
     actions.productoSelect();
+
   }, []);
 
   const añadirCesta = (e) => {
@@ -42,6 +46,9 @@ export const Producto = () => {
       storeSeleccionado = store.productos;
     } else if (store.listaPerfil) {
       storeSeleccionado = store.artistaGaleria;
+      storeSeleccionado = store.artistaGaleria.filter((ele) => {
+        return ele.vendido === false;
+      })
       console.log("storegaleria", store.artistaGaleria);
     } else if (store.listaPedidos) {
       storeSeleccionado = store.pedido.productos_info;
@@ -58,11 +65,16 @@ export const Producto = () => {
     }
 
     let productoTarget;
-    direccion === "right"
-      ? (productoTarget = arraySeleccionado[indexProducto + 1])
-      : (productoTarget = arraySeleccionado[indexProducto - 1]);
 
-    console.log("target", productoTarget)
+    if (direccion === "right" && !isNaN(indexProducto + 1)) {
+      productoTarget = arraySeleccionado[indexProducto + 1];
+    }
+    else if (direccion !== "right" && !isNaN(indexProducto - 1)) {
+      productoTarget = arraySeleccionado[indexProducto - 1];
+    }
+
+
+
     localStorage.removeItem("productSelect");
 
     if (productoTarget !== undefined) {
@@ -80,8 +92,7 @@ export const Producto = () => {
         productoTarget.vendedor_user_id,
       );
     }
-
-    navigate(`../producto/${productoTarget.id}`);
+    productoTarget && navigate(`../producto/${productoTarget.id}`);
   };
 
   useEffect(() => {
@@ -178,14 +189,20 @@ export const Producto = () => {
                     </h4>
                   </div>
 
-                  <div className="col-6 col-boton-cesta d-flex justify-content-end">
-                    <button
-                      className="boton-registro"
-                      onClick={(e) => añadirCesta(e)}
-                    >
-                      Añadir al carrito
-                    </button>
-                  </div>
+                  {
+                    store.productoPedido === false &&
+
+                    <div className="col-6 col-boton-cesta d-flex justify-content-end">
+                      <button
+                        className="boton-registro"
+                        onClick={(e) => añadirCesta(e)}
+                      >
+                        Añadir al carrito
+                      </button>
+                    </div>
+                  }
+
+
                 </div>
 
                 <div className="row row-precio">

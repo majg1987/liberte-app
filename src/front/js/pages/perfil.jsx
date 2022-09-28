@@ -15,7 +15,7 @@ export const Perfil = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setScroll(true);
-    // actions.productoSelect();
+    store.productoPedido = false;
   }, []);
 
   useEffect(() => {

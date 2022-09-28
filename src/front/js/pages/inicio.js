@@ -14,6 +14,7 @@ export const Inicio = () => {
     store.listaCesta = false;
     store.listaPerfil = false;
     store.listaPedidos = false;
+    store.productoPedido = false;
   }, []);
 
   const breakpoints = {

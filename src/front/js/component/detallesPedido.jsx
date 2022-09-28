@@ -27,6 +27,7 @@ const DetallesPedido = ({
     useEffect(() => {
         store.listaCesta = false;
         store.listaPerfil = false;
+        store.productoPedido = true;
     }, [])
 
 

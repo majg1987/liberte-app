@@ -9,13 +9,16 @@ import { GiShoppingBag } from "react-icons/gi";
 import { BsDot } from "react-icons/bs";
 
 export const Obra = (props) => {
-  // console.log("effff", props)
+
   const { store, actions } = useContext(Context);
 
   // Pasamos listaCesta a false para que cuando le demos a siguiente imagen se quede en perfil
   useEffect(() => {
     store.listaCesta = false;
     store.listaPedidos = false;
+    if (props.vendido) {
+      store.productoPedido = true;
+    }
   }, []);
 
   const añadirCesta = (e) => {
@@ -36,6 +39,7 @@ export const Obra = (props) => {
             onClick={() => {
               localStorage.getItem("productSelect") &&
                 localStorage.removeItem("productSelect");
+              { props.vendido ? store.productoPedido = true : store.productoPedido = false }
 
               actions.productoSelect(
                 props.obra_id,
@@ -49,7 +53,7 @@ export const Obra = (props) => {
                 props.fotoArtista,
                 props.userId
               );
-              console.log("pspeect", store.productoSelect);
+
               store.listaPerfil = true;
             }}
           >
